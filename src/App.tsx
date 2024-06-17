@@ -33,7 +33,7 @@ function App() {
         </form>
         {message && <p>{message}</p>}
         <p>Don't have an account yet?</p>
-        <a href="/" className="sign-up-link">
+        <a href="/sign-up" className="sign-up-link">
           <strong>Sign Up Here</strong>
         </a>
       </div>

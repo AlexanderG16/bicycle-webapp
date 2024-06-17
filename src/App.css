@@ -88,6 +88,6 @@
   color: black;
 }
 
-.sign-up-link {
+.sign-up-link, .log-in-link {
   text-decoration: underline;
 }

@@ -11,11 +11,14 @@ function App() {
         <form action="" method="get">
           <input type="text" id="input-username" placeholder="Username"></input>
           <input type="password" id="input-password" placeholder="Password"></input>
+          <input type="email" id="input-email" placeholder="Email"></input>
+          <input type="tel" id="input-phone-num" placeholder="+62 |"></input>
+          <input type="text" id="input-address" placeholder="Address"></input>
           <Button btnType="btn-signup">Sign Up</Button>
         </form>
-        <p>Don't have An Account Yet?</p>
-        <a href="" className="log-in-link">
-          <strong>Sign Up Here</strong>
+        <p>Already Have An Account?</p>
+        <a href="/" className="log-in-link">
+          <strong>Log In Here</strong>
         </a>
       </div>
     </div>
