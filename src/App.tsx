@@ -1,7 +1,25 @@
+import React, { useState, useEffect } from "react";
 import Button from "./components/Button";
 import "./App.css";
 
 function App() {
+  const [message, setMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchMessage = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/");
+        const data = await response.text();
+        setMessage(data);
+      } catch (error) {
+        console.error("Error fetching message:", error);
+        setMessage("Failed to fetch message");
+      }
+    };
+
+    fetchMessage();
+  }, []);
+
   return (
     <div className="App">
       <div className="left-banner">
@@ -13,8 +31,9 @@ function App() {
           <input type="password" id="input-password" placeholder="Password"></input>
           <Button btnType="btn-login">Log In</Button>
         </form>
-        <p>Don't have An Account Yet?</p>
-        <a href="" className="sign-up-link">
+        {message && <p>{message}</p>}
+        <p>Don't have an account yet?</p>
+        <a href="/" className="sign-up-link">
           <strong>Sign Up Here</strong>
         </a>
       </div>
