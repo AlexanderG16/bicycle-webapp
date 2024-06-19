@@ -26,20 +26,14 @@ function App() {
         <h2 className="logo">HOBIGOWES</h2>
       </div>
       <div className="main-area">
-        <form action="">
-          <label className="username-label" htmlFor="input-username">
-            Username
-          </label>
-          <input type="text" id="input-username"></input>
-          <label className="password-label" htmlFor="input-password">
-            Password
-          </label>
-          <input type="password" id="input-password"></input>
+        <form action="" method="get">
+          <input type="text" id="input-username" placeholder="Username"></input>
+          <input type="password" id="input-password" placeholder="Password"></input>
           <Button btnType="btn-login">Log In</Button>
         </form>
         {message && <p>{message}</p>}
         <p>Don't have an account yet?</p>
-        <a href="/" className="sign-up-link">
+        <a href="/sign-up" className="sign-up-link">
           <strong>Sign Up Here</strong>
         </a>
       </div>
