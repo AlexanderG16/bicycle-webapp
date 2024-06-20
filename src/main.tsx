@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
-import SignUp from './SignUp'
+import App from '../frontend/hobigowes-app/src/App'
+import SignUp from '../frontend/hobigowes-app/src/SignUp'
 import './index.css'
 import {
   createBrowserRouter,
