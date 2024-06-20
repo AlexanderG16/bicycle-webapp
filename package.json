@@ -1,23 +1,13 @@
 {
-  "name": "hobigowes-app",
+  "name": "bicycle-webapp",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.23.1"
+    "start": "concurrently \"npm run build-and-start-backend\" \"npm run start --prefix frontend/hobigowes-app\"",
+    "build-and-start-backend": "npm run build --prefix backend && npm run start --prefix backend",
+    "install-all": "npm install --prefix backend && npm install --prefix frontend/hobigowes-app"
   },
   "devDependencies": {
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
-    "@vitejs/plugin-react": "^3.1.0",
-    "typescript": "^4.9.3",
-    "vite": "^4.1.0"
+    "concurrently": "^6.2.0"
   }
 }
