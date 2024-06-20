@@ -1,9 +1,9 @@
 import Button from "./components/Button";
 import "./App.css";
 
-function App() {
+function SignUp() {
   return (
-    <div className="App">
+    <div className="SignUp">
       <div className="left-banner">
         <h2 className="logo">HOBIGOWES</h2>
       </div>
@@ -25,4 +25,4 @@ function App() {
   );
 }
 
-export default App;
+export default SignUp;

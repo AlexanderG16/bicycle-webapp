@@ -11,7 +11,7 @@
   width: 100vw;
 }
 
-.App {
+.App, .SignUp {
   width: 100%;
   display: flex;
   justify-content: space-around;

@@ -1,0 +1,50 @@
+.Home{
+    position: relative;
+    width: 1728px;
+    height: 4003px;
+}
+
+.Navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #060606;
+    list-style-type: none;
+    padding: 30px;
+}
+
+.Navbar > li {
+    text-decoration: none;
+    display: inline;
+}
+
+strong {
+    color: white;
+}
+
+.logo {
+    color: #FFFFFF;
+    font-family: 'Alfa Slab One';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 100%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: -0.05em;
+    text-transform: capitalize;
+}
+
+.SignIn, .SignUp {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 100%;
+    letter-spacing: -0.05em;
+    text-transform: capitalize;
+    display: flex;
+
+    color: #FFFFFF;
+}
