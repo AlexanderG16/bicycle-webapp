@@ -1,22 +1,23 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { findUserByName, createUser } from '../models/user';
+import { findUserByUsername, createUser } from '../models/user';
 
 const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
-  const user = await findUserByName(username);
+  const user = await findUserByUsername(username);
+
   if (!user) {
-    return res.status(401).json({ message: 'Invalid username or password' });
+    return res.status(401).json({ message: 'Invalid username' });
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    return res.status(401).json({ message: 'Invalid username or password' });
+    return res.status(401).json({ message: 'Invalid password' });
   }
 
-  const token = jwt.sign({ username: user.name }, process.env.JWT_SECRET!, {
+  const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET!, {
     expiresIn: '1h',
   });
 
@@ -24,14 +25,14 @@ const login = async (req: Request, res: Response) => {
 };
 
 const register = async (req: Request, res: Response) => {
-  const { username, password, email, phone_number, address } = req.body;
+  const { name, password, email, phone_number, address } = req.body;
 
   try {
-    const existingUser = await findUserByName(username);
+    const existingUser = await findUserByUsername(name);
     if (existingUser) {
-      return res.status(400).json({ message: 'Username already taken' });
+      return res.status(400).json({ message: 'name already taken' });
     }
-    await createUser(username, password, email, phone_number, address);
+    await createUser(name, password, email, phone_number, address);
     res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });

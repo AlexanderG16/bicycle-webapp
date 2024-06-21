@@ -1,22 +1,22 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { findUserByName, createUser } from '../src/models/user';
+import { findUserByUsername, createUser } from '../src/models/user';
 
 const login = async (req: Request, res: Response) => {
   const { name, password } = req.body;
 
-  const user = await findUserByName(name);
+  const user = await findUserByUsername(name);
   if (!user) {
-    return res.status(401).json({ message: 'Invalid name or password' });
+    return res.status(401).json({ message: 'Invalid name' });
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    return res.status(401).json({ message: 'Invalid name or password' });
+    return res.status(401).json({ message: 'Invalid password' });
   }
 
-  const token = jwt.sign({ name: user.name }, process.env.JWT_SECRET!, {
+  const token = jwt.sign({ name: user.username }, process.env.JWT_SECRET!, {
     expiresIn: '1h',
   });
 
@@ -27,7 +27,7 @@ const register = async (req: Request, res: Response) => {
   const { name, password, email, phone_number, address } = req.body;
 
   try {
-    const existingUser = await findUserByName(name);
+    const existingUser = await findUserByUsername(name);
     if (existingUser) {
       return res.status(400).json({ message: 'name already taken' });
     }

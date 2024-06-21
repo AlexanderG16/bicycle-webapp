@@ -158,8 +158,8 @@ INSERT INTO `transaction_detail` (`transaction_id`, `post_id`, `quantity`) VALUE
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `password_hashed` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `phone_number` varchar(255) DEFAULT NULL,
   `is_seller` tinyint(1) DEFAULT NULL
@@ -169,7 +169,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `password_hashed`, `email`, `phone_number`, `is_seller`) VALUES
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `phone_number`, `is_seller`) VALUES
 (1, 'John Doe', '$2a$12$LUGcqtehXitGjBCNcxUq6.7IAZwgV5D4WBnieY.EbzCTguhJLzuPy', 'john.doe@example.com', '123-456-7890', 1),
 (2, 'Jane Smith', '1f51c87a47d5c4aacc042ba9945523ce', 'jane.smith@example.com', '098-765-4321', 0);
 
