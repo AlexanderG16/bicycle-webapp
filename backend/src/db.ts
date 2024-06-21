@@ -1,14 +1,18 @@
-import mariadb from 'mariadb';
+import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config(); // Load environment variables
 
-const pool = mariadb.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  connectionLimit: 5,
+const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
+
+const pool = mysql.createPool({
+  host: DB_HOST || 'localhost',
+  user: DB_USER || 'root',
+  password: DB_PASSWORD || '',
+  database: DB_NAME || 'hobigowes',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 export default pool;

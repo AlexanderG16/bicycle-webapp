@@ -1,22 +1,22 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { findUserByUsername, createUser } from '../src/models/user';
+import { findUserByName, createUser } from '../src/models/user';
 
 const login = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  const { name, password } = req.body;
 
-  const user = await findUserByUsername(username);
+  const user = await findUserByName(name);
   if (!user) {
-    return res.status(401).json({ message: 'Invalid username or password' });
+    return res.status(401).json({ message: 'Invalid name or password' });
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    return res.status(401).json({ message: 'Invalid username or password' });
+    return res.status(401).json({ message: 'Invalid name or password' });
   }
 
-  const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET!, {
+  const token = jwt.sign({ name: user.name }, process.env.JWT_SECRET!, {
     expiresIn: '1h',
   });
 
@@ -24,15 +24,18 @@ const login = async (req: Request, res: Response) => {
 };
 
 const register = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  const { name, password, email, phone_number, address } = req.body;
 
-  const existingUser = await findUserByUsername(username);
-  if (existingUser) {
-    return res.status(400).json({ message: 'Username already taken' });
+  try {
+    const existingUser = await findUserByName(name);
+    if (existingUser) {
+      return res.status(400).json({ message: 'name already taken' });
+    }
+    await createUser(name, password, email, phone_number, address);
+    res.status(201).json({ message: 'User created successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
   }
-
-  await createUser(username, password);
-  res.status(201).json({ message: 'User created successfully' });
 };
 
 export { login, register };
