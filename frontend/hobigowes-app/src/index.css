@@ -55,6 +55,25 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.logo {
+  font-family: Alfa Slab One, serif;
+  color: white;
+  margin-left: 40px;
+  margin-top: 30px;
+}
+
+.btn {
+  width: 400px;
+  border-radius: 40px;
+  color: white;
+  transition: 800ms;
+}
+
+.btn:hover {
+  background-color: #9d9d9d;
+  color: black;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

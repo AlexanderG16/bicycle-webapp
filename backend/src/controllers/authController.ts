@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import { findUserByUsername, createUser } from '../models/user';
+import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { findUserByUsername, createUser } from "../models/user";
 
 const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
@@ -9,34 +9,46 @@ const login = async (req: Request, res: Response) => {
   const user = await findUserByUsername(username);
 
   if (!user) {
-    return res.status(401).json({ message: 'Invalid username' });
+    return res.status(401).json({ message: "Invalid username" });
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    return res.status(401).json({ message: 'Invalid password' });
+    return res.status(401).json({ message: "Invalid password" });
   }
 
-  const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET!, {
-    expiresIn: '1h',
-  });
+  const token = jwt.sign(
+    {
+      username: user.username,
+      role: user.is_seller, // Add user role or other information as needed
+    },
+    process.env.JWT_SECRET!,
+    { expiresIn: "1h" }
+
+    // req.session.token = token;
+  );
 
   res.json({ token });
 };
 
-const register = async (req: Request, res: Response) => {
-  const { name, password, email, phone_number, address } = req.body;
+const signup = async (req: Request, res: Response) => {
+  const { username, password, email, phoneNumber } = req.body;
 
   try {
-    const existingUser = await findUserByUsername(name);
+    const existingUser = await findUserByUsername(username);
     if (existingUser) {
-      return res.status(400).json({ message: 'name already taken' });
+      return res.status(400).json({ message: "name already taken" });
     }
-    await createUser(name, password, email, phone_number, address);
-    res.status(201).json({ message: 'User created successfully' });
+    await createUser(username, password, email, phoneNumber);
+    res.status(201).json({ message: "User created successfully" });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
-export { login, register };
+const displayPost = async (req: Request, res: Response) => {
+  // logic here later
+};
+
+export { login, signup, displayPost };

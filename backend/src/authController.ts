@@ -1,23 +1,23 @@
-import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import { findUserByUsername, createUser } from '../src/models/user';
+import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { findUserByUsername, createUser } from "../src/models/user";
 
 const login = async (req: Request, res: Response) => {
   const { name, password } = req.body;
 
   const user = await findUserByUsername(name);
   if (!user) {
-    return res.status(401).json({ message: 'Invalid name' });
+    return res.status(401).json({ message: "Invalid name" });
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    return res.status(401).json({ message: 'Invalid password' });
+    return res.status(401).json({ message: "Invalid password" });
   }
 
   const token = jwt.sign({ name: user.username }, process.env.JWT_SECRET!, {
-    expiresIn: '1h',
+    expiresIn: "1h",
   });
 
   res.json({ token });
@@ -29,12 +29,12 @@ const register = async (req: Request, res: Response) => {
   try {
     const existingUser = await findUserByUsername(name);
     if (existingUser) {
-      return res.status(400).json({ message: 'name already taken' });
+      return res.status(400).json({ message: "name already taken" });
     }
-    await createUser(name, password, email, phone_number, address);
-    res.status(201).json({ message: 'User created successfully' });
+    await createUser(name, password, email, phone_number);
+    res.status(201).json({ message: "User created successfully" });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
