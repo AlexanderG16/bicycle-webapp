@@ -1,0 +1,63 @@
+body {
+    background-color: white;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    background-color: black;
+    color: white;
+}
+
+.btn-btn-cart-menu {
+    background-image: url("./assets/vecteezy_online-shop-icon-set-vector-for-web-presentation-logo_4262773.jpg");
+    background-size: cover;
+}
+
+.btn-btn-profile-menu {
+    background-image: url("./assets/vecteezy_default-profile-account-unknown-icon-black-silhouette_20765399.jpg");
+}
+
+.auth-links{
+    margin-left: 1rem;
+    color: white;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero {
+    background: url(./assets/josh-nuttall-XVTWFHcNIko-unsplash.jpg) no-repeat center center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.hero-content *{
+    padding: 2rem 1rem;
+}
+
+.hero-content h1{
+    font-size: 3rem;
+    color: white;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    color: white;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.search-bar input {
+    width: 60%;
+    padding: 0.75rem;
+    margin-right: 1rem;
+    border: 1px solid #ccc;
+}

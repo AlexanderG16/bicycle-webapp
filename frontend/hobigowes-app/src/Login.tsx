@@ -30,7 +30,7 @@ function Login() {
           setMessage("Login successful");
           // Handle token storage and redirect if necessary
           console.log("Token:", data.token);
-          navigate("/home");
+          navigate("/");
 
           var token = data.token;
           var expirationDate = new Date();

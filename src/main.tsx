@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from '../frontend/hobigowes-app/src/App'
 import SignUp from '../frontend/hobigowes-app/src/SignUp'
 import './index.css'
+import Home from '../frontend/hobigowes-app/src/Home'
 import {
   createBrowserRouter,
   RouterProvider,
@@ -11,6 +12,10 @@ import {
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/sign-in",
     element: <App />,
   },
   {
