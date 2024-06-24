@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import Button from "./components/Button";
 import "./Login.css";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [message, setMessage] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +30,15 @@ function Login() {
           setMessage("Login successful");
           // Handle token storage and redirect if necessary
           console.log("Token:", data.token);
+          navigate("/home");
+
+          var token = data.token;
+          var expirationDate = new Date();
+          expirationDate.setTime(expirationDate.getTime() + 1 * 60 * 60 * 1000); // 1 hour in milliseconds
+
+          var cookieString = "token=" + token + "; expires=" + expirationDate.toUTCString() + "; path=/";
+
+          document.cookie = cookieString;
         } else {
           const errorData = await response.json();
           setMessage(errorData.message);

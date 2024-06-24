@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2024 at 08:07 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.1.12
+-- Generation Time: Jun 24, 2024 at 04:14 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -171,7 +171,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `phone_number`, `is_seller`) VALUES
 (1, 'John Doe', '$2a$12$LUGcqtehXitGjBCNcxUq6.7IAZwgV5D4WBnieY.EbzCTguhJLzuPy', 'john.doe@example.com', '123-456-7890', 1),
-(2, 'Jane Smith', '1f51c87a47d5c4aacc042ba9945523ce', 'jane.smith@example.com', '098-765-4321', 0);
+(2, 'Jane Smith', '1f51c87a47d5c4aacc042ba9945523ce', 'jane.smith@example.com', '098-765-4321', 0),
+(3, 'test1', '$2a$10$oK1evgIbigHwVQfTaEuaeepcB9cAMeb/Aj4CWYs4sme8bb/ZopI/O', 'test1@gmail', '1', NULL);
 
 --
 -- Indexes for dumped tables
@@ -257,7 +258,7 @@ ALTER TABLE `transaction`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
