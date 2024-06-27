@@ -1,4 +1,5 @@
 import { login } from "../controllers/authController";
+import Post from "../models/post";
 import pool from "../db";
 
 interface Cart {

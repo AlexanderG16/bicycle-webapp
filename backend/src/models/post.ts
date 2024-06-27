@@ -69,3 +69,5 @@ export const getPostByID = async (id?: number): Promise<Post | null> => {
         return null;
     }
 }
+
+export default Post;

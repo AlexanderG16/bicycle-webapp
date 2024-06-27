@@ -29,9 +29,8 @@ const Home = () => {
           </>
         ) : (
           <>
-            <a href="/signin">Sign In</a>
-            <a href="/signup">Sign Up</a>
-              <img className="btn-cart-menu" src={cartImage} onClick={function(){location.href="/cart"}}></img>
+            <a href="/signin" className="sign-in-btn">Sign In</a>
+            <a href="/signup" className="sign-up-btn">Sign Up</a>
           </>
         )}
         </div>

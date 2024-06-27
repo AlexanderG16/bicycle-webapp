@@ -60,3 +60,15 @@ body {
     margin-right: 1rem;
     border: 2px solid #ccc;
 }
+
+.sign-in-btn {
+    display: inline-block;
+    padding: 10px;
+    color: white;
+}
+
+.sign-up-btn {
+    display: inline-block;
+    padding: 10px;
+    color: white;
+}

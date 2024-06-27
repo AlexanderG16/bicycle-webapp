@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import pool from './db'; // Import the database connection
 
 import authRoutes from './routes/auth';
+import postRoutes from './routes/postRoutes';
 
 dotenv.config();
 
@@ -29,9 +30,6 @@ initDB(); // Initialize the database connection
 
 // Routes
 app.use('/api/auth', authRoutes);
-
-app.get('/', (req, res) => {
-  res.send('Hello from Express!');
-});
+app.use('/', postRoutes)
 
 export default app;
