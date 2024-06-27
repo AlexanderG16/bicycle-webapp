@@ -4,6 +4,8 @@ import "./Login.css";
 import "./index.css";
 import Button from "./components/Button";
 import "./Home.css";
+import cartImage from "./assets/vecteezy_online-shop-icon-set-vector-for-web-presentation-logo_4262773.jpg";
+import profileImage from "./assets/vecteezy_default-profile-account-unknown-icon-black-silhouette_20765399.jpg";
 
 const Home = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -21,14 +23,15 @@ const Home = () => {
         <div className="auth-links">
         {isAuthenticated ? (
           <>
-            <Button btnType="btn-cart-menu"></Button>
-            <Button btnType="btn-profile-menu"></Button>
+              <img className="btn-cart-menu" src={cartImage} onClick={function(){location.href="/cart"}}></img>
+              <img className="btn-profile-menu" src={profileImage} onClick={function(){location.href="/profile"}}></img>
+
           </>
         ) : (
           <>
             <a href="/signin">Sign In</a>
             <a href="/signup">Sign Up</a>
-            <Button btnType="btn-cart-menu"></Button>
+              <img className="btn-cart-menu" src={cartImage} onClick={function(){location.href="/cart"}}></img>
           </>
         )}
         </div>
@@ -36,7 +39,7 @@ const Home = () => {
       <section className="hero">
         <div className="hero-content">
           <h1>FIND YOUR PERFECT RIDE</h1>
-          <p>Join our community of cycling enthusiasts and discover the best bikes for sale near you.</p>
+          <p>Join our community of cycling enthusiasts and discover a wide range of bikes to suit every style and need, quality, convenience, and passion all in one place.</p>
           <div className="hero-buttons">
             <Button btnType="btn-browse-listing">Browse Listings</Button>
             <Button btnType="btn-about-us">About Us</Button>

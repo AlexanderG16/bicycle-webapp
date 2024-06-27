@@ -10,13 +10,11 @@ body {
     color: white;
 }
 
-.btn-btn-cart-menu {
-    background-image: url("./assets/vecteezy_online-shop-icon-set-vector-for-web-presentation-logo_4262773.jpg");
-    background-size: cover;
-}
-
-.btn-btn-profile-menu {
-    background-image: url("./assets/vecteezy_default-profile-account-unknown-icon-black-silhouette_20765399.jpg");
+.btn-cart-menu, .btn-profile-menu {
+    width: 40px;
+    height: 40px;
+    margin-left: 1rem;
+    border-radius: 100%;
 }
 
 .auth-links{
@@ -56,8 +54,9 @@ body {
 }
 
 .search-bar input {
+    border-radius: 25px;
     width: 60%;
     padding: 0.75rem;
     margin-right: 1rem;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
 }
