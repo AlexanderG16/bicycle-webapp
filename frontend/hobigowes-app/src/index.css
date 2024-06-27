@@ -64,7 +64,8 @@ button:focus-visible {
   font-family: Alfa Slab One, serif;
   color: white;
   margin-left: 40px;
-  margin-top: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .btn {
