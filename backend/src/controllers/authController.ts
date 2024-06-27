@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { findUserByUsername, createUser } from "../models/user";
+import { createCart } from "../models/cart";
+
 
 const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
@@ -20,14 +22,14 @@ const login = async (req: Request, res: Response) => {
   const token = jwt.sign(
     {
       username: user.username,
-      role: user.is_seller, // Add user role or other information as needed
+      role: user.is_seller,
     },
     process.env.JWT_SECRET!,
     { expiresIn: "1h" }
-
-    // req.session.token = token;
   );
 
+  await createCart(user.id);
+  
   res.json({ token });
 };
 
