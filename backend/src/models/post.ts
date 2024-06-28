@@ -19,7 +19,7 @@ export interface Post {
     price?: number;
     city?: string;
     province?: string;
-    upload_date: string;
+    upload_date: Date;
     stok?: number;
     status?: Status;
     user_id?: number;
@@ -31,7 +31,7 @@ export const getAllPosts = async (): Promise<Array<Post> | null> => {
         const [rows] = await conn.query("SELECT * FROM post");
         conn.release();
 
-        return rows as Array<Post> // Harus di cek lagi bener apa engga
+        return rows as Array<Post>
     } catch (error) {
         console.error("Error getting all posts");
         conn.release();
@@ -39,10 +39,10 @@ export const getAllPosts = async (): Promise<Array<Post> | null> => {
     }
 }
 
-export const createPost = async (title: string, bike_type: BikeType, description: string, price: number, city: string, province: string, upload_date: string, stok: number, status: Status, user_id: number): Promise<void> => {
+export const createPost = async (title: string, bike_type: BikeType, description: string, price: number, city: string, province: string, stok: number, status: Status, user_id: number): Promise<void> => {
     const conn = await pool.getConnection();
     try {
-        await conn.query("INSERT INTO post (title, bike_type, description, price, city, province, upload_date, stok, status, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [title, bike_type, description, price, city, province, upload_date, stok, status, user_id]);
+        await conn.query("INSERT INTO post (title, bike_type, description, price, city, province, upload_date, stok, status, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [title, bike_type, description, price, city, province, stok, status, user_id]);
         conn.release();
     } catch (error) {
         console.error("Unexpected Error Occured");

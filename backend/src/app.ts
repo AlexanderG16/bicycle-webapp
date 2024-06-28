@@ -7,6 +7,7 @@ import pool from './db'; // Import the database connection
 
 import authRoutes from './routes/auth';
 import postRoutes from './routes/postRoutes';
+import cartRoutes from './routes/cartRoutes';
 import profileRoutes from './routes/profileRoutes';
 import transactionRoutes from './routes/transactionRoutes';
 
@@ -32,7 +33,8 @@ initDB(); // Initialize the database connection
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/', postRoutes)
+app.use('/', postRoutes);
+app.use('/cart', cartRoutes)
 app.use('/profile', profileRoutes)
 app.use('/transaction', transactionRoutes)
 

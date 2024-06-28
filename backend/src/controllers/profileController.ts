@@ -1,20 +1,22 @@
 import { Request, Response } from 'express';
 import Cookies from "js-cookie";
-import jwt from 'jsonwebtoken';
+import { jwtDecode } from 'jwt-decode';
 
 import { findUserByUsername } from '../models/user';
 
 export const displayUserProfile = async (req: Request, res: Response) => {
-  const token = Cookies.get("token")
-  console.log(token)
+  // Testing Postman:
+  // const token = req.headers.authorization?.split(' ')[1];
+  // Testing Front-End:
+  const token = Cookies.get("token");
 
   if (!token) {
     return res.status(401).json({ message: "Authorization token is required" });
   }
 
   try {
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
-    const username = decoded.username;
+    const decoded = jwtDecode(token);
+    const username = decoded.username ?? '';
 
     const user = await findUserByUsername(username);
 

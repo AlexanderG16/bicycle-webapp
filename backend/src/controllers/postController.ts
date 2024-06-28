@@ -47,7 +47,6 @@ const makePost = async (req: Request, res: Response) => {
       price,
       city,
       province,
-      upload_date,
       stok,
       status,
       user_id
