@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "./components/Button";
 import "./Login.css";
+import "./Form.css";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -30,15 +31,16 @@ function Login() {
           setMessage("Login successful");
           // Handle token storage and redirect if necessary
           console.log("Token:", data.token);
-          navigate("/");
 
           var token = data.token;
+          console.log(token.id);
           var expirationDate = new Date();
           expirationDate.setTime(expirationDate.getTime() + 1 * 60 * 60 * 1000); // 1 hour in milliseconds
 
           var cookieString = "token=" + token + "; expires=" + expirationDate.toUTCString() + "; path=/";
 
           document.cookie = cookieString;
+          navigate("/");
         } else {
           const errorData = await response.json();
           setMessage(errorData.message);
