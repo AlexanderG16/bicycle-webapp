@@ -2,13 +2,15 @@ import pool from "../db";
 import bcrypt from "bcryptjs";
 import { RowDataPacket } from "mysql2/promise";
 
-interface User {
+export interface User {
   id: number;
   username: string;
   password: string;
   email: string;
   phone_number: string;
-  is_seller: string;
+  address?: string;
+  profile_picture?: string;
+  is_seller: number;
 }
 
 interface UserRow extends RowDataPacket {
@@ -69,5 +71,41 @@ export const getUserIdByUsername = async (username: string): Promise<number | nu
     console.error("Error getting user ID by username:", error);
     conn.release();
     return null;
+  }
+};
+
+export const updateUser = async (user: User, oldPassword: string): Promise<void> => {
+  const conn = await pool.getConnection();
+  try {
+    // Fetch the current password from the database
+    const [rows]: any = await conn.query('SELECT password FROM users WHERE id = ?', [user.id]);
+    const currentPassword = rows[0]?.password;
+
+    if (!currentPassword) {
+      throw new Error('User not found');
+    }
+
+    // Compare old password with the current password
+    const isOldPasswordValid = await bcrypt.compare(oldPassword, currentPassword);
+    if (!isOldPasswordValid) {
+      throw new Error('Invalid old password');
+    }
+
+    // Check if the new password is the same as the old password
+    const isNewPasswordSame = await bcrypt.compare(user.password, currentPassword);
+    if (isNewPasswordSame) {
+      throw new Error('New password cannot be the same as the old password');
+    }
+
+    // Update the user in the database
+    await conn.query(
+      'UPDATE users SET password = ?, email = ?, phone_number = ?, address = ?, profile_picture = ? WHERE id = ?',
+      [user.password, user.email, user.phone_number, user.address, user.profile_picture, user.id]
+    );
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  } finally {
+    conn.release();
   }
 };

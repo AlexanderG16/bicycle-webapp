@@ -26,8 +26,6 @@ const login = async (req: Request, res: Response) => {
     process.env.JWT_SECRET!,
     { expiresIn: "1h" }
   );
-
-  await createCart(user.id);
   
   res.json({ token });
 };
@@ -47,8 +45,5 @@ const signup = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
-// 3 function dibawah ini nanti harus dipisah buat 
-
 
 export { login, signup };

@@ -38,7 +38,20 @@ async function initDB() {
 initDB(); // Initialize the database connection
 
 // Routes
+
+//Auth Endpoints (login and register)
 app.use('/api/auth', authRoutes);
-app.use('/', postRoutes)
+
+//Post Endpoints (upload post)
+app.use('/', postRoutes);
+
+//Cart Endpoints (list cart Items)
+app.use('/cart', cartRoutes);
+
+//Profile Endpoints (profile dashboard)
+app.use('/profile', profileRoutes);
+
+//Transaction Endpoints (list all orders)
+app.use('/transaction', transactionRoutes);
 
 export default app;
