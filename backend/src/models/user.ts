@@ -1,5 +1,6 @@
 import pool from "../db";
 import bcrypt from "bcryptjs";
+import { RowDataPacket } from "mysql2/promise";
 
 interface User {
   id?: number;
@@ -8,6 +9,10 @@ interface User {
   email: string;
   phone_number: string;
   is_seller: string;
+}
+
+interface UserRow extends RowDataPacket {
+  id: number;
 }
 
 export const findUserByUsername = async (name: string): Promise<User | null> => {
@@ -42,6 +47,27 @@ export const createUser = async (username: string, password: string, email: stri
   } catch (error) {
     console.error("Error creating user:", error);
     conn.release();
-    throw error; // Rethrow the error to be handled by the calling code
+    throw error;
+  }
+};
+
+export const getUserIdByUsername = async (username: string): Promise<number | null> => {
+  const conn = await pool.getConnection();
+  try {
+    const [rows] = await conn.query<UserRow[]>(
+      "SELECT id FROM `users` WHERE username = ?",
+      [username]
+    );
+    conn.release();
+
+    if (rows.length > 0) {
+      console.log(`User ID for username ${username}:`, rows[0].id);
+      return rows[0].id;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error getting user ID by username:", error);
+    conn.release();
+    return null;
   }
 };
