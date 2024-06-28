@@ -2,7 +2,7 @@ import pool from "../db";
 import bcrypt from "bcryptjs";
 
 interface User {
-  id?: number;
+  id: number;
   username: string;
   password: string;
   email: string;
