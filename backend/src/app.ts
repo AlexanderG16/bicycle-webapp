@@ -33,7 +33,7 @@ initDB(); // Initialize the database connection
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/', postRoutes);
-app.use('/:id/cart', cartRoutes)
+app.use('/cart', cartRoutes)
 app.use('/profile', profileRoutes)
 
 export default app;
