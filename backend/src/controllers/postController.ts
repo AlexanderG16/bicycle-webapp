@@ -1,21 +1,22 @@
 import { Request, Response } from "express";
 
-import { getAllPosts, createPost, getPostByID } from "../models/post";
+import { getAllPosts, createPost, getPostByID, searchPosts } from "../models/post";
 
 const displayPost = async (req: Request, res: Response) => {
   try {
     const posts = await getAllPosts();
     if (posts) {
-      return res
-        .status(200)
-        .json({
-          message: "Posts successfully retreived",
-          number_of_posts: posts.length,
-        });
+      return res.status(200).json({
+        message: "Posts successfully retrieved",
+        number_of_posts: posts.length,
+        posts: posts,
+      });
+    } else {
+      return res.status(404).json({ message: "No posts found" });
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Unexpected Error Occured" });
+    console.error(error);
+    return res.status(500).json({ message: "Unexpected error occurred" });
   }
 };
 
@@ -91,4 +92,27 @@ const getOnePost = async (req: Request, res: Response) => {
   }
 };
 
-export { displayPost, makePost, getOnePost };
+const searchPostByKeyword = async (req: Request, res: Response) => {
+  const keyword = req.query.keyword as string;
+  if (!keyword) {
+    return res.status(400).json({ message: "Keyword is required" });
+  }
+  
+  try {
+    const posts = await searchPosts(keyword);
+    if (posts && posts.length > 0) {
+      return res.status(200).json({
+        message: "Posts successfully retrieved",
+        number_of_posts: posts.length,
+        posts: posts,
+      });
+    } else {
+      return res.status(404).json({ message: "No posts found" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Unexpected error occurred" });
+  }
+};
+
+export { displayPost, makePost, getOnePost, searchPostByKeyword };
