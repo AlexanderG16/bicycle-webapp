@@ -8,6 +8,7 @@ import pool from './db'; // Import the database connection
 import authRoutes from './routes/auth';
 import postRoutes from './routes/postRoutes';
 import cartRoutes from './routes/cartRoutes';
+import profileRoutes from './routes/profileRoutes';
 
 dotenv.config();
 
@@ -33,5 +34,6 @@ initDB(); // Initialize the database connection
 app.use('/api/auth', authRoutes);
 app.use('/', postRoutes);
 app.use('/:id/cart', cartRoutes)
+app.use('/profile', profileRoutes)
 
 export default app;
