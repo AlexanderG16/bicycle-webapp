@@ -24,7 +24,7 @@ const Home = () => {
         {isAuthenticated ? (
           <>
               <img className="btn-cart-menu" src={cartImage} onClick={function(){location.href="/cart"}}></img>
-              <img className="btn-profile-menu" src={profileImage} onClick={function(){location.href="/profile"}}></img>
+              <img className="btn-profile-menu" src={profileImage} onClick={function(){location.href="/profile/dashboard"}}></img>
 
           </>
         ) : (
