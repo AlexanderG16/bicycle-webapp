@@ -1,74 +1,136 @@
-body {
-    background-color: white;
-    padding: 0;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    background-color: black;
-    color: white;
-}
-
-.btn-cart-menu, .btn-profile-menu {
-    width: 40px;
-    height: 40px;
-    margin-left: 1rem;
-    border-radius: 100%;
-}
-
-.auth-links{
-    margin-left: 1rem;
-    color: white;
-    text-decoration: none;
-    justify-content: center;
-    align-items: center;
-}
-
 .hero {
-    background: url(./assets/josh-nuttall-XVTWFHcNIko-unsplash.jpg) no-repeat center center;
-    background-size: cover;
-    color: white;
-    text-align: center;
-    padding: 4rem 2rem;
+  position: relative;
+  background: url(./assets/josh-nuttall-XVTWFHcNIko-unsplash.jpg) no-repeat center center;
+  background-size: cover;
+  color: white;
+  padding: 300px 2rem 4rem;
+  height: 320px;
 }
 
-.hero-content *{
-    padding: 2rem 1rem;
+.hero-content {
+  width: 630px;
+  /* border: 1px solid red; */
+  position: absolute;
+  top: 200px;
+  right: 30px;
 }
 
-.hero-content h1{
-    font-size: 3rem;
-    color: white;
+.hero .slogan {
+  position: relative;
+  width: 630px;
+  height: 125px;
+  /* border: 1px solid yellow; */
 }
 
-.hero-content p {
-    font-size: 1.25rem;
-    color: white;
+.hero .slogan h1 {
+  position: absolute;
+  color: #e8e8e8;
+}
+
+.hero .slogan h1:not(:nth-of-type(1)) {
+  color: black;
+  text-shadow: 1px 1px 0 #fff, -1px 1px 0 #fff, 1px -1px 0 #fff, -1px -1px 0 #fff, 0px 1px 0 #fff, 0px -1px 0 #fff, -1px 0px 0 #fff, 1px 0px 0 #fff, 2px 2px 0 #fff, -2px 2px 0 #fff, 2px -2px 0 #fff, -2px -2px 0 #fff, 0px 2px 0 #fff,
+    0px -2px 0 #fff, -2px 0px 0 #fff, 2px 0px 0 #fff, 1px 2px 0 #fff, -1px 2px 0 #fff, 1px -2px 0 #fff, -1px -2px 0 #fff, 2px 1px 0 #fff, -2px 1px 0 #fff, 2px -1px 0 #fff, -2px -1px 0 #fff;
+}
+
+.hero .slogan h1:nth-of-type(2) {
+  top: 40px;
+  opacity: 80%;
+}
+
+.hero .slogan h1:nth-of-type(3) {
+  top: 80px;
+  opacity: 60%;
+}
+
+.hero h1 {
+  font-size: 50px;
+  color: white;
+}
+
+.hero p {
+  width: 500px;
+  margin: 30px 0 30px;
+  /* border: 1px solid green; */
+  text-align: left;
+  color: white;
+  font-size: 1.23rem;
+}
+
+.hero-buttons {
+  width: 630px;
+}
+
+.btn-browse-listing,
+.btn-about-us {
+  width: 200px;
+  color: black;
+  background-color: white;
+}
+
+.hero-buttons Button {
+  margin-right: 20px;
+}
+
+.search-bar-create-post {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.search-bar-create-post input {
+  border-radius: 25px;
+  width: 60%;
+  padding: 0.75rem;
+  margin-right: 1rem;
+  border: 2px solid #ccc;
 }
 
 .search-bar {
-    display: flex;
-    justify-content: center;
-    margin: 2rem 0;
+  background-color: white;
+  color: black;
+  border: none;
+  outline: none;
+  box-shadow: 1px 2px 2px 0px rgba(0, 0, 0, 0.397);
 }
 
-.search-bar input {
-    border-radius: 25px;
-    width: 60%;
-    padding: 0.75rem;
-    margin-right: 1rem;
-    border: 2px solid #ccc;
+.btn-create-post {
+  background-color: black;
+  color: white;
 }
 
-.sign-in-btn {
-    display: inline-block;
-    padding: 10px;
-    color: white;
+/* CSS UNTUK POSTINGAN */
+.post-area {
+  padding: 30px 100px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 2fr));
+  gap: 50px;
 }
 
-.sign-up-btn {
-    display: inline-block;
-    padding: 10px;
-    color: white;
+.post {
+  background-color: #ffffff;
+  min-height: 400px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
+
+.post-description {
+  box-sizing: border-box;
+  padding: 15px;
+}
+
+.post-loc {
+  opacity: 80%;
+  margin-bottom: 10px;
+}
+
+.post .post-img {
+  height: 240px;
+  background-image: url(assets/post-img-example.jpg);
+  background-size: cover;
+}
+
+.upload-time {
+  text-align: right;
 }

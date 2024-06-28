@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { RowDataPacket } from "mysql2/promise";
 
 interface User {
-  id?: number;
+  id: number;
   username: string;
   password: string;
   email: string;
