@@ -27,19 +27,19 @@ export const createCart = async (user_id?: number): Promise<void> => {
     }
 }
 
-export const getAllCartItems = async (cart_id?: number): Promise<Array<CartItems> | null> => {
+export const getAllCartItems = async (cart_id: number): Promise<Array<CartItems> | null> => {
   const conn = await pool.getConnection();
   try {
     const [rows] = await conn.query("SELECT * FROM cart_item WHERE cart_id = ?", [cart_id]);
     conn.release(); 
 
-    return rows as Array<CartItems>
+    return rows as Array<CartItems>;
   } catch (error) {
-    console.error("Error getting all cart items");
+    console.error("Error getting all cart items:", error);
     conn.release();
     return null;
   }
-}
+};
 
 export const insertItemToCart = async (cart_id?: number, post_id?: number, quantity?: number): Promise<void> => {
   const conn = await pool.getConnection();

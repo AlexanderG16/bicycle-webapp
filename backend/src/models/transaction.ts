@@ -1,63 +1,38 @@
 import pool from "../db";
 import { RowDataPacket } from "mysql2/promise";
+import Post, { getPostByID } from "./post";
+import { Pool, ResultSetHeader } from 'mysql2/promise';
 
 export enum TransactionStatus {
   SUCCESS = "success",
   FAIL = "fail",
 }
 
-<<<<<<< HEAD
-export class Transaction {
-    public transaction_id: number;
-    public transaction_date: string;
-    public status: TransactionStatus;
-    public user_id: number;
-    public post_id: number;
-    public quantity: number;
-
-    constructor(
-        transaction_id: number,
-        transaction_date: string,
-        status: TransactionStatus,
-        user_id: number,
-        post_id: number,
-        quantity: number
-    ) {
-        this.transaction_id = transaction_id;
-        this.transaction_date = transaction_date;
-        this.status = status;
-        this.user_id = user_id;
-        this.post_id = post_id;
-        this.quantity = quantity;
-    }
-}
-
-export interface TransactionRow extends RowDataPacket {
-=======
 export interface Transaction {
   transaction_id: number;
   transaction_date: string;
-  status: TransactionStatus;
-  user_id: number;
-  post_id: number;
-  quantity: number;
+  status?: TransactionStatus;
+  user_id?: number;
+  post_id?: number;
+  quantity?: number;
+  total_price?: number;
 }
 
 interface TransactionRow extends RowDataPacket {
->>>>>>> f0b0df1a78df1bb61f5f7f78e8169cd5699bf22c
   transaction_id: number;
   transaction_date: string;
-  status: TransactionStatus;
-  user_id: number;
-  post_id: number;
-  quantity: number;
+  status?: TransactionStatus;
+  user_id?: number;
+  post_id?: number;
+  quantity?: number;
+  total_price?: number;
 }
 
 export const getAllOrders = async (user_id: number): Promise<Array<Transaction> | null> => {
   const conn = await pool.getConnection();
   try {
     const [rows] = await conn.query<TransactionRow[]>(
-      `SELECT t.id AS transaction_id, t.transaction_date, t.status, t.user_id, td.post_id, td.quantity
+      `SELECT t.id AS transaction_id, t.transaction_date, t.status, t.user_id, td.post_id, td.quantity, td.total_price
        FROM \`transaction\` t
        JOIN \`transaction_detail\` td ON t.id = td.transaction_id
        WHERE t.user_id = ?
@@ -73,20 +48,31 @@ export const getAllOrders = async (user_id: number): Promise<Array<Transaction> 
     conn.release();
     return null;
   }
-<<<<<<< HEAD
 };
 
-export const createTransaction = async (transaction_date: string, status: TransactionStatus, user_id: number, post_id: number, quantity: number) => {    
+// ini create transaction yg bukan dari cart
+export const createTransactionOnePost = async (status: TransactionStatus, user_id: number, post_id: number, quantity: number) => {    
     const conn = await pool.getConnection();
     try {
-         await conn.query("INSERT INTO transaction (transaction_date, status, user_id) VALUES (?, ?, ?)", [transaction_date, status, user_id])
-         conn.release();
+        const post = await getPostByID(post_id) as Post;
+        var insertedId = 0;
+        if (post != undefined) {
+
+          console.log("Item's price: ", post.price);
+          console.log("Qty: ", quantity);
+
+          const [result] = await conn.query<ResultSetHeader>("INSERT INTO transaction (status, user_id, total_price) VALUES (?, ?, ?)", [status, user_id, post.price * quantity]);
+
+          // Return the ID of the inserted record
+          insertedId = result.insertId;
+        } else {
+            throw console.error("Post not found");
+        }
+        await conn.query("INSERT INTO transaction_detail (transaction_id, post_id, quantity, total_price) VALUES (?, ?, ?, ?)", [insertedId, post_id, quantity, post.price * quantity]);
+        conn.release();
     } catch (error) {
         console.error("Unexpected Error Occured");
         conn.release();
         throw error;    
     }
 }
-=======
-};
->>>>>>> f0b0df1a78df1bb61f5f7f78e8169cd5699bf22c

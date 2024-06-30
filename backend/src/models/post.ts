@@ -12,17 +12,17 @@ enum status {
 }
 
 interface Post {
-    id?: number;
+    id: number;
     title: string;
-    bike_type?: bike_type;
-    description?: string;
-    price?: number;
-    city?: string;
-    province?: string;
-    upload_date: string; // Rancu, harus ngecek returnnya dalam bentuk apa
-    stok?: number;
-    status?: status;
-    user_id?: number;
+    bike_type: bike_type;
+    description: string;
+    price: number;
+    city: string;
+    province: string;
+    upload_date: string | Date;
+    stok: number;
+    status: status;
+    user_id: number;
 }
 
 export const getAllPosts = async (): Promise<Array<Post> | null> => {
@@ -55,7 +55,7 @@ export const createPost = async (title: string, bike_type: bike_type, descriptio
 export const getPostByID = async (id?: number): Promise<Post | null> => {
     const conn = await pool.getConnection();
     try {
-        const [rows] = await conn.query("SELECT * FROM post WHERE id = ?", [id]);
+        const [rows] = await conn.query("SELECT id, title, bike_type, description, price, city, province, upload_date, stok, status, user_id FROM post WHERE id = ?", [id]);
         conn.release();
 
         if (Array.isArray(rows) && rows.length > 0) {
@@ -65,6 +65,23 @@ export const getPostByID = async (id?: number): Promise<Post | null> => {
         }
     } catch (error) {
         console.error("Error finding post by id:", error);
+        conn.release();
+        return null;
+    }
+}
+
+export const searchPosts = async (keyword: string): Promise<Array<Post> | null> => {
+    const conn = await pool.getConnection();
+    try {
+        const query = `
+            SELECT * FROM post
+            WHERE title LIKE ? OR description LIKE ? OR city LIKE ? OR province LIKE ?
+        `;
+        const [rows] = await conn.query(query, [`%${keyword}%`, `%${keyword}%`, `%${keyword}%`, `%${keyword}%`]);
+        conn.release();
+        return rows as Array<Post>;
+    } catch (error) {
+        console.error("Error searching posts", error);
         conn.release();
         return null;
     }

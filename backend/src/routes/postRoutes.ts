@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { displayPost, getOnePost, makePost, makePostStub } from "../controllers/postController";
+import { displayPost, getOnePost, makePost, makePostStub, searchPostByKeyword } from "../controllers/postController";
 import multer from "multer";
 import path from "path";
 import fs from "fs";

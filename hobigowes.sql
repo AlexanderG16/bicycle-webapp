@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 24, 2024 at 04:14 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Jun 30, 2024 at 03:29 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -50,17 +50,16 @@ CREATE TABLE `cart_item` (
   `cart_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
   `quantity` int(11) DEFAULT NULL,
-  `added_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `status` enum('checked out','not checked out') DEFAULT NULL
+  `added_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cart_item`
 --
 
-INSERT INTO `cart_item` (`cart_id`, `post_id`, `quantity`, `added_at`, `status`) VALUES
-(1, 1, 1, '2024-06-01 05:30:00', 'not checked out'),
-(1, 2, 2, '2024-06-01 05:45:00', 'not checked out');
+INSERT INTO `cart_item` (`cart_id`, `post_id`, `quantity`, `added_at`) VALUES
+(1, 1, 1, '2024-06-30 12:33:44'),
+(1, 2, 1, '2024-06-30 12:33:41');
 
 -- --------------------------------------------------------
 
@@ -108,7 +107,9 @@ CREATE TABLE `post` (
 
 INSERT INTO `post` (`id`, `title`, `bike_type`, `description`, `price`, `city`, `province`, `upload_date`, `stok`, `status`, `user_id`) VALUES
 (1, 'Mountain Bike X1', 'mountain bike', 'A durable mountain bike', 500, 'City A', 'Province A', '2024-01-01 03:00:00', 5, 'available', 1),
-(2, 'Road Bike Y2', 'road bike', 'A fast road bike', 750, 'City B', 'Province B', '2024-01-05 08:00:00', 3, 'available', 1);
+(2, 'Road Bike Y2', 'road bike', 'A fast road bike', 750, 'City B', 'Province B', '2024-01-05 08:00:00', 3, 'available', 1),
+(3, 'Jumanji Bike', 'mountain bike', 'Ride the bike like you\'re riding a bike', 20, 'Orlando', 'Ashoy', '2023-12-31 18:00:00', 10, 'available', 2),
+(4, 'Puki Bike', 'road bike', 'Ride the bike like you\'re riding a cock', 2000, 'Orlando', 'Ashoy', '2023-12-31 18:00:00', 100, 'available', 1);
 
 -- --------------------------------------------------------
 
@@ -120,15 +121,16 @@ CREATE TABLE `transaction` (
   `id` int(11) NOT NULL,
   `transaction_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `status` enum('success','fail') DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL
+  `user_id` int(11) DEFAULT NULL,
+  `total_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `transaction`
 --
 
-INSERT INTO `transaction` (`id`, `transaction_date`, `status`, `user_id`) VALUES
-(1, '2024-06-15 07:00:00', 'success', 2);
+INSERT INTO `transaction` (`id`, `transaction_date`, `status`, `user_id`, `total_price`) VALUES
+(1, '2024-06-30 13:28:31', 'success', 2, 2000);
 
 -- --------------------------------------------------------
 
@@ -139,16 +141,17 @@ INSERT INTO `transaction` (`id`, `transaction_date`, `status`, `user_id`) VALUES
 CREATE TABLE `transaction_detail` (
   `transaction_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
-  `quantity` int(11) DEFAULT NULL
+  `quantity` int(11) DEFAULT NULL,
+  `total_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `transaction_detail`
 --
 
-INSERT INTO `transaction_detail` (`transaction_id`, `post_id`, `quantity`) VALUES
-(1, 1, 1),
-(1, 2, 2);
+INSERT INTO `transaction_detail` (`transaction_id`, `post_id`, `quantity`, `total_price`) VALUES
+(1, 1, 1, 500),
+(1, 2, 2, 1500);
 
 -- --------------------------------------------------------
 
@@ -246,7 +249,7 @@ ALTER TABLE `image`
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `transaction`

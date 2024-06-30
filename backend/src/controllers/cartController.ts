@@ -9,15 +9,16 @@ const getIdFromPath = (path: string, idIndex: number) => {
     return Number(idString); // Convert the extracted id to a number
 };
 
-const verifyUserAccount = () => {
-    const token = Cookies.get("token");
+const verifyUserAccount = (req: Request) => {
+    // const token = Cookies.get("token");
+    const token = req.headers.authorization?.split(' ')[1];
     if (!token){ return false; }
     return true;
 }
 
 export const displayCartItems = async (req: Request, res: Response) => {
     try {
-        if (verifyUserAccount()){
+        if (verifyUserAccount(req)){
             const id = getIdFromPath(req.path, 1);
             const posts = await getAllCartItems(id);
             if (posts) {
@@ -40,13 +41,10 @@ export const displayCartItems = async (req: Request, res: Response) => {
 
 export const insertCartItem = async (req: Request, res: Response) => {
     try {
-        if (verifyUserAccount()){
+        if (verifyUserAccount(req)){
             const id = getIdFromPath(req.path, 2);
-            console.log("id masuk")
             const {post_id, quantity} = req.body;
-            console.log("postid quantity masuk")
             await insertItemToCart(id, post_id, quantity);
-            console.log("function jalan")
             return res.status(201).json({ message: "Post has been added to cart!" });
         } else {
             return res.status(401).json({ message: "Authorization token is required" });
@@ -59,11 +57,13 @@ export const insertCartItem = async (req: Request, res: Response) => {
 
 export const incrementItemQty = async (req: Request, res: Response) => {
     try {
-        if (verifyUserAccount()) {
+        if (verifyUserAccount(req)) {
             const id = getIdFromPath(req.path, 2);
             const post_id = req.body;
             await incrementItem(id, post_id);
             return res.status(201).json({ message: "Successfully increased post's quantity" })
+        } else {
+            return res.status(401).json({ message: "Authorization token is required" });
         }
     } catch (error) {
         console.error(error);
@@ -72,10 +72,14 @@ export const incrementItemQty = async (req: Request, res: Response) => {
 }
 export const decrementItemQty = async (req: Request, res: Response) => {
     try {
-        const id = getIdFromPath(req.path, 2);
-        const post_id = req.body;
-        await decrementItem(id, post_id);
-        res.status(201).json({ message: "Successfully decreased post's quantity" })
+        if (verifyUserAccount(req)){
+            const id = getIdFromPath(req.path, 2);
+            const post_id = req.body;
+            await decrementItem(id, post_id);
+            res.status(201).json({ message: "Successfully decreased post's quantity" })
+        } else {
+            return res.status(401).json({ message: "Authorization token is required" });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Unexpected Error Occurred" });
@@ -84,10 +88,14 @@ export const decrementItemQty = async (req: Request, res: Response) => {
 
 export const setItemQty = async (req: Request, res: Response) => {
     try {
-        const id = getIdFromPath(req.path, 2);
-        const {post_id, quantity} = req.body;
-        await setItemQuantity(id, post_id, quantity);
-        res.status(201).json({ message: "Item quantity successfully updated" })
+        if (verifyUserAccount(req)){
+            const id = getIdFromPath(req.path, 2);
+            const {post_id, quantity} = req.body;
+            await setItemQuantity(id, post_id, quantity);
+            res.status(201).json({ message: "Item quantity successfully updated" })
+        } else {
+            return res.status(401).json({ message: "Authorization token is required" });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Unexpected Error Occured" });
