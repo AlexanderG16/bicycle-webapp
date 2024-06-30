@@ -27,10 +27,16 @@ export const createCart = async (user_id?: number): Promise<void> => {
     }
 }
 
-export const getAllCartItems = async (cart_id: number): Promise<Array<CartItems> | null> => {
+export const getAllCartItems = async (user_id: number): Promise<Array<CartItems> | null> => {
   const conn = await pool.getConnection();
   try {
-    const [rows] = await conn.query("SELECT * FROM cart_item WHERE cart_id = ?", [cart_id]);
+    const [rows] = await conn.query(`
+      SELECT ci.*
+      FROM cart_item ci
+      JOIN cart c ON ci.cart_id = c.id
+      WHERE c.user_id = ?
+    `, [user_id]);
+
     conn.release(); 
 
     return rows as Array<CartItems>;
