@@ -1,13 +1,20 @@
 import pool from "../db";
 import bcrypt from "bcryptjs";
+import { RowDataPacket } from "mysql2/promise";
 
-interface User {
-  id?: number;
+export interface User {
+  id: number;
   username: string;
   password: string;
   email: string;
   phone_number: string;
-  is_seller: string;
+  address?: string;
+  profile_picture?: string;
+  is_seller: number;
+}
+
+interface UserRow extends RowDataPacket {
+  id: number;
 }
 
 export const findUserByUsername = async (name: string): Promise<User | null> => {
@@ -42,6 +49,63 @@ export const createUser = async (username: string, password: string, email: stri
   } catch (error) {
     console.error("Error creating user:", error);
     conn.release();
-    throw error; // Rethrow the error to be handled by the calling code
+    throw error;
+  }
+};
+
+export const getUserIdByUsername = async (username: string): Promise<number | null> => {
+  const conn = await pool.getConnection();
+  try {
+    const [rows] = await conn.query<UserRow[]>(
+      "SELECT id FROM `users` WHERE username = ?",
+      [username]
+    );
+    conn.release();
+
+    if (rows.length > 0) {
+      console.log(`User ID for username ${username}:`, rows[0].id);
+      return rows[0].id;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error getting user ID by username:", error);
+    conn.release();
+    return null;
+  }
+};
+
+export const updateUser = async (user: User, oldPassword: string): Promise<void> => {
+  const conn = await pool.getConnection();
+  try {
+    // Fetch the current password from the database
+    const [rows]: any = await conn.query('SELECT password FROM users WHERE id = ?', [user.id]);
+    const currentPassword = rows[0]?.password;
+
+    if (!currentPassword) {
+      throw new Error('User not found');
+    }
+
+    // Compare old password with the current password
+    const isOldPasswordValid = await bcrypt.compare(oldPassword, currentPassword);
+    if (!isOldPasswordValid) {
+      throw new Error('Invalid old password');
+    }
+
+    // Check if the new password is the same as the old password
+    const isNewPasswordSame = await bcrypt.compare(user.password, currentPassword);
+    if (isNewPasswordSame) {
+      throw new Error('New password cannot be the same as the old password');
+    }
+
+    // Update the user in the database
+    await conn.query(
+      'UPDATE users SET password = ?, email = ?, phone_number = ?, address = ?, profile_picture = ? WHERE id = ?',
+      [user.password, user.email, user.phone_number, user.address, user.profile_picture, user.id]
+    );
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  } finally {
+    conn.release();
   }
 };

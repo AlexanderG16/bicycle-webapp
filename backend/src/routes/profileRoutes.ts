@@ -1,8 +1,9 @@
 import { Router, Request, Response } from "express";
-import { displayUserProfile } from "../controllers/profileController";
+import { displayUserProfile, updateUserProfile } from "../controllers/profileController";
 
 const router = Router();
 
 router.get("/dashboard", displayUserProfile);
+router.post("/edit", updateUserProfile);
 
 export default router;

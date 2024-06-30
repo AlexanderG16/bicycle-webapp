@@ -1,0 +1,22 @@
+form {
+  width: 400px;
+  height: fit-content;
+  margin: 0 auto;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+form input {
+  width: 380px;
+  height: 50px;
+  border-radius: 40px;
+  background-color: #d9d9d9;
+  margin-bottom: 20px;
+  padding-left: 20px;
+}
+
+form label {
+  color: rgb(34, 34, 34);
+  position: absolute;
+  left: 20px;
+}

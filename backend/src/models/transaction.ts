@@ -6,6 +6,7 @@ export enum TransactionStatus {
   FAIL = "fail",
 }
 
+<<<<<<< HEAD
 export class Transaction {
     public transaction_id: number;
     public transaction_date: string;
@@ -32,6 +33,18 @@ export class Transaction {
 }
 
 export interface TransactionRow extends RowDataPacket {
+=======
+export interface Transaction {
+  transaction_id: number;
+  transaction_date: string;
+  status: TransactionStatus;
+  user_id: number;
+  post_id: number;
+  quantity: number;
+}
+
+interface TransactionRow extends RowDataPacket {
+>>>>>>> f0b0df1a78df1bb61f5f7f78e8169cd5699bf22c
   transaction_id: number;
   transaction_date: string;
   status: TransactionStatus;
@@ -60,6 +73,7 @@ export const getAllOrders = async (user_id: number): Promise<Array<Transaction> 
     conn.release();
     return null;
   }
+<<<<<<< HEAD
 };
 
 export const createTransaction = async (transaction_date: string, status: TransactionStatus, user_id: number, post_id: number, quantity: number) => {    
@@ -73,3 +87,6 @@ export const createTransaction = async (transaction_date: string, status: Transa
         throw error;    
     }
 }
+=======
+};
+>>>>>>> f0b0df1a78df1bb61f5f7f78e8169cd5699bf22c

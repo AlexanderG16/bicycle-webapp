@@ -1,0 +1,41 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background-color: black;
+  color: white;
+  z-index: 99;
+  position: fixed;
+}
+
+.header-links {
+  margin: 20px;
+}
+
+.btn-cart-menu,
+.btn-profile-menu {
+  width: 30px;
+  height: 30px;
+  margin: 20px 20px 20px 0;
+  border-radius: 100%;
+}
+
+.auth-links {
+  margin-left: 1rem;
+  color: white;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.sign-in-btn {
+  display: inline-block;
+  padding: 10px;
+  color: white;
+}
+
+.sign-up-btn {
+  display: inline-block;
+  padding: 10px;
+  color: white;
+}

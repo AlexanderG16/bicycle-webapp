@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { displayPost, getOnePost, makePost, searchPostByKeyword } from "../controllers/postController";
 import { decrementItemQty, displayCartItems, incrementItemQty, insertCartItem } from "../controllers/cartController";
 
 const router = Router();
