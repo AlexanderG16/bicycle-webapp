@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import pool from "../db";
 import { getUserIdByUsername } from "../models/user";
 import { jwtDecode } from "jwt-decode";
-import { createTransactionOnePost, getAllOrders, TransactionStatus } from "../models/transaction";
+import { createTransaction, createTransactionOnePost, getAllOrders, TransactionStatus, createTransactionDetail } from "../models/transaction";
 import { getAllCartItems } from "../models/cart";
 
 export const getAllTransactions = async (req: Request, res: Response) => {
@@ -57,7 +57,6 @@ export const insertTransactionOnePost = async (req: Request, res: Response) => {
 
     const post_id = getIdFromPath(req.path, 2);
     await createTransactionOnePost(TransactionStatus.SUCCESS, user_id, post_id, quantity);
-    console.log("pepek 2");
     return res.status(200).json({ message: "Transaction has been succesfully created"});
   } catch (error) {
     console.error("Unexpected Error Occured:", error)
@@ -87,24 +86,19 @@ export const insertTransaction = async (req: Request, res: Response) => {
           return res.status(404).json({ message: "No cart items found" });
       }
 
+      const transaction_date = new Date();
+
       // Start a transaction
       const conn = await pool.getConnection();
       await conn.beginTransaction();
 
       try {
-          // Insert into the transaction table
-          const [transactionResult] = await conn.query(
-              "INSERT INTO transaction (user_id, transaction_date, status) VALUES (?, NOW(), ?)",
-              [user_id, TransactionStatus.SUCCESS]
-          );
-          const transaction_id = (transactionResult as any).insertId;
+          // Insert into the transaction table and get the transaction_id
+          const transaction_id = await createTransaction(user_id, transaction_date, TransactionStatus.SUCCESS);
 
           // Insert into the transaction_detail table
           for (const item of cartItems) {
-              await conn.query(
-                  "INSERT INTO transaction_detail (transaction_id, post_id, quantity) VALUES (?, ?, ?)",
-                  [transaction_id, item.post_id, item.quantity]
-              );
+              await createTransactionDetail(transaction_id, item.post_id, item.quantity);
           }
 
           // Commit the transaction

@@ -1,7 +1,7 @@
 import pool from "../db";
 import { RowDataPacket } from "mysql2/promise";
 import Post, { getPostByID } from "./post";
-import { Pool, ResultSetHeader } from 'mysql2/promise';
+import { ResultSetHeader } from 'mysql2/promise';
 
 export enum TransactionStatus {
   SUCCESS = "success",
@@ -76,3 +76,34 @@ export const createTransactionOnePost = async (status: TransactionStatus, user_i
         throw error;    
     }
 }
+
+export const createTransaction = async (user_id: string, transaction_date: Date, status: TransactionStatus): Promise<number> => {
+  const conn = await pool.getConnection();
+  try {
+      const [result] = await conn.query(
+          "INSERT INTO transaction (user_id, transaction_date, status) VALUES (?, ?, ?)",
+          [user_id, transaction_date, status]
+      );
+      conn.release();
+      return (result as any).insertId;
+  } catch (error) {
+      console.error("Unexpected Error Occured");
+      conn.release();
+      throw error;
+  }
+};
+
+export const createTransactionDetail = async (transaction_id: number, post_id: number, quantity: number): Promise<void> => {
+  const conn = await pool.getConnection();
+  try {
+      await conn.query(
+          "INSERT INTO transaction_detail (transaction_id, post_id, quantity) VALUES (?, ?, ?)",
+          [transaction_id, post_id, quantity]
+      );
+      conn.release();
+  } catch (error) {
+      console.error("Unexpected Error Occured");
+      conn.release();
+      throw error;
+  }
+};
