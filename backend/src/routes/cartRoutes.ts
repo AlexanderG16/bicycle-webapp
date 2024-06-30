@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { displayPost, getOnePost, makePost, searchPostByKeyword } from "../controllers/postController";
-import { displayCartItems } from "../controllers/cartController";
+import { decrementItemQty, displayCartItems, incrementItemQty, insertCartItem } from "../controllers/cartController";
 
 const router = Router();
 
 router.get("/:cart_id", displayCartItems);
-// router.post("/:user_id/create-post", makePost);
-// router.get("/post/:post_id", getOnePost);
-// router.get("/search", searchPostByKeyword);
+router.post("/:cart_id/insert-item", insertCartItem);
+router.put("/:cart_id/increase", incrementItemQty);
+router.put("/:cart_id/decrease", decrementItemQty);
 
 export default router;
