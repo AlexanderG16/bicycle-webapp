@@ -1,5 +1,7 @@
 import pool from "../db";
 import bcrypt from "bcryptjs";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 import { RowDataPacket } from "mysql2/promise";
 
 export interface User {
@@ -98,12 +100,31 @@ export const updateUser = async (user: User, oldPassword: string): Promise<void>
     }
 
     // Update the user in the database
-    await conn.query(
-      'UPDATE users SET password = ?, email = ?, phone_number = ?, address = ?, profile_picture = ? WHERE id = ?',
-      [user.password, user.email, user.phone_number, user.address, user.profile_picture, user.id]
-    );
+    if (user.is_seller === 1) {
+      await conn.query(
+        'UPDATE users SET password = ?, email = ?, phone_number = ?, address = ?, profile_picture = ? WHERE id = ?',
+        [user.password, user.email, user.phone_number, user.address, user.profile_picture, user.id]
+      );
+    } else {
+      await conn.query(
+        'UPDATE users SET password = ?, email = ?, address = ?, profile_picture = ? WHERE id = ?',
+        [user.password, user.email, user.address, user.profile_picture, user.id]
+      );
+    }
   } catch (error) {
     console.error('Error updating user:', error);
+    throw error;
+  } finally {
+    conn.release();
+  }
+};
+
+export const registerAsSeller = async (user_id: number, phone_number: string): Promise<void> => {
+  const conn = await pool.getConnection();
+  try {
+    await conn.query("UPDATE users SET phone_number = ? WHERE id = ?", [phone_number, user_id]);
+  } catch (error) {
+    console.error("Error registering as seller:", error);
     throw error;
   } finally {
     conn.release();

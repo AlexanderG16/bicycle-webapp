@@ -13,7 +13,7 @@ const displayPost = async (req: Request, res: Response) => {
     if (posts) {
       return res.status(200).json({
         message: "Posts successfully retreived",
-        number_of_posts: posts.length,
+        posts: posts,
       });
     }
   } catch (error) {

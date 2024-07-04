@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import { jwtDecode } from 'jwt-decode';
 import multer from 'multer';
 
-import { findUserByUsername, updateUser, getUserIdByUsername } from '../models/user';
+import { findUserByUsername, updateUser, getUserIdByUsername, registerAsSeller } from '../models/user';
 
 // Multer configuration for file uploads
 const storage = multer.diskStorage({
@@ -114,3 +114,27 @@ export const updateUserProfile = [
     }
   }
 ];
+
+export const registerBuyerToSeller = async (req: Request, res: Response) => {
+  // Testing Postman:
+  const token = req.headers.authorization?.split(' ')[1];
+  // Testing Front-End:
+  // const token = Cookies.get("token");
+
+  const phone_number = req.body;
+
+  if (!token) {
+    return res.status(401).json({ message: "Authorization token is required" });
+  }
+
+  try {
+    const decoded = jwtDecode(token);
+    const user_id = decoded.user_id ?? 0;
+
+    await registerAsSeller(user_id, phone_number);
+    return res.status(200).json({ message: "User successfully registered as seller" });
+  } catch (error) {
+    console.error('Error registering user as seller:', error);
+    return res.status(500).json({ message: 'Unexpected Error Occured' });
+  }
+};

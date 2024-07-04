@@ -23,13 +23,14 @@ interface Post {
     stok: number;
     status: status;
     user_id: number;
+    url: string;
 }
 
 export const getAllPosts = async (): Promise<Array<Post> | null> => {
     const conn = await pool.getConnection();
     // const posts = Array<Post>;
     try {
-        const [rows] = await conn.query("SELECT * FROM post");
+        const [rows] = await conn.query("SELECT * FROM post JOIN image ON post.id = image.post_id");
         conn.release();
 
         return rows as Array<Post> // Harus di cek lagi bener apa engga

@@ -4,9 +4,6 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import pool from "./db"; // Import the database connection
-// import path from "path";
-// import fs from "fs";
-// import multer from "multer";
 
 import authRoutes from "./routes/auth";
 import postRoutes from "./routes/postRoutes";
