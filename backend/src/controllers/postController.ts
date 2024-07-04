@@ -111,7 +111,7 @@ const searchPostByKeyword = async (req: Request, res: Response) => {
   if (!keyword) {
     return res.status(400).json({ message: "Keyword is required" });
   }
-  
+
   try {
     const posts = await searchPosts(keyword);
     if (posts && posts.length > 0) {

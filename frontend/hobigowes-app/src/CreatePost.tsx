@@ -40,18 +40,20 @@ const CreatePost = () => {
     }
 
     const formData = new FormData();
-    // formData.append("images", imageFiles[0]);
+    formData.append("images", imageFiles[0]);
+
+    console.log(formData);
 
     // console.log("Form Data: ", formData.entries().next().value);
-    imageFiles.forEach((file, index) => {
-      formData.append(`images${index}`, file);
-    });
+    // imageFiles.forEach((file, index) => {
+    //   formData.append(`images${index}`, file);
+    // });
 
     try {
       const response = await fetch("http://localhost:5000/${userID}/create-post", {
         method: "POST",
         headers: {
-          "Content-Type": "multipart/form-data; boundary=<calculated when request is sent>",
+          "Content-Type": "multipart/form-data>",
         },
         body: formData,
       });
