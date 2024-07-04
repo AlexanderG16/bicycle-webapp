@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from '../frontend/hobigowes-app/src/App'
+import App from '../frontend/hobigowes-app/src/Home'
 import SignUp from '../frontend/hobigowes-app/src/SignUp'
 import './index.css'
 import Home from '../frontend/hobigowes-app/src/Home'

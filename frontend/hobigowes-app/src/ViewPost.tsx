@@ -9,6 +9,6 @@ import profileImage from "./assets/vecteezy_default-profile-account-unknown-icon
 
 const ViewPost = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+    
     useEffect
 }
