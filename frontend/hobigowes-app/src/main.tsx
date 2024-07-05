@@ -5,6 +5,8 @@ import SignUp from "./SignUp";
 import Home from "./Home";
 import CreatePost from "./CreatePost";
 import ViewPost from "./ViewPost";
+import ProfilePage from "./ProfilePage";
+
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AboutUs from "./AboutUs";
@@ -43,6 +45,10 @@ const router = createBrowserRouter([
       const resJson = await res.json();
       return resJson;
     },
+  },
+  {
+    path: "/profile",
+    element: <ProfilePage />,
   },
 ]);
 

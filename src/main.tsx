@@ -4,6 +4,7 @@ import App from '../frontend/hobigowes-app/src/Home'
 import SignUp from '../frontend/hobigowes-app/src/SignUp'
 import './index.css'
 import Home from '../frontend/hobigowes-app/src/Home'
+import ProfilePage from '../frontend/hobigowes-app/src/ProfilePage'
 import {
   createBrowserRouter,
   RouterProvider,
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/sign-up",
     element: <SignUp />
+  },
+  {
+    path: "/profile",
+    element: <ProfilePage/>
   }
 ])
 

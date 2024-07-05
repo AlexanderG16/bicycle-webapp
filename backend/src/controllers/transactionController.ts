@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import pool from "../db";
-import { getUserIdByUsername } from "../models/user";
+import InitDB from "../database";
 import { jwtDecode } from "jwt-decode";
 import { createTransaction, createTransactionOnePost, getAllOrders, TransactionStatus, createTransactionDetail } from "../models/transaction";
 import { getAllCartItems } from "../models/cart";
@@ -14,8 +13,8 @@ export const getAllTransactions = async (req: Request, res: Response) => {
   }
 
   try {
-    const decoded = jwtDecode(token);
-    console.log(decoded.user_id)
+    const decoded: any = jwtDecode(token);
+    console.log(decoded.user_id);
     const user_id = decoded.user_id ?? '';
 
     if (!user_id) {
@@ -34,7 +33,7 @@ export const getAllTransactions = async (req: Request, res: Response) => {
 };
 
 export const insertTransactionOnePost = async (req: Request, res: Response) => {
-  const token = req. headers.authorization?.split(" ")[1];
+  const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({ message: "Authorization token is required" });
@@ -57,66 +56,80 @@ export const insertTransactionOnePost = async (req: Request, res: Response) => {
 
     const post_id = getIdFromPath(req.path, 2);
     await createTransactionOnePost(TransactionStatus.SUCCESS, user_id, post_id, quantity);
-    return res.status(200).json({ message: "Transaction has been succesfully created"});
+    return res.status(200).json({ message: "Transaction has been successfully created" });
   } catch (error) {
-    console.error("Unexpected Error Occured:", error)
-    return res.status(500).json({ message: "Unexpected Error Occured" });
+    console.error("Unexpected Error Occurred:", error);
+    return res.status(500).json({ message: "Unexpected Error Occurred" });
   }
-
-}
+};
 
 export const insertTransaction = async (req: Request, res: Response) => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-      return res.status(401).json({ message: "Authorization token is required" });
+    return res.status(401).json({ message: "Authorization token is required" });
   }
 
   try {
-      const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
-      const user_id = decoded.user_id;
+    const jwtSecret = process.env.JWT_SECRET;
 
-      if (!user_id) {
-          return res.status(404).json({ message: "User not found" });
+    if (!jwtSecret) {
+      console.error("JWT secret is not defined in environment variables");
+      return res.status(500).json({ message: "Internal server error" });
+    }
+
+    const decoded: any = jwt.verify(token, jwtSecret);
+    const user_id = decoded.user_id;
+
+    if (!user_id) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Retrieve cart items
+    const cartItems = await getAllCartItems(user_id);
+    if (!cartItems || cartItems.length === 0) {
+      return res.status(404).json({ message: "No cart items found" });
+    }
+
+    const transaction_date = new Date();
+
+    // Start a transaction
+    const conn = await InitDB.getInstance();
+    await conn.beginTransaction();
+
+    try {
+      // Insert into the transaction table and get the transaction_id
+      const transaction_id = await createTransaction(
+        user_id,
+        transaction_date,
+        TransactionStatus.SUCCESS
+      );
+
+      // Insert into the transaction_detail table
+      for (const item of cartItems) {
+        await createTransactionDetail(
+          transaction_id,
+          item.post_id,
+          item.quantity
+        );
       }
 
-      // Retrieve cart items
-      const cartItems = await getAllCartItems(user_id);
-      if (!cartItems || cartItems.length === 0) {
-          return res.status(404).json({ message: "No cart items found" });
-      }
+      // Commit the transaction
+      await conn.commit();
 
-      const transaction_date = new Date();
-
-      // Start a transaction
-      const conn = await pool.getConnection();
-      await conn.beginTransaction();
-
-      try {
-          // Insert into the transaction table and get the transaction_id
-          const transaction_id = await createTransaction(user_id, transaction_date, TransactionStatus.SUCCESS);
-
-          // Insert into the transaction_detail table
-          for (const item of cartItems) {
-              await createTransactionDetail(transaction_id, item.post_id, item.quantity);
-          }
-
-          // Commit the transaction
-          await conn.commit();
-          conn.release();
-
-          return res.status(201).json({ message: "Transaction created successfully", transaction_id });
-
-      } catch (error) {
-          // Rollback the transaction in case of error
-          await conn.rollback();
-          conn.release();
-          console.error("Error creating transaction:", error);
-          return res.status(500).json({ message: "Internal server error" });
-      }
-
-  } catch (error) {
+      return res
+        .status(201)
+        .json({ message: "Transaction created successfully", transaction_id });
+    } catch (error) {
+      // Rollback the transaction in case of error
+      await conn.rollback();
       console.error("Error creating transaction:", error);
       return res.status(500).json({ message: "Internal server error" });
+    } finally {
+      conn.release();
+    }
+  } catch (error) {
+    console.error("Error creating transaction:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
