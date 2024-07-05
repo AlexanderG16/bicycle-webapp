@@ -50,7 +50,7 @@ function App() {
         <h2 className="logo">HOBIGOWES</h2>
       </div>
       <div className="main-area">
-        <form onSubmit={handleSubmit}>
+        <form className="form-signup" onSubmit={handleSubmit}>
           <input type="text" id="input-username" placeholder="Username" onChange={(e) => setUsername(e.target.value)}></input>
 
           <input type="password" id="input-password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}></input>

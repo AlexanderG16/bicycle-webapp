@@ -1,7 +1,7 @@
 import pool from "../db";
 import { RowDataPacket } from "mysql2/promise";
 import Post, { getPostByID } from "./post";
-import { ResultSetHeader } from 'mysql2/promise';
+import { ResultSetHeader } from "mysql2/promise";
 
 export enum TransactionStatus {
   SUCCESS = "success",
@@ -51,59 +51,52 @@ export const getAllOrders = async (user_id: number): Promise<Array<Transaction> 
 };
 
 // ini create transaction yg bukan dari cart
-export const createTransactionOnePost = async (status: TransactionStatus, user_id: number, post_id: number, quantity: number) => {    
-    const conn = await pool.getConnection();
-    try {
-        const post = await getPostByID(post_id) as Post;
-        var insertedId = 0;
-        if (post != undefined) {
+export const createTransactionOnePost = async (status: TransactionStatus, user_id: number, post_id: number, quantity: number) => {
+  const conn = await pool.getConnection();
+  try {
+    const post = (await getPostByID(post_id)) as Post;
+    var insertedId = 0;
+    if (post != undefined) {
+      console.log("Item's price: ", post.price);
+      console.log("Qty: ", quantity);
 
-          console.log("Item's price: ", post.price);
-          console.log("Qty: ", quantity);
+      const [result] = await conn.query<ResultSetHeader>("INSERT INTO transaction (status, user_id, total_price) VALUES (?, ?, ?)", [status, user_id, post.price * quantity]);
 
-          const [result] = await conn.query<ResultSetHeader>("INSERT INTO transaction (status, user_id, total_price) VALUES (?, ?, ?)", [status, user_id, post.price * quantity]);
-
-          // Return the ID of the inserted record
-          insertedId = result.insertId;
-        } else {
-            throw console.error("Post not found");
-        }
-        await conn.query("INSERT INTO transaction_detail (transaction_id, post_id, quantity, total_price) VALUES (?, ?, ?, ?)", [insertedId, post_id, quantity, post.price * quantity]);
-        conn.release();
-    } catch (error) {
-        console.error("Unexpected Error Occured");
-        conn.release();
-        throw error;    
+      // Return the ID of the inserted record
+      insertedId = result.insertId;
+    } else {
+      throw console.error("Post not found");
     }
-}
+    await conn.query("INSERT INTO transaction_detail (transaction_id, post_id, quantity, total_price) VALUES (?, ?, ?, ?)", [insertedId, post_id, quantity, post.price * quantity]);
+    conn.release();
+  } catch (error) {
+    console.error("Unexpected Error Occured");
+    conn.release();
+    throw error;
+  }
+};
 
 export const createTransaction = async (user_id: string, transaction_date: Date, status: TransactionStatus): Promise<number> => {
   const conn = await pool.getConnection();
   try {
-      const [result] = await conn.query(
-          "INSERT INTO transaction (user_id, transaction_date, status) VALUES (?, ?, ?)",
-          [user_id, transaction_date, status]
-      );
-      conn.release();
-      return (result as any).insertId;
+    const [result] = await conn.query("INSERT INTO transaction (user_id, transaction_date, status) VALUES (?, ?, ?)", [user_id, transaction_date, status]);
+    conn.release();
+    return (result as any).insertId;
   } catch (error) {
-      console.error("Unexpected Error Occured");
-      conn.release();
-      throw error;
+    console.error("Unexpected Error Occured");
+    conn.release();
+    throw error;
   }
 };
 
 export const createTransactionDetail = async (transaction_id: number, post_id: number, quantity: number): Promise<void> => {
   const conn = await pool.getConnection();
   try {
-      await conn.query(
-          "INSERT INTO transaction_detail (transaction_id, post_id, quantity) VALUES (?, ?, ?)",
-          [transaction_id, post_id, quantity]
-      );
-      conn.release();
+    await conn.query("INSERT INTO transaction_detail (transaction_id, post_id, quantity) VALUES (?, ?, ?)", [transaction_id, post_id, quantity]);
+    conn.release();
   } catch (error) {
-      console.error("Unexpected Error Occured");
-      conn.release();
-      throw error;
+    console.error("Unexpected Error Occured");
+    conn.release();
+    throw error;
   }
 };

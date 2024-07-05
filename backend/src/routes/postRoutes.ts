@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.get("/", displayPost);
-router.post("/:user_id/create-post", upload.single("images"), makePostStub);
+router.post("/:user_id/create-post", upload.array("images"), makePost);
 router.get("/post/:id", getOnePost);
 router.get("/search", searchPostByKeyword);
 
