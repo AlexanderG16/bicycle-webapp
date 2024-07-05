@@ -17,7 +17,7 @@ const Home = () => {
     if (typeof token === "string") {
       setIsAuthenticated(true);
       const payload = jwtDecode(token);
-      if (payload.user_id === 1){
+      if (payload.user_role === 1) {
         setIsSeller(true);
       }
     }
@@ -52,14 +52,14 @@ const Home = () => {
             </div>
           `;
         }
-        let container = document.getElementById('post-area');
+        let container = document.getElementById("post-area");
         if (container) {
           container.innerHTML = html;
-        
-          const postElements = container.getElementsByClassName('post');
-          Array.from(postElements).forEach(post => {
-            post.addEventListener('click', () => {  
-              const postId = post.getAttribute('data-id');
+
+          const postElements = container.getElementsByClassName("post");
+          Array.from(postElements).forEach((post) => {
+            post.addEventListener("click", () => {
+              const postId = post.getAttribute("data-id");
               console.log(postId);
               window.location.href = `/post/${postId}`;
             });
@@ -69,7 +69,7 @@ const Home = () => {
           console.error("Error getting posts' data:", errorData);
           return errorData;
         }
-        
+
         const errorData = await response.json();
         console.error("Error getting posts' data:", errorData);
         return errorData;
@@ -78,7 +78,7 @@ const Home = () => {
       console.error("Error getting all posts: ", error);
       throw error;
     }
-  }
+  };
 
   return (
     <div className="home">
@@ -124,25 +124,30 @@ const Home = () => {
           </div>
           <p>Join our community of cycling enthusiasts and discover a wide range of bikes to suit every style and need, quality, convenience, and passion all in one place.</p>
           <div className="hero-buttons">
-            <Button btnType="browse-listing" onClick={function () {window.location.href='.search-bar-create-post'}}>Browse Listings</Button>
+            <Button
+              btnType="browse-listing"
+              onClick={function () {
+                window.location.href = ".search-bar-create-post";
+              }}
+            >
+              Browse Listings
+            </Button>
             <Button btnType="about-us">About Us</Button>
           </div>
         </div>
       </section>
-        <div className="search-bar-create-post">
-          <input type="text" placeholder="Search" className="search-bar" />
-          {isSeller ? (
-            <>
-                <Button btnType="create-post">Create Post</Button>
-            </>
-          ) : (
-            <div className="header-links">
-            </div>
-          )}
-        </div>
-
-      <div id="post-area">
+      <div className="search-bar-create-post">
+        <input type="text" placeholder="Search" className="search-bar" />
+        {isSeller ? (
+          <>
+            <Button btnType="create-post">Create Post</Button>
+          </>
+        ) : (
+          <div className="header-links"></div>
+        )}
       </div>
+
+      <div id="post-area"></div>
     </div>
   );
 };

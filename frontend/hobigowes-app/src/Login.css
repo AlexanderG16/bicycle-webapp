@@ -15,7 +15,7 @@
   background-repeat: no-repeat;
 }
 
-.main-area {
+div.main-area {
   width: 50%;
   background-color: white;
   display: flex;
