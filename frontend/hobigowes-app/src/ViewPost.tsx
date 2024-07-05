@@ -41,7 +41,7 @@ const ViewPost = () => {
       <section className="content">
         <div className="carousel">
           <button className="carousel-button left-button">❮</button>
-          <img src="https://your-image-source-url.com" alt="Product Image" className="carousel-image" />
+          <img src="" alt="Product Image" className="carousel-image" />
           <button className="carousel-button right-button">❯</button>
         </div>
         <div className="product-details">
