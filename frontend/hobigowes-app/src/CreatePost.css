@@ -8,9 +8,10 @@ section {
   padding-top: 100px;
 }
 
-form.form-createpost {
+form#form-createpost {
   width: 900px;
-  margin: auto;
+  /* margin: auto; */
+  padding-left: 15px;
 }
 
 .form-upload-image {
