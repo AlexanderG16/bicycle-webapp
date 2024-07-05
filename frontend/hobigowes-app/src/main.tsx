@@ -4,6 +4,8 @@ import Login from "./Login";
 import SignUp from "./SignUp";
 import Home from "./Home";
 import CreatePost from "./CreatePost";
+import ProfilePage from "./ProfilePage";
+
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -23,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/createpost",
     element: <CreatePost />,
+  },
+  {
+    path: "/profile",
+    element: <ProfilePage />,
   },
 ]);
 

@@ -4,9 +4,9 @@ import "./index.css";
 import Button from "./components/Button";
 import "./ProfilePage.css";
 import "./Header.css";
-import { jwtDecode } from "jwt-decode";
 import profileImage from "./assets/vecteezy_default-profile-account-unknown-icon-black-silhouette_20765399.jpg";
 import cartImage from "./assets/vecteezy_online-shop-icon-set-vector-for-web-presentation-logo_4262773.jpg";
+import { jwtDecode } from "jwt-decode";
 
 const ProfilePage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -14,7 +14,7 @@ const ProfilePage = () => {
   const [profileData, setProfileData] = useState({
     username: "",
     email: "",
-    phoneNumber: ""
+    phoneNumber: "",
   });
 
   useEffect(() => {
@@ -31,19 +31,21 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/profile/dashboard", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${Cookies.get("token")}`
-          },
-        });
+        const response = await fetch(
+          "http://localhost:5000/profile/dashboard",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         if (response.ok) {
           const data = await response.json();
           setProfileData({
             username: data.username,
             email: data.email,
-            phoneNumber: data.phone_number
+            phoneNumber: data.phone_number,
           });
         } else {
           const errorData = await response.json();
@@ -98,13 +100,21 @@ const ProfilePage = () => {
           <img src={profileImage} alt="Profile" className="profile-image" />
           <div className="profile-info">
             <h1>{profileData.username}</h1>
-            <p>{profileData.email} | {profileData.phoneNumber}</p>
+            <p>
+              {profileData.email} | {profileData.phoneNumber}
+            </p>
           </div>
         </div>
         <div className="profile-actions">
           <Button btnType="edit-profile">Edit Profile</Button>
-          <Button btnType="view-transaction-history">View Transaction History</Button>
-          {isSeller && <Button btnType="show-seller-dashboard">Show Seller Dashboard</Button>}
+          <Button btnType="view-transaction-history">
+            View Transaction History
+          </Button>
+          {isSeller && (
+            <Button btnType="show-seller-dashboard">
+              Show Seller Dashboard
+            </Button>
+          )}
         </div>
       </div>
     </div>
