@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import pool from "../db";
-import { getUserIdByUsername } from "../models/user";
+import InitDB from "../database";
 import { jwtDecode } from "jwt-decode";
 import { createTransaction, createTransactionOnePost, getAllOrders, TransactionStatus, createTransactionDetail } from "../models/transaction";
 import { getAllCartItems } from "../models/cart";
@@ -89,7 +88,7 @@ export const insertTransaction = async (req: Request, res: Response) => {
       const transaction_date = new Date();
 
       // Start a transaction
-      const conn = await pool.getConnection();
+      const conn = await InitDB.getInstance();
       await conn.beginTransaction();
 
       try {

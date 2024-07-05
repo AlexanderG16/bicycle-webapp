@@ -3,7 +3,6 @@ import cors from "cors";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import pool from "./db"; // Import the database connection
 
 import authRoutes from "./routes/auth";
 import postRoutes from "./routes/postRoutes";
@@ -22,17 +21,6 @@ app.use(morgan("dev"));
 
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "100mb" }));
-
-// Database initialization
-async function initDB() {
-  try {
-    await pool.getConnection(); // Test the database connection
-    console.log("Connected to MySQL database");
-  } catch (error) {
-    console.error("Error connecting to MySQL database:", error);
-  }
-}
-initDB(); // Initialize the database connection
 
 // Routes
 

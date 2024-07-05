@@ -1,6 +1,6 @@
 import { login } from "../controllers/authController";
 import Post from "../models/post";
-import pool from "../db";
+import InitDB from "../database";
 
 export interface Cart {
     id: number;
@@ -16,11 +16,11 @@ export interface CartItems {
 }
 
 export const createCart = async (user_id?: number): Promise<void> => {
-    const connection = await pool.getConnection();
+    const connection = await InitDB.getInstance();
     try {
-      const [rows] = await connection.execute(
-        "INSERT INTO cart (user_id) VALUES (?)",
-        [user_id]
+      const [rows] = await connection.query(
+          "INSERT INTO cart (user_id) VALUES (?)",
+          [user_id]
       );
     } finally {
       connection.release();
@@ -28,7 +28,7 @@ export const createCart = async (user_id?: number): Promise<void> => {
 }
 
 export const getAllCartItems = async (user_id: number): Promise<Array<CartItems> | null> => {
-  const conn = await pool.getConnection();
+  const conn = await InitDB.getInstance();
   try {
     const [rows] = await conn.query(`
       SELECT ci.*
@@ -48,7 +48,7 @@ export const getAllCartItems = async (user_id: number): Promise<Array<CartItems>
 };
 
 export const insertItemToCart = async (cart_id?: number, post_id?: number, quantity?: number): Promise<void> => {
-  const conn = await pool.getConnection();
+  const conn = await InitDB.getInstance();
   try {
     await conn.query("INSERT INTO cart_item (cart_id, post_id, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + ?", [cart_id, post_id, quantity, quantity]);
     conn.release();
@@ -60,7 +60,7 @@ export const insertItemToCart = async (cart_id?: number, post_id?: number, quant
 }
 
 export const incrementItem = async (cart_id?: number, post_id?: number): Promise<void> => {
-  const conn = await pool.getConnection();
+  const conn = await InitDB.getInstance();
   try {
     await conn.query("UPDATE cart_item SET quantity = quantity + 1 WHERE cart_id = ? AND post_id = ?", [cart_id, post_id]);
     conn.release();
@@ -72,7 +72,7 @@ export const incrementItem = async (cart_id?: number, post_id?: number): Promise
 }
 
 export const decrementItem = async (cart_id?: number, post_id?: number): Promise<void> => {
-  const conn = await pool.getConnection();
+  const conn = await InitDB.getInstance();
   try {
     await conn.query("UPDATE cart_item SET quantity = IF(quantity = 1, quantity, quantity - 1) WHERE cart_id = ? AND post_id = ?", [cart_id, post_id]); // TODO: Tambahin message kalau decrement nya udah < 1
     conn.release();
@@ -84,7 +84,7 @@ export const decrementItem = async (cart_id?: number, post_id?: number): Promise
 }
 
 export const setItemQuantity = async (cart_id?: number, post_id?: number, quantity?: number): Promise<void> => {
-  const conn = await pool.getConnection();
+  const conn = await InitDB.getInstance();
   try {
     await conn.query("UPDATE cart_item SET quantity = ? WHERE cart_id = ? AND post_id = ?", [quantity, cart_id, post_id]);
     conn.release();
