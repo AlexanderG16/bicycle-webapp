@@ -4,7 +4,7 @@
   margin-top: 20px;
 }
 
-section {
+section#edit-profile-section {
   padding-top: 100px;
 }
 
@@ -17,7 +17,7 @@ form#form-editprofile {
 .form-put-inputs {
   display: flex;
   flex-direction: column;
-  width: 30%;
+  width: 50%;
 }
 
 .form-put-inputs label {
@@ -31,7 +31,7 @@ form#form-editprofile {
 }
 
 .form-upload-profile-pic {
-  margin-left: 150px;
+  margin-left: 100px;
   padding: 0;
 }
 

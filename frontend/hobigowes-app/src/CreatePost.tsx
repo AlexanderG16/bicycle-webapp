@@ -103,7 +103,7 @@ const CreatePost = () => {
       <header className="header">
         <h2 className="logo">HOBIGOWES</h2>
       </header>
-      <section>
+      <section id="create-post-section">
         <form id="form-createpost" className="form-createpost" onSubmit={handleUpload} encType="multipart/form-data" method="post">
           <div className="form-upload-image">
             <label htmlFor="image">Select Image:</label>

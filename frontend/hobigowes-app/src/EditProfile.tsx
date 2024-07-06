@@ -114,7 +114,7 @@ const EditProfile = () => {
       <header className="header">
         <h2 className="logo">HOBIGOWES</h2>
       </header>
-      <section>
+      <section id="edit-profile-section">
         <form
           id="form-editprofile"
           className="form-editprofile"
