@@ -5,8 +5,11 @@ import SignUp from "./SignUp";
 import Home from "./Home";
 import CreatePost from "./CreatePost";
 import ViewPost from "./ViewPost";
+import ProfilePage from "./ProfilePage";
+
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AboutUs from "./AboutUs";
 
 const router = createBrowserRouter([
   {
@@ -26,9 +29,13 @@ const router = createBrowserRouter([
     element: <CreatePost />,
   },
   {
+    path: "/aboutus",
+    element: <AboutUs />,
+  },
+  {
     path: "/post/:id",
     element: <ViewPost />,
-    loader: async ({params}) => {
+    loader: async ({ params }) => {
       const res = await fetch(`http://localhost:5000/post/${params.id}`, {
         method: "GET",
         headers: {
@@ -37,8 +44,12 @@ const router = createBrowserRouter([
       });
       const resJson = await res.json();
       return resJson;
-    }
-  }
+    },
+  },
+  {
+    path: "/profile",
+    element: <ProfilePage />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

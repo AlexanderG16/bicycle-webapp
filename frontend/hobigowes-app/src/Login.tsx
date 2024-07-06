@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "./components/Button";
-import "./Login.css";
 import "./Form.css";
+import "./Login.css";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -58,7 +58,7 @@ function Login() {
         <h2 className="logo">HOBIGOWES</h2>
       </div>
       <div className="main-area">
-        <form action="" onSubmit={handleSubmit}>
+        <form className="form-signin" action="" onSubmit={handleSubmit}>
           <input type="text" id="input-username" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
 
           <input type="password" id="input-password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />

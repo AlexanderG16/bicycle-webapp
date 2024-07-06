@@ -1,8 +1,31 @@
 .btn-create-post {
-  color: white;
-  background-color: black;
+  display: block;
+  margin: auto;
+  margin-top: 20px;
 }
 
 section {
   padding-top: 100px;
+}
+
+form#form-createpost {
+  width: 900px;
+  /* margin: auto; */
+  padding-left: 15px;
+}
+
+.form-upload-image {
+  width: fit-content;
+  margin: auto;
+}
+
+.form-other-post-data {
+  display: flex;
+  justify-content: space-between;
+}
+
+form select {
+  width: 150px;
+  height: 50px;
+  background-color: #d9d9d9;
 }

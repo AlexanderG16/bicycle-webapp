@@ -3,7 +3,6 @@ import Cookies from "js-cookie";
 import "./index.css";
 import Button from "./components/Button";
 import "./Home.css";
-import "./Header.css";
 import { useLoaderData } from "react-router-dom";
 import "./ViewPost.css";
 import Post from "../../../backend/src/models/post";
@@ -23,27 +22,31 @@ const ViewPost = () => {
   const res = useLoaderData() as Post;
   return (
     <div className="product-view">
-      <section className="hero">
-        <header className="header">
-          <h2 className="logo">HOBIGOWES</h2>
-          <div className="auth-links">
-            <img
-              className="btn-cart-menu"
-              src={cartImage}
-              onClick={function () {
-                location.href = "/cart";
-              }}
-            ></img>
-            <img
-              className="btn-profile-menu"
-              src={profileImage}
-              onClick={function () {
-                location.href = "/profile";
-              }}
-            ></img>
-          </div>
-        </header>
-      </section>
+      <header className="header">
+        <div className="header-left">
+          <button className="back-button">❮</button>
+          <h1 className="logo">HOBIGOWES</h1>
+        </div>
+        <div className="header-center">
+          <input type="text" className="search-bar" placeholder="Search" />
+        </div>
+        <div className="header-right">
+          <img
+            className="btn-cart-menu"
+            src={cartImage}
+            onClick={function () {
+              location.href = "/cart";
+            }}
+          ></img>
+          <img
+            className="btn-profile-menu"
+            src={profileImage}
+            onClick={function () {
+              location.href = "/profile";
+            }}
+          ></img>
+        </div>
+      </header>
       <div className="carousel">
         <button className="carousel-button left-button">❮</button>
         <img
