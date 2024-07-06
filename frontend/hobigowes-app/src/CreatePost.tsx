@@ -29,10 +29,12 @@ const CreatePost = () => {
   useEffect(() => {
     const token = Cookies.get("token");
     if (typeof token === "string") {
-      // decode token to get user_id
-      console.log(token);
-      const decodedToken = jwtDecode(token);
-      setUserID(decodedToken.user_id);
+      // Decode token to get user_id
+      const decodedToken = jwtDecode<JwtPayload>(token);
+      
+      if (decodedToken.user_id) {
+        setUserID(decodedToken.user_id);
+      }
     }
   }, [userID]);
 

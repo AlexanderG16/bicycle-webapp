@@ -6,7 +6,7 @@ import "./Home.css";
 import "./Header.css";
 import cartImage from "./assets/vecteezy_online-shop-icon-set-vector-for-web-presentation-logo_4262773.jpg";
 import profileImage from "./assets/vecteezy_default-profile-account-unknown-icon-black-silhouette_20765399.jpg";
-import { jwtDecode } from "jwt-decode"; // Fix import statement
+import { jwtDecode, JwtPayload } from "jwt-decode"; // Fix import statement
 
 const Home = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -15,9 +15,11 @@ const Home = () => {
   useEffect(() => {
     const token = Cookies.get("token");
     if (typeof token === "string") {
-      const payload = jwtDecode(token);
+      const payload = jwtDecode<JwtPayload>(token);
       setIsAuthenticated(true);
-      if (payload.role === 1) {
+
+      const role = Number(payload.role);
+      if (!isNaN(role) && role === 1) {
         setIsSeller(true);
       }
     }
