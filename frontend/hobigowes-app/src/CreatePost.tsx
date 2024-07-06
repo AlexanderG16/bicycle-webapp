@@ -143,7 +143,7 @@ const CreatePost = () => {
               <input type="text" id="price" value={postPrice} onChange={(e) => setPostPrice(e.target.value)} />
             </div>
           </div>
-          <Button btnType="create-post">Upload</Button>
+          <Button btnType="create-post" type="submit">Upload</Button>
         </form>
 
         {message && <p>{message}</p>}

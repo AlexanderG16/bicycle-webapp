@@ -61,7 +61,7 @@ function App() {
 
           <input type="text" id="input-address" placeholder="Address"></input>
 
-          <Button btnType="btn-signup">Sign Up</Button>
+          <Button btnType="btn-signup" type="submit">Sign Up</Button>
         </form>
         {message && <p>{message}</p>}
         <p>Already Have An Account?</p>

@@ -63,7 +63,7 @@ function Login() {
 
           <input type="password" id="input-password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-          <Button btnType="btn-login">Log In</Button>
+          <Button btnType="btn-login" type="submit">Log In</Button>
         </form>
         {message && <p>{message}</p>}
         <p>Don't have an account yet?</p>
