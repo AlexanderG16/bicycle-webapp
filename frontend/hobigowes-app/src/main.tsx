@@ -10,6 +10,7 @@ import ProfilePage from "./ProfilePage";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AboutUs from "./AboutUs";
+import EditProfile from "./EditProfile";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <ProfilePage />,
+  },
+  {
+    path: "/editprofile",
+    element: <EditProfile />,
   },
 ]);
 

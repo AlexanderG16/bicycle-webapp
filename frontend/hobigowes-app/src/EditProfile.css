@@ -1,0 +1,64 @@
+.btn-edit-profile {
+  display: block;
+  margin: auto;
+  margin-top: 20px;
+}
+
+section {
+  padding-top: 100px;
+}
+
+form#form-editprofile {
+  width: fit-content;
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-put-inputs {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+.form-put-inputs label {
+  font-weight: bold;
+}
+
+.form-put-inputs input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-upload-profile-pic {
+  margin-left: 150px;
+  padding: 0;
+}
+
+.form-upload-profile-pic label {
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.put-profile-picture {
+  width: 300px;
+  height: 400px;
+  padding: 50px;
+  border: 1px dashed #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-direction: row;
+}
+
+.form-upload-profile-pic .btn-edit-profile {
+  margin-top: 60px;
+}
+
+p#status-message {
+  font-weight: bold;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-size: larger;
+  padding-bottom: 5%;
+}
