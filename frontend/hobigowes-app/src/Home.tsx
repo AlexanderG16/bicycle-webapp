@@ -27,14 +27,11 @@ const Home = () => {
     try {
       const response = await fetch("http://localhost:5000/", {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
 
       if (response.ok) {
         var html = "";
-        const data = await response.json();
+        const data = await response.clone().json();
         const posts = data.posts;
         const message = data.message;
         console.log(message);
@@ -69,10 +66,6 @@ const Home = () => {
           console.error("Error getting posts' data:", errorData);
           return errorData;
         }
-        
-        const errorData = await response.json();
-        console.error("Error getting posts' data:", errorData);
-        return errorData;
       }
     } catch (error) {
       console.error("Error getting all posts: ", error);
@@ -124,17 +117,15 @@ const Home = () => {
           </div>
           <p>Join our community of cycling enthusiasts and discover a wide range of bikes to suit every style and need, quality, convenience, and passion all in one place.</p>
           <div className="hero-buttons">
-            <Button btnType="browse-listing" onClick={function () {window.location.href='.search-bar-create-post'}}>Browse Listings</Button>
+            <Button btnType="browse-listing" onClick={function () {document.getElementById('search-bar')?.scrollIntoView(true)}}>Browse Listings</Button>
             <Button btnType="about-us">About Us</Button>
           </div>
         </div>
       </section>
-        <div className="search-bar-create-post">
+        <div className="search-bar-create-post" id="search-bar">
           <input type="text" placeholder="Search" className="search-bar" />
           {isSeller ? (
-            <>
-                <Button btnType="create-post">Create Post</Button>
-            </>
+            <Button btnType="create-post">Create Post</Button>
           ) : (
             <div className="header-links">
             </div>

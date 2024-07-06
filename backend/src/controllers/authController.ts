@@ -27,7 +27,7 @@ const login = async (req: Request, res: Response) => {
     { expiresIn: "1h" }
   );
   
-  res.json({ token });
+  return res.json({ token });
 };
 
 const signup = async (req: Request, res: Response) => {
@@ -39,10 +39,10 @@ const signup = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "name already taken" });
     }
     await createUser(username, password, email, phoneNumber);
-    res.status(201).json({ message: "User created successfully" });
+    return res.status(201).json({ message: "User created successfully" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 

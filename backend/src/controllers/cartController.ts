@@ -67,7 +67,7 @@ export const incrementItemQty = async (req: Request, res: Response) => {
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Unexpected Error Occurred" });
+        return res.status(500).json({ message: "Unexpected Error Occurred" });
     }
 }
 export const decrementItemQty = async (req: Request, res: Response) => {
@@ -76,13 +76,13 @@ export const decrementItemQty = async (req: Request, res: Response) => {
             const id = getIdFromPath(req.path, 2);
             const post_id = req.body;
             await decrementItem(id, post_id);
-            res.status(201).json({ message: "Successfully decreased post's quantity" })
+            return res.status(201).json({ message: "Successfully decreased post's quantity" })
         } else {
             return res.status(401).json({ message: "Authorization token is required" });
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Unexpected Error Occurred" });
+        return res.status(500).json({ message: "Unexpected Error Occurred" });
     }
 }
 
@@ -92,12 +92,12 @@ export const setItemQty = async (req: Request, res: Response) => {
             const id = getIdFromPath(req.path, 2);
             const {post_id, quantity} = req.body;
             await setItemQuantity(id, post_id, quantity);
-            res.status(201).json({ message: "Item quantity successfully updated" })
+            return res.status(201).json({ message: "Item quantity successfully updated" })
         } else {
             return res.status(401).json({ message: "Authorization token is required" });
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Unexpected Error Occured" });
+        return res.status(500).json({ message: "Unexpected Error Occured" });
     }
 }
