@@ -11,6 +11,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AboutUs from "./AboutUs";
 import EditProfile from "./EditProfile";
+import TransactionHistory from "./TransactionHistory";
 
 const router = createBrowserRouter([
   {
@@ -52,8 +53,12 @@ const router = createBrowserRouter([
     element: <ProfilePage />,
   },
   {
-    path: "/editprofile",
+    path: "/edit-profile",
     element: <EditProfile />,
+  },
+  {
+    path: "/transaction-history",
+    element: <TransactionHistory />,
   },
 ]);
 

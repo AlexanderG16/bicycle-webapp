@@ -113,11 +113,11 @@ const ProfilePage = () => {
       </section>
       <section className="profile-section">
         <div className="profile-actions">
-          <a href="/editprofile" className="profile-menu-item">
+          <a href="/edit-profile" className="profile-menu-item">
             <span>Edit Profile</span>
             <span>&gt;</span>
           </a>
-          <a href="#" className="profile-menu-item">
+          <a href="/transaction-history" className="profile-menu-item">
             <span>View Transaction History</span>
             <span>&gt;</span>
           </a>

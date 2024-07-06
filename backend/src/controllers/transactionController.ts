@@ -2,7 +2,13 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import InitDB from "../database";
 import { jwtDecode } from "jwt-decode";
-import { createTransaction, createTransactionOnePost, getAllOrders, TransactionStatus, createTransactionDetail } from "../models/transaction";
+import {
+  createTransaction,
+  createTransactionOnePost,
+  getAllOrders,
+  TransactionStatus,
+  createTransactionDetail,
+} from "../models/transaction";
 import { getAllCartItems } from "../models/cart";
 
 export const getAllTransactions = async (req: Request, res: Response) => {
@@ -15,7 +21,7 @@ export const getAllTransactions = async (req: Request, res: Response) => {
   try {
     const decoded: any = jwtDecode(token);
     console.log(decoded.user_id);
-    const user_id = decoded.user_id ?? '';
+    const user_id = decoded.user_id ?? "";
 
     if (!user_id) {
       return res.status(404).json({ message: "User not found" });
@@ -55,8 +61,15 @@ export const insertTransactionOnePost = async (req: Request, res: Response) => {
     };
 
     const post_id = getIdFromPath(req.path, 2);
-    await createTransactionOnePost(TransactionStatus.SUCCESS, user_id, post_id, quantity);
-    return res.status(200).json({ message: "Transaction has been successfully created" });
+    await createTransactionOnePost(
+      TransactionStatus.SUCCESS,
+      user_id,
+      post_id,
+      quantity
+    );
+    return res
+      .status(200)
+      .json({ message: "Transaction has been successfully created" });
   } catch (error) {
     console.error("Unexpected Error Occurred:", error);
     return res.status(500).json({ message: "Unexpected Error Occurred" });

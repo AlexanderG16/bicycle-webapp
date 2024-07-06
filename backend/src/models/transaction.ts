@@ -15,34 +15,54 @@ export interface Transaction {
   post_id?: number;
   quantity?: number;
   total_price?: number;
-}
-
-interface TransactionRow extends RowDataPacket {
-  transaction_id: number;
-  transaction_date: string;
-  status?: TransactionStatus;
-  user_id?: number;
-  post_id?: number;
-  quantity?: number;
-  total_price?: number;
+  product_name: string;
 }
 
 export const getAllOrders = async (
   user_id: number
-): Promise<Array<Transaction> | null> => {
+): Promise<Transaction[] | null> => {
   const conn = await InitDB.getInstance();
   try {
-    const [rows] = (await conn.query(
-      `SELECT t.id AS transaction_id, t.transaction_date, t.status, t.user_id, td.post_id, td.quantity, td.total_price
+    const [rows] = await conn.query(
+      `SELECT 
+          t.id AS transaction_id,
+          t.transaction_date,
+          t.status,
+          t.user_id,
+          td.post_id,
+          td.quantity,
+          td.total_price,
+          p.title AS product_name
         FROM \`transaction\` t
         JOIN \`transaction_detail\` td ON t.id = td.transaction_id
+        JOIN \`post\` p ON td.post_id = p.id
         WHERE t.user_id = ?
         ORDER BY t.transaction_date DESC;`,
       [user_id]
-    )) as [TransactionRow[], any];
-    return rows.length > 0 ? rows : null;
+    );
+
+    if (!rows || rows.length === 0) {
+      return null;
+    }
+
+    // Map rows to Transaction objects
+    const transactions: Transaction[] = rows.map((row: any) => ({
+      transaction_id: row.transaction_id,
+      transaction_date: row.transaction_date,
+      status: row.status as TransactionStatus,
+      user_id: row.user_id,
+      post_id: row.post_id,
+      quantity: row.quantity,
+      total_price: row.total_price,
+      product_name: row.product_name,
+    }));
+
+    return transactions;
   } catch (error) {
-    console.error("Error getting all transactions:", error);
+    console.error(
+      "Error getting all transactions with product details:",
+      error
+    );
     return null;
   } finally {
     conn.release();
