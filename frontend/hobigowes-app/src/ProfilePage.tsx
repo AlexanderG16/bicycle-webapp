@@ -1,65 +1,63 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import "./index.css";
-import Button from "./components/Button";
 import "./ProfilePage.css";
 import "./Header.css";
 import profileImage from "./assets/vecteezy_default-profile-account-unknown-icon-black-silhouette_20765399.jpg";
 import cartImage from "./assets/vecteezy_online-shop-icon-set-vector-for-web-presentation-logo_4262773.jpg";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 const ProfilePage = () => {
+  const [userID, setUserID] = useState<number | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSeller, setIsSeller] = useState(false);
-  const [profileData, setProfileData] = useState({
-    username: "",
-    email: "",
-    phoneNumber: "",
-  });
+  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
     const token = Cookies.get("token");
     if (typeof token === "string") {
       setIsAuthenticated(true);
-      const payload = jwtDecode(token);
-      if (payload.user_id === 1) {
+      const payload: { role?: number; user_id?: number } = jwtDecode(token);
+      if (payload.role === 1) {
         setIsSeller(true);
       }
+      if (payload.user_id) {
+        setUserID(payload.user_id);
+      }
     }
-  }, [isAuthenticated, isSeller]);
+  }, []);
 
   useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:5000/profile/dashboard",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setProfileData({
-            username: data.username,
-            email: data.email,
-            phoneNumber: data.phone_number,
-          });
-        } else {
-          const errorData = await response.json();
-          console.error("Error fetching profile data:", errorData);
-        }
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      }
-    };
-
-    if (isAuthenticated) {
-      fetchProfileData();
+    if (userID !== null) {
+      fetchUserProfile(userID);
     }
-  }, [isAuthenticated]);
+  }, [userID]);
+
+  const fetchUserProfile = async (userID: number) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/profile/dashboard`,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+        }
+      );
+
+      const data = response.data;
+      setUsername(data.username);
+      setEmail(data.email);
+      setPhoneNumber(data.phone_number);
+      setProfilePicture(data.profile_picture); // Assuming this is a URL string
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
 
   return (
     <div className="profile-page">
@@ -71,7 +69,7 @@ const ProfilePage = () => {
               <img
                 className="btn-cart-menu"
                 src={cartImage}
-                onClick={() => {
+                onClick={function () {
                   location.href = "/cart";
                 }}
               ></img>
@@ -95,28 +93,42 @@ const ProfilePage = () => {
           )}
         </div>
       </header>
-      <div className="profile-container">
-        <div className="profile-header">
-          <img src={profileImage} alt="Profile" className="profile-image" />
+      <section className="profile-page-bg">
+        <div className="profile-page-content">
           <div className="profile-info">
-            <h1>{profileData.username}</h1>
-            <p>
-              {profileData.email} | {profileData.phoneNumber}
-            </p>
+            <a id="profile-logo">
+              <img
+                src={profilePicture || profileImage}
+                alt="Profile Picture"
+                width="100"
+                height="100"
+              />
+            </a>
+            <h1 id="profile-name">{username}</h1>
+            <article id="profile-desc">
+              {email} | {phoneNumber}
+            </article>
           </div>
         </div>
+      </section>
+      <section className="profile-section">
         <div className="profile-actions">
-          <Button btnType="edit-profile">Edit Profile</Button>
-          <Button btnType="view-transaction-history">
-            View Transaction History
-          </Button>
+          <a href="/editprofile" className="profile-menu-item">
+            <span>Edit Profile</span>
+            <span>&gt;</span>
+          </a>
+          <a href="#" className="profile-menu-item">
+            <span>View Transaction History</span>
+            <span>&gt;</span>
+          </a>
           {isSeller && (
-            <Button btnType="show-seller-dashboard">
-              Show Seller Dashboard
-            </Button>
+            <a href="#" className="profile-menu-item">
+              <span>Show Seller Dashboard</span>
+              <span>&gt;</span>
+            </a>
           )}
         </div>
-      </div>
+      </section>
     </div>
   );
 };

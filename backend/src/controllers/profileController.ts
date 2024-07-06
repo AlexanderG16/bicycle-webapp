@@ -48,6 +48,7 @@ export const displayUserProfile = async (req: Request, res: Response) => {
       email: user.email,
       phone_number: user.phone_number,
       address: user.address,
+      profile_picture: user.profile_picture
     };
 
     console.log("username");
