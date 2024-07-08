@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Route to display user profile
-router.get("/dashboard", displayUserProfile);
+router.post("/dashboard", displayUserProfile);
 
 // Route to update user profile
 router.put(

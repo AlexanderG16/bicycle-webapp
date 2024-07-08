@@ -43,28 +43,22 @@ const EditProfile = () => {
 
   const fetchUserProfile = async (userID: number) => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/profile/dashboard`,
+      const response = await axios.post(
+        "http://localhost:5000/profile/dashboard",
         {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
+          user_id: userID,
         }
       );
-
       const data = response.data;
       setUsername(data.username);
       setEmail(data.email);
       setPhoneNumber(data.phone_number);
-      setAddress(data.address);
     } catch (error) {
-      console.error("Error fetching user profile:", error);
+      console.error("Error fetching profile data:", error);
     }
   };
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
-    e.preventDefault();
-
     if (!userID || !imageFile) {
       setMessage("User ID or profile picture not found");
       return;
@@ -81,11 +75,13 @@ const EditProfile = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/profile/${userID}/edit-profile`,
-        formData,
+        `http://localhost:5000/profile/edit-profile`,
+        {
+          formData,
+          user_id: userID,
+        },
         {
           headers: {
-            Authorization: `Bearer ${Cookies.get("token")}`,
             "Content-Type": "multipart/form-data",
           },
         }

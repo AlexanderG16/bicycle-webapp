@@ -40,22 +40,19 @@ const ProfilePage = () => {
 
   const fetchUserProfile = async (userID: number) => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/profile/dashboard`,
+      const response = await axios.post(
+        "http://localhost:5000/profile/dashboard",
         {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
+          user_id: userID,
         }
       );
-
       const data = response.data;
       setUsername(data.username);
       setEmail(data.email);
       setPhoneNumber(data.phone_number);
-      setProfilePicture(data.profile_picture); // Assuming this is a URL string
+      setProfilePicture(data.profile_picture);
     } catch (error) {
-      console.error("Error fetching user profile:", error);
+      console.error("Error fetching profile data:", error);
     }
   };
 
@@ -122,7 +119,7 @@ const ProfilePage = () => {
             <span>&gt;</span>
           </a>
           {isSeller && (
-            <a href="#" className="profile-menu-item">
+            <a href="/seller-dashboard" className="profile-menu-item">
               <span>Show Seller Dashboard</span>
               <span>&gt;</span>
             </a>
