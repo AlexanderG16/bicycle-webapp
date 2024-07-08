@@ -109,7 +109,7 @@
 #post-area {
   padding: 30px 100px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 2fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 2fr));
   gap: 50px;
 }
 
@@ -140,6 +140,12 @@
 .post .post-img {
   height: 240px;
   background-size: cover;
+}
+
+.post-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .upload-time {

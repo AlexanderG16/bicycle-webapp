@@ -11,6 +11,7 @@ import profileImage from "./assets/vecteezy_default-profile-account-unknown-icon
 
 const ViewPost = () => {
   const res = useLoaderData() as Post;
+
   return (
     <div className="product-view">
       <header className="header">

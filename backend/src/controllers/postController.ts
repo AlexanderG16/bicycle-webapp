@@ -6,8 +6,22 @@ import { Request, Response } from "express";
 import { getAllPosts, createPost, getPostByID, searchPosts } from "../models/post";
 
 import { bike_type } from "../models/post";
+import path from "path";
 
 // import upload from "../app";
+
+const getImageFromServer = async (req: Request, res: Response) => {
+  const filename = req.params.filename;
+  const directoryPath = path.resolve(__dirname, "../../user_uploads");
+  const filePath = path.join(directoryPath, filename);
+
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error("Error sending file:", err);
+      res.status(404).send("File not found");
+    }
+  });
+};
 
 const displayPost = async (req: Request, res: Response) => {
   try {
@@ -39,30 +53,30 @@ const displayPost = async (req: Request, res: Response) => {
 // });
 // const upload = multer({ storage });
 
-const makePostStub = [
-  // upload.single("images"),
+// const makePostStub = [
+//   // upload.single("images"),
 
-  async (req: Request, res: Response) => {
-    console.log("MASUK REQ");
-    try {
-      const imageFiles = req.file;
-      console.log("Image File: ", imageFiles);
-      // res.status(200).json({ message: "Files uploaded successfully" });
+//   async (req: Request, res: Response) => {
+//     console.log("MASUK REQ");
+//     try {
+//       const imageFiles = req.file;
+//       console.log("Image File: ", imageFiles);
+//       // res.status(200).json({ message: "Files uploaded successfully" });
 
-      res.send(req.file);
-    } catch (error) {
-      console.error("Error uploading files:", error);
-      res.status(500).json({ message: "Failed to upload files" });
-    }
-  },
-];
+//       res.send(req.file);
+//     } catch (error) {
+//       console.error("Error uploading files:", error);
+//       res.status(500).json({ message: "Failed to upload files" });
+//     }
+//   },
+// ];
 
 const makePost = async (req: Request, res: Response) => {
   const images = req.files;
   const { title, bike_type_input, description, price, city, province, upload_date, stock, status, user_id } = req.body;
 
   console.log(title);
-  console.log(bike_type_input);
+  console.log("Bike Type: ", bike_type_input);
   console.log(description);
   console.log(price);
   console.log(city);
@@ -73,24 +87,14 @@ const makePost = async (req: Request, res: Response) => {
   console.log(images);
   console.log("user id: ", user_id);
 
-  // const getIdFromPath = (path: string) => {
-  //   const pathSegments = path.split("/");
-  //   const idString = pathSegments[pathSegments.length - 2]; // Assuming id is the last segment
-  //   return Number(idString); // Convert the extracted id to a number
-  // };
-
-  // const userID = req.params.userID;
-  // console.log("User ID: ", userID);
-
-  // const user_id = getIdFromPath(req.path);
   try {
     let enumBikeType: bike_type;
     // console.log(enumBikeType);
-    if (bike_type_input === bike_type.MOUNTAIN_BIKE) {
+    if (bike_type_input === "mountainBike") {
       enumBikeType = bike_type.MOUNTAIN_BIKE;
-    } else if (bike_type_input === bike_type.BMX) {
+    } else if (bike_type_input === "bmx") {
       enumBikeType = bike_type.BMX;
-    } else if (bike_type_input === bike_type.TOURING_BIKE) {
+    } else if (bike_type_input === "touringBike") {
       enumBikeType = bike_type.TOURING_BIKE;
     } else {
       enumBikeType = bike_type.ROAD_BIKE;
@@ -171,4 +175,15 @@ const searchPostByKeyword = async (req: Request, res: Response) => {
   }
 };
 
-export { displayPost, makePost, getOnePost, makePostStub, searchPostByKeyword };
+export { displayPost, makePost, getOnePost, searchPostByKeyword, getImageFromServer };
+
+// const getIdFromPath = (path: string) => {
+//   const pathSegments = path.split("/");
+//   const idString = pathSegments[pathSegments.length - 2]; // Assuming id is the last segment
+//   return Number(idString); // Convert the extracted id to a number
+// };
+
+// const userID = req.params.userID;
+// console.log("User ID: ", userID);
+
+// const user_id = getIdFromPath(req.path);

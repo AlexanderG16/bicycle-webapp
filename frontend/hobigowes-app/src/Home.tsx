@@ -11,6 +11,7 @@ import { jwtDecode, JwtPayload } from "jwt-decode"; // Fix import statement
 const Home = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSeller, setIsSeller] = useState(false);
+  const [imageFile, setImageFile] = useState<File>();
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -41,11 +42,25 @@ const Home = () => {
           const posts = data.posts;
           const message = data.message;
           console.log(message);
+
+          console.log("POST IMG URL: ", posts[2].url);
+
           for (let index = 0; index < posts.length; index++) {
             const element = posts[index];
+            // const img_url = element.url;
+
+            // const response_img = await fetch("http://localhost:5000/user_uploads/retrieve_img", {
+            //   method: "GET",
+            //   headers: {
+            //     "Content-Type": "application/json",
+            //   },
+            //   body: JSON.stringify({ img_url }),
+            // });
+
             html += `
               <div class="post" data-id="${element.id}">
-                <div class="post-img" style="background-image: url(${element.url})"></div>
+                <div class="post-img">
+                <img src="http://localhost:5000/user_uploads/retrieve_img/${element.url}"></img></div>
                 <div class="post-description">
                   <h3 class="post-title">${element.title}</h3>
                   <p class="post-loc">${element.city}, ${element.province}</p>
@@ -149,6 +164,8 @@ const Home = () => {
       </div>
 
       <div id="post-area"></div>
+
+      <img src="D:/TugasReactJS/RPLL/bicycle-webapp/backend/user_uploads/1720237419063-Deluxe MTB.jpg" alt="" />
     </div>
   );
 };
