@@ -7,6 +7,7 @@ import multer from "multer";
 
 import {
   findUserByUsername,
+  findUserById,
   updateUser,
   registerAsSeller,
 } from "../models/user";
@@ -24,20 +25,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 export const displayUserProfile = async (req: Request, res: Response) => {
-  // Testing Postman:
-  const token = req.headers.authorization?.split(" ")[1];
-  // Testing Front-End:
-  // const token = Cookies.get("token");
-
-  if (!token) {
-    return res.status(401).json({ message: "Authorization token is required" });
-  }
+  const user_id = req.body.user_id;
 
   try {
-    const decoded = jwtDecode(token);
-    const username = decoded.username ?? "";
-
-    const user = await findUserByUsername(username);
+    const user = await findUserById(user_id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -48,7 +39,7 @@ export const displayUserProfile = async (req: Request, res: Response) => {
       email: user.email,
       phone_number: user.phone_number,
       address: user.address,
-      profile_picture: user.profile_picture
+      profile_picture: user.profile_picture,
     };
 
     console.log("username");
@@ -59,17 +50,14 @@ export const displayUserProfile = async (req: Request, res: Response) => {
 };
 
 export const updateUserProfile = async (req: Request, res: Response) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ message: "Authorization token is required" });
-  }
+  const user_id = req.body.user_id;
 
   try {
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
-    const username = decoded.username;
+    if (!user_id) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-    const user = await findUserByUsername(username);
+    const user = await findUserById(user_id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -126,19 +114,15 @@ export const updateUserProfile = async (req: Request, res: Response) => {
 
 export const registerBuyerToSeller = async (req: Request, res: Response) => {
   // Testing Postman:
-  const token = req.headers.authorization?.split(" ")[1];
+  const user_id = req.body.user_id;
   // Testing Front-End:
   // const token = Cookies.get("token");
-
   const phone_number = req.body;
 
-  if (!token) {
-    return res.status(401).json({ message: "Authorization token is required" });
-  }
-
   try {
-    const decoded = jwtDecode(token);
-    const user_id = decoded.user_id ?? 0;
+    if (!user_id) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     await registerAsSeller(user_id, phone_number);
     return res

@@ -1,7 +1,5 @@
 import InitDB from "../database";
 import bcrypt from "bcryptjs";
-import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
 import { RowDataPacket } from "mysql2/promise";
 
 export interface User {
@@ -15,8 +13,26 @@ export interface User {
   is_seller: number;
 }
 
-interface UserRow extends RowDataPacket {
-  id: number;
+export const findUserById = async (
+  user_id: number
+): Promise<User | null> => {
+  const conn = await InitDB.getInstance();
+  try {
+    const [rows] = await conn.query("SELECT * FROM users WHERE id = ?", [
+      user_id,
+    ]);
+    conn.release();
+
+    if (Array.isArray(rows) && rows.length > 0) {
+      return rows[0] as User;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error finding user by name:", error);
+    conn.release();
+    return null;
+  }
 }
 
 export const findUserByUsername = async (
@@ -169,3 +185,25 @@ export const registerAsSeller = async (
     conn.release();
   }
 };
+
+export const findIsSeller = async (user_id: number): Promise<boolean> => {
+  const conn = await InitDB.getInstance();
+  try {
+    const [rows] = await conn.query(
+      "SELECT is_seller FROM `users` WHERE id = ?",
+      [user_id]
+    );
+
+    if (rows.length > 0) {
+      return rows[0].is_seller === 1;
+    }
+    return false;
+  } catch (error) {
+    console.error("Error checking if user is a seller:", error);
+    return false;
+  } finally {
+    conn.release();
+  }
+};
+
+export default findIsSeller;

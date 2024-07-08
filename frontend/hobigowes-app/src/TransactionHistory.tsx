@@ -53,12 +53,10 @@ const TransactionHistory = () => {
 
   const fetchUserTransactionHistory = async (userID: number) => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/transaction/order-list`,
+      const response = await axios.post(
+        "http://localhost:5000/transaction/order-list",
         {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
+          user_id: userID,
         }
       );
 
