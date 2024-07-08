@@ -131,7 +131,7 @@ const getOnePost = async (req: Request, res: Response) => {
   try {
     const post = await getPostByID(+id);
     if (post) {
-      res.status(200).json({
+      return res.status(200).json({
         id: post.id,
         title: post.title,
         bike_type: post.bike_type,
@@ -145,10 +145,10 @@ const getOnePost = async (req: Request, res: Response) => {
         user_id: post.user_id,
       });
     }
-    res.status(400).json({ message: "Post with that id doesn't exist" });
+    return res.status(400).json({ message: "Post with that id doesn't exist" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Unexpected Error Occured" });
+    return res.status(500).json({ message: "Unexpected Error Occured" });
   }
 };
 

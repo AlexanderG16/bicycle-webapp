@@ -1,7 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./AboutUs.css";
+import cartImage from "./assets/vecteezy_online-shop-icon-set-vector-for-web-presentation-logo_4262773.jpg";
+import profileImage from "./assets/vecteezy_default-profile-account-unknown-icon-black-silhouette_20765399.jpg";
+import facebookLogo from "./assets/9041266_facebook_icon.png";
+import xLogo from "./assets/11053969_x_logo_twitter_new_brand_icon.png";
+import instagramLogo from "./assets/5279112_camera_instagram_social media_instagram logo_icon.png";
+import Cookies from "js-cookie";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 const AboutUs: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (typeof token === "string") {
+      const payload = jwtDecode<JwtPayload>(token);
+      setIsAuthenticated(true);
+    }
+  }, [isAuthenticated]);
+
   return (
     <div className="about-us">
       <header className="header">
@@ -16,8 +33,33 @@ const AboutUs: React.FC = () => {
           </button>
         </div>
         <div className="header-right">
-          <button className="cart-button">🛒</button>
-          <button className="user-button">👤</button>
+        {isAuthenticated ? (
+            <>
+              <img
+                className="btn-cart-menu"
+                src={cartImage}
+                onClick={function () {
+                  location.href = "/cart";
+                }}
+              ></img>
+              <img
+                className="btn-profile-menu"
+                src={profileImage}
+                onClick={function () {
+                  location.href = "/profile";
+                }}
+              ></img>
+            </>
+          ) : (
+            <div className="header-links">
+              <a href="/signin" className=" sign-in-btn">
+                Sign In
+              </a>
+              <a href="/signup" className=" sign-up-btn">
+                Sign Up
+              </a>
+            </div>
+          )}
         </div>
       </header>
       <main className="main-content">
@@ -39,9 +81,9 @@ const AboutUs: React.FC = () => {
         <div className="social-media">
           <h2>Follow Us On:</h2>
           <div className="social-icons">
-            <span>📘</span>
-            <span>🕊️</span>
-            <span>📸</span>
+            <span><img src={facebookLogo} alt="facebook" /></span>
+            <span><img src={xLogo} alt="X" /></span>
+            <span><img src={instagramLogo} alt="instagram" /></span>
           </div>
         </div>
       </main>

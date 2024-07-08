@@ -65,7 +65,7 @@ function App() {
         </form>
         {message && <p>{message}</p>}
         <p>Already Have An Account?</p>
-        <a href="/" className="log-in-link">
+        <a href="/signin" className="log-in-link">
           <strong>Log In Here</strong>
         </a>
       </div>

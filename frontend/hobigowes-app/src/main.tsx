@@ -6,10 +6,12 @@ import Home from "./Home";
 import CreatePost from "./CreatePost";
 import ViewPost from "./ViewPost";
 import ProfilePage from "./ProfilePage";
+import Cart from "./Cart";
+import AboutUs from "./AboutUs";
 
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AboutUs from "./AboutUs";
+import OrderPage from "./OrderPageCart";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +52,14 @@ const router = createBrowserRouter([
     path: "/profile",
     element: <ProfilePage />,
   },
+  {
+    path: "/cart",
+    element: <Cart />,
+  },
+  {
+    path: "/cart/order",
+    element: <OrderPage />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

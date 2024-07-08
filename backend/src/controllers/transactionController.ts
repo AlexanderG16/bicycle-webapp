@@ -6,16 +6,8 @@ import { createTransaction, createTransactionOnePost, getAllOrders, TransactionS
 import { getAllCartItems } from "../models/cart";
 
 export const getAllTransactions = async (req: Request, res: Response) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ message: "Authorization token is required" });
-  }
-
   try {
-    const decoded: any = jwtDecode(token);
-    console.log(decoded.user_id);
-    const user_id = decoded.user_id ?? '';
+    const user_id = req.body;
 
     if (!user_id) {
       return res.status(404).json({ message: "User not found" });
@@ -33,15 +25,8 @@ export const getAllTransactions = async (req: Request, res: Response) => {
 };
 
 export const insertTransactionOnePost = async (req: Request, res: Response) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ message: "Authorization token is required" });
-  }
-
   try {
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
-    const user_id = decoded.user_id;
+    const user_id = req.body;
 
     if (!user_id) {
       return res.status(404).json({ message: "User not found" });
@@ -64,29 +49,10 @@ export const insertTransactionOnePost = async (req: Request, res: Response) => {
 };
 
 export const insertTransaction = async (req: Request, res: Response) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ message: "Authorization token is required" });
-  }
-
   try {
-    const jwtSecret = process.env.JWT_SECRET;
-
-    if (!jwtSecret) {
-      console.error("JWT secret is not defined in environment variables");
-      return res.status(500).json({ message: "Internal server error" });
-    }
-
-    const decoded: any = jwt.verify(token, jwtSecret);
-    const user_id = decoded.user_id;
-
-    if (!user_id) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
+    const {user_id, cart_id} = req.body;
     // Retrieve cart items
-    const cartItems = await getAllCartItems(user_id);
+    const cartItems = await getAllCartItems(cart_id);
     if (!cartItems || cartItems.length === 0) {
       return res.status(404).json({ message: "No cart items found" });
     }
@@ -109,7 +75,7 @@ export const insertTransaction = async (req: Request, res: Response) => {
       for (const item of cartItems) {
         await createTransactionDetail(
           transaction_id,
-          item.post_id,
+          item.post.id,
           item.quantity
         );
       }

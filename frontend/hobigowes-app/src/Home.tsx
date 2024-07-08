@@ -38,7 +38,7 @@ const Home = () => {
 
         if (response.ok) {
           var html = "";
-          const data = await response.json();
+          const data = await response.clone().json();
           const posts = data.posts;
           const message = data.message;
           console.log(message);
@@ -87,10 +87,6 @@ const Home = () => {
             console.error("Error getting posts' data:", errorData);
             return errorData;
           }
-
-          const errorData = await response.json();
-          console.error("Error getting posts' data:", errorData);
-          return errorData;
         }
       } catch (error) {
         console.error("Error getting all posts: ", error);
@@ -99,7 +95,6 @@ const Home = () => {
     };
 
     fetchData();
-    console.log("is Seller: " + isSeller);
   }, []);
 
   return (
@@ -113,7 +108,7 @@ const Home = () => {
                 className="btn-cart-menu"
                 src={cartImage}
                 onClick={function () {
-                  location.href = "/cart";
+                  window.location.href = `/cart`;
                 }}
               ></img>
               <img
@@ -154,7 +149,7 @@ const Home = () => {
             >
               Browse Listings
             </Button>
-            <Button btnType="about-us">About Us</Button>
+            <Button btnType="about-us" onClick={function () {window.location.href='/aboutus'}}>About Us</Button>
           </div>
         </div>
       </section>
@@ -162,7 +157,6 @@ const Home = () => {
         <input type="text" placeholder="Search" className="search-bar" />
         {isSeller ? <Button btnType="create-post">Create Post</Button> : <div></div>}
       </div>
-
       <div id="post-area"></div>
 
       <img src="D:/TugasReactJS/RPLL/bicycle-webapp/backend/user_uploads/1720237419063-Deluxe MTB.jpg" alt="" />

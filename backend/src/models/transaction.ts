@@ -106,9 +106,6 @@ export const createTransaction = async (
     console.error("Unexpected Error Occured");
     conn.release();
     throw error;
-    console.error("Unexpected Error Occured");
-    conn.release();
-    throw error;
   }
 };
 

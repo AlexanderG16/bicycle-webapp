@@ -115,10 +115,12 @@
 
 .post {
   background-color: #ffffff;
+  max-width: 400px;
   min-height: 400px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
+  padding: 10px;
 }
 
 .post:hover {
@@ -130,6 +132,10 @@
 .post-description {
   box-sizing: border-box;
   padding: 15px;
+}
+
+.post-description * {
+  color: black;
 }
 
 .post-loc {
