@@ -150,3 +150,119 @@ export const createTransactionDetail = async (
     throw error;
   }
 };
+
+export const getAllOrdersBySeller = async (
+  seller_id: number
+): Promise<Transaction[] | null> => {
+  const conn = await InitDB.getInstance();
+  try {
+    const [rows] = await conn.query(
+      `SELECT 
+          t.id AS transaction_id,
+          t.transaction_date,
+          t.status,
+          td.post_id,
+          td.quantity,
+          td.total_price,
+          p.title AS product_name,
+          p.price AS product_price
+        FROM \`transaction\` t
+        JOIN \`transaction_detail\` td ON t.id = td.transaction_id
+        JOIN \`post\` p ON td.post_id = p.id
+        JOIN (
+            SELECT 
+                td.post_id,
+                SUM(td.quantity) AS total_quantity
+            FROM \`transaction_detail\` td
+            JOIN \`post\` p ON td.post_id = p.id
+            WHERE p.user_id = ?
+            GROUP BY td.post_id
+            ORDER BY total_quantity DESC
+        ) pq ON pq.post_id = p.id
+        WHERE p.user_id = ?
+        ORDER BY pq.total_quantity DESC, t.transaction_date DESC;`,
+      [seller_id, seller_id]
+    );
+
+    if (!rows || rows.length === 0) {
+      return null;
+    }
+
+    // Map rows to Transaction objects
+    const transactions: Transaction[] = rows.map((row: any) => ({
+      transaction_id: row.transaction_id,
+      transaction_date: row.transaction_date,
+      status: row.status as TransactionStatus,
+      post_id: row.post_id,
+      quantity: row.quantity,
+      total_price: row.total_price,
+      product_name: row.product_name,
+      product_price: row.product_price,
+    }));
+
+    return transactions;
+  } catch (error) {
+    console.error("Error getting all transactions for seller:", error);
+    return null;
+  } finally {
+    conn.release();
+  }
+};
+
+export const getTotalSalesBySeller = async (
+  seller_id: number
+): Promise<number | null> => {
+  const conn = await InitDB.getInstance();
+  try {
+    const [rows] = await conn.query(
+      `SELECT 
+          SUM(td.total_price) AS total_sales
+        FROM \`transaction\` t
+        JOIN \`transaction_detail\` td ON t.id = td.transaction_id
+        JOIN \`post\` p ON td.post_id = p.id
+        WHERE p.user_id = ?;`,
+      [seller_id]
+    );
+
+    if (!rows || rows.length === 0) {
+      return null;
+    }
+
+    const totalSales = rows[0].total_sales;
+    return totalSales || 0;
+  } catch (error) {
+    console.error("Error getting total sales for seller:", error);
+    return null;
+  } finally {
+    conn.release();
+  }
+};
+
+export const getTotalOrdersBySeller = async (
+  seller_id: number
+): Promise<number | null> => {
+  const conn = await InitDB.getInstance();
+  try {
+    const [rows] = await conn.query(
+      `SELECT 
+          SUM(td.quantity) AS total_pieces_sold
+        FROM \`transaction\` t
+        JOIN \`transaction_detail\` td ON t.id = td.transaction_id
+        JOIN \`post\` p ON td.post_id = p.id
+        WHERE p.user_id = ?;`,
+      [seller_id]
+    );
+
+    if (!rows || rows.length === 0) {
+      return null;
+    }
+
+    const totalPiecesSold = rows[0].total_pieces_sold;
+    return totalPiecesSold || 0;
+  } catch (error) {
+    console.error("Error getting total pieces sold for seller:", error);
+    return null;
+  } finally {
+    conn.release();
+  }
+};

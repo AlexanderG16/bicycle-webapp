@@ -1,28 +1,23 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import InitDB from "../database";
-import { jwtDecode } from "jwt-decode";
+import findIsSeller from "../models/user";
+
 import {
   createTransaction,
   createTransactionOnePost,
   getAllOrders,
+  getAllOrdersBySeller,
+  getTotalSalesBySeller,
+  getTotalOrdersBySeller,
   TransactionStatus,
   createTransactionDetail,
 } from "../models/transaction";
 import { getAllCartItems } from "../models/cart";
 
 export const getAllTransactions = async (req: Request, res: Response) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ message: "Authorization token is required" });
-  }
+  const user_id = req.body.user_id;
 
   try {
-    const decoded: any = jwtDecode(token);
-    console.log(decoded.user_id);
-    const user_id = decoded.user_id ?? "";
-
     if (!user_id) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -38,16 +33,84 @@ export const getAllTransactions = async (req: Request, res: Response) => {
   }
 };
 
-export const insertTransactionOnePost = async (req: Request, res: Response) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ message: "Authorization token is required" });
-  }
-
+export const getAllSellerTransactions = async (req: Request, res: Response) => {
   try {
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
-    const user_id = decoded.user_id;
+    const user_id = req.body.user_id;
+
+    if (!user_id) {
+      return res.status(404).json({ message: "User ID not found" });
+    }
+
+    const isSeller = await findIsSeller(user_id);
+    if (!isSeller) {
+      return res.status(403).json({ message: "User is not a seller" });
+    }
+
+    const orders = await getAllOrdersBySeller(user_id);
+    if (!orders) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+    return res.status(200).json(orders);
+  } catch (error) {
+    console.error("Error getting orders for seller:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getSellerTotalSales = async (req: Request, res: Response) => {
+  try {
+    const user_id = req.body.user_id;
+
+    if (!user_id) {
+      return res.status(404).json({ message: "User ID not found" });
+    }
+
+    const isSeller = await findIsSeller(user_id);
+    if (!isSeller) {
+      return res.status(403).json({ message: "User is not a seller" });
+    }
+
+    const totalSales = await getTotalSalesBySeller(user_id);
+    if (totalSales === null) {
+      return res.status(404).json({ message: "No sales data found" });
+    }
+    return res.status(200).json({ total_sales: totalSales });
+  } catch (error) {
+    console.error("Error getting total sales for seller:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getSellerTotalTransactions = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const user_id = req.body.user_id;
+
+    if (!user_id) {
+      return res.status(404).json({ message: "User ID not found" });
+    }
+
+    const isSeller = await findIsSeller(user_id);
+    if (!isSeller) {
+      return res.status(403).json({ message: "User is not a seller" });
+    }
+
+    const totalOrders = await getTotalOrdersBySeller(user_id);
+    if (totalOrders === null) {
+      return res.status(404).json({ message: "No orders data found" });
+    }
+    return res.status(200).json({ total_orders: totalOrders });
+  } catch (error) {
+    console.error("Error getting total orders for seller:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const insertTransactionOnePost = async (req: Request, res: Response) => {
+  try {
+    const user_id = req.body;
 
     if (!user_id) {
       return res.status(404).json({ message: "User not found" });
@@ -77,29 +140,10 @@ export const insertTransactionOnePost = async (req: Request, res: Response) => {
 };
 
 export const insertTransaction = async (req: Request, res: Response) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ message: "Authorization token is required" });
-  }
-
   try {
-    const jwtSecret = process.env.JWT_SECRET;
-
-    if (!jwtSecret) {
-      console.error("JWT secret is not defined in environment variables");
-      return res.status(500).json({ message: "Internal server error" });
-    }
-
-    const decoded: any = jwt.verify(token, jwtSecret);
-    const user_id = decoded.user_id;
-
-    if (!user_id) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
+    const { user_id, cart_id } = req.body;
     // Retrieve cart items
-    const cartItems = await getAllCartItems(user_id);
+    const cartItems = await getAllCartItems(cart_id);
     if (!cartItems || cartItems.length === 0) {
       return res.status(404).json({ message: "No cart items found" });
     }
