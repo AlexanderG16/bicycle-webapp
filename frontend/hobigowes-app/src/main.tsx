@@ -12,6 +12,7 @@ import AboutUs from "./AboutUs";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import OrderPage from "./OrderPageCart";
+import OrderPagePost from "./OrderPagePost";
 
 const router = createBrowserRouter([
   {
@@ -59,7 +60,21 @@ const router = createBrowserRouter([
   {
     path: "/cart/order",
     element: <OrderPage />,
-  }
+  },
+  {
+    path: "post/order-checkout/:id",
+    element: <OrderPagePost />,
+    loader: async ({ params }) => {
+      const res = await fetch(`http://localhost:5000/post/${params.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const resJson = await res.json();
+      return resJson.post;
+    },
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

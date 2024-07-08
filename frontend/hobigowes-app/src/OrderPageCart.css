@@ -1,182 +1,181 @@
 .order-cart {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    color: black;
-    background-color: black;
-    /* height: 100%; */
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  color: black;
+  background-color: black;
+  /* height: 100%; */
+}
 
-  .main-content-order-cart {
-    width: 100%;
-    height: 100%;
-  }
+.main-content-order-cart {
+  width: 100%;
+  height: 100%;
+}
 
-  .hero-order-cart {
-    /* top: -15%; */
-    position: relative;
-    background: url(./assets/josh-nuttall-zkVi57UYHIQ-unsplash.jpg) no-repeat center center;
-    background-size: cover;
-    color: white;
-    padding-top: 0px;
-    height: 320px;
-    text-align: center;
-    justify-content: center;
-  }
-  
-  .hero-content-order-cart {
-    position: absolute;
-    width: 100%;
-  }
-  
-  .hero-order-cart .slogan-order-cart {
-    position: relative;
-    width: 100%;
-    text-align: center;
-  }
-  
-  .hero-order-cart .slogan-order-cart h1 {
-    position: absolute;
-    color: #e8e8e8;
-    font-size: 70px;
-    left: 20%;
-  }
-  
-  .hero-order-cart .slogan-order-cart h1:not(:nth-of-type(1)) {
-    color: black;
-    text-shadow: 1px 1px 0 #fff, -1px 1px 0 #fff, 1px -1px 0 #fff, -1px -1px 0 #fff, 0px 1px 0 #fff, 0px -1px 0 #fff, -1px 0px 0 #fff, 1px 0px 0 #fff, 2px 2px 0 #fff, -2px 2px 0 #fff, 2px -2px 0 #fff, -2px -2px 0 #fff, 0px 2px 0 #fff,
-      0px -2px 0 #fff, -2px 0px 0 #fff, 2px 0px 0 #fff, 1px 2px 0 #fff, -1px 2px 0 #fff, 1px -2px 0 #fff, -1px -2px 0 #fff, 2px 1px 0 #fff, -2px 1px 0 #fff, 2px -1px 0 #fff, -2px -1px 0 #fff;
-  }
-  
-  .hero-order-cart .slogan-order-cart h1:nth-of-type(2) {
-    top: 50px;
-    opacity: 40%;
-  }
-  
-  .hero-order-cart .slogan-order-cart h1:nth-of-type(3) {
-    top: 105px;
-    opacity: 20%;
-  }
-  
-  .hero-order-cart .slogan-order-cart h1:nth-of-type(4) {
-    top: 160px;
-    opacity: 10%;
-  }
-  
-  .hero-order-cart h1 {
-    font-size: 50px;
-    color: white;
-  }
-  
-  .hero-order-cart p {
-    width: 500px;
-    margin: 30px 0 30px;
-    /* border: 1px solid green; */
-    text-align: left;
-    color: white;
-    font-size: 1.23rem;
-  }  
+.hero-order-cart {
+  /* top: -15%; */
+  position: relative;
+  background: url(./assets/josh-nuttall-zkVi57UYHIQ-unsplash.jpg) no-repeat center center;
+  background-size: cover;
+  color: white;
+  padding-top: 0px;
+  height: 320px;
+  text-align: center;
+  justify-content: center;
+}
+
+.hero-content-order-cart {
+  position: absolute;
+  width: 100%;
+}
+
+.hero-order-cart .slogan-order-cart {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.hero-order-cart .slogan-order-cart h1 {
+  position: absolute;
+  color: #e8e8e8;
+  font-size: 70px;
+  left: 20%;
+}
+
+.hero-order-cart .slogan-order-cart h1:not(:nth-of-type(1)) {
+  color: black;
+  text-shadow: 1px 1px 0 #fff, -1px 1px 0 #fff, 1px -1px 0 #fff, -1px -1px 0 #fff, 0px 1px 0 #fff, 0px -1px 0 #fff, -1px 0px 0 #fff, 1px 0px 0 #fff, 2px 2px 0 #fff, -2px 2px 0 #fff, 2px -2px 0 #fff, -2px -2px 0 #fff, 0px 2px 0 #fff,
+    0px -2px 0 #fff, -2px 0px 0 #fff, 2px 0px 0 #fff, 1px 2px 0 #fff, -1px 2px 0 #fff, 1px -2px 0 #fff, -1px -2px 0 #fff, 2px 1px 0 #fff, -2px 1px 0 #fff, 2px -1px 0 #fff, -2px -1px 0 #fff;
+}
+
+.hero-order-cart .slogan-order-cart h1:nth-of-type(2) {
+  top: 50px;
+  opacity: 40%;
+}
+
+.hero-order-cart .slogan-order-cart h1:nth-of-type(3) {
+  top: 105px;
+  opacity: 20%;
+}
+
+.hero-order-cart .slogan-order-cart h1:nth-of-type(4) {
+  top: 160px;
+  opacity: 10%;
+}
+
+.hero-order-cart h1 {
+  font-size: 50px;
+  color: white;
+}
+
+.hero-order-cart p {
+  width: 500px;
+  margin: 30px 0 30px;
+  /* border: 1px solid green; */
+  text-align: left;
+  color: white;
+  font-size: 1.23rem;
+}
 
 .header-order-cart {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 95%;
-    background-color: transparent;
-    height: 30%;
-    left: 3%;
-  }
-  
-  .header-left-order-cart {
-    display: flex;
-    align-items: center;
-  }
-  
-  .header-right-order-cart {
-    display: flex;
-    align-items: center;
-  }
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  background-color: transparent;
+  height: 30%;
+  left: 3%;
+}
 
-  .content-sections-order-cart {
-    height: 670px;
-    background-color: white;
-    position: relative;
-    display: inline-flex;
-    width: 100%;
-  }
+.header-left-order-cart {
+  display: flex;
+  align-items: center;
+}
 
-  .section-order-cart {
-    width: 70%;
-  }
+.header-right-order-cart {
+  display: flex;
+  align-items: center;
+}
 
-  .section-order-cart h1 {
-    color: black;
-    padding: 30px 60px;
-    margin-bottom: 0;
-  }
+.content-sections-order-cart {
+  height: 100%;
+  background-color: white;
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+}
 
-  .not-logged-in {
-    text-align: center;
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #fff;
-  }
-  
-  .not-logged-in h2 {
-    margin-bottom: 10px;
-    font-size: 24px;
-    color: #333;
-  }
-  
-  .not-logged-in p {
-    margin-bottom: 20px;
-    font-size: 18px;
-    color: #666;
-  }
+.section-order-cart {
+  width: 70%;
+}
 
-  .btn-pay-from-cart {
-    position: relative;
-  }
+.section-order-cart h1 {
+  color: black;
+  padding: 30px 60px;
+  margin-bottom: 0;
+}
 
-  .interactive {
-    width: 100%;
-    display: inline-flex;
-    justify-content: space-between;
-  }
+.not-logged-in {
+  text-align: center;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+}
 
-  .decrease, .increase {
-    background-color: #3B3838;
-    color: white;
-    margin: 5px;
-    width: 50px;
-    height: 50px;
-  }
+.not-logged-in h2 {
+  margin-bottom: 10px;
+  font-size: 24px;
+  color: #333;
+}
 
+.not-logged-in p {
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #666;
+}
 
-  #input-qty {
-    background-color: #D9D9D9;
-    /* border: 1px solid black; */
-    width: 50px;
-    height: 50px;
-    margin: 5px;
-    margin-left: 0;
-    margin-right: 0;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    border-radius: 20%;
-  }
+.btn-pay-from-cart {
+  position: relative;
+}
 
+.interactive {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+}
 
-  .save-settings {
-    background-color: whitesmoke;
-    box-shadow: #3B3838;
-    margin: 5px;
-  }
+.decrease,
+.increase {
+  background-color: #3b3838;
+  color: white;
+  margin: 5px;
+  width: 50px;
+  height: 50px;
+}
+
+#input-qty {
+  background-color: #d9d9d9;
+  /* border: 1px solid black; */
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  border-radius: 20%;
+}
+
+.save-settings {
+  background-color: whitesmoke;
+  box-shadow: #3b3838;
+  margin: 5px;
+}
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -185,42 +184,45 @@ input::-webkit-inner-spin-button {
 }
 
 #right-area {
-    text-align: center;
-    vertical-align:bottom;
-    background-color: #D9D9D9;
-    width: 30%;
+  text-align: center;
+  vertical-align: bottom;
+  background-color: #d9d9d9;
+  width: 30%;
+  position: sticky;
+  top: 0%;
+  height: 745px;
 }
 
 #right-area * {
-    top: 15%;
+  top: 15%;
 }
 
 #right-area p {
-    margin-top: 50%;
-    color: black;
-    font-weight: bolder;
-    font-size: 20px;
+  margin-top: 50%;
+  color: black;
+  font-weight: bolder;
+  font-size: 20px;
 }
 
 hr {
-    background-color: black;
-    height: 2px;
-    width: 60%;
-    margin-left: 20%;
+  background-color: black;
+  height: 2px;
+  width: 60%;
+  margin-left: 20%;
 }
 
 .total-price {
-    vertical-align: middle;
-    margin-left: 10%;
-    margin-top: 45%;
-    background-color: white;
-    font-weight: bolder;
-    border-radius: 10px;
-    width: 80%;
-    height: 5%;
+  vertical-align: middle;
+  margin-left: 10%;
+  margin-top: 45%;
+  background-color: white;
+  font-weight: bolder;
+  border-radius: 10px;
+  width: 80%;
+  height: 5%;
 }
 
 .total-price h2 {
-    padding: 5px;
-    color: black;
+  padding: 5px;
+  color: black;
 }

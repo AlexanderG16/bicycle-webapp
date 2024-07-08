@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 // import path from "path";
 // import fs from "fs";
 
-import { getAllPosts, createPost, getPostByID, searchPosts } from "../models/post";
+import { getAllPosts, createPost, getPostByID, getImagesById, searchPosts } from "../models/post";
 
 import { bike_type } from "../models/post";
 import path from "path";
@@ -38,38 +38,28 @@ const displayPost = async (req: Request, res: Response) => {
   }
 };
 
-// console.log("MASUK makePostStub"),
-// upload.single("images"), // Handle up to 5 files with field name "images"
+const searchPostByKeyword = async (req: Request, res: Response) => {
+  const keyword = req.query.keyword as string;
+  if (!keyword) {
+    return res.status(400).json({ message: "Keyword is required" });
+  }
 
-// Define upload directory for multer
-// const uploadDir = path.join(__dirname, "../../user_uploads");
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, uploadDir);
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, `${Date.now()}-${file.originalname}`);
-//   },
-// });
-// const upload = multer({ storage });
-
-// const makePostStub = [
-//   // upload.single("images"),
-
-//   async (req: Request, res: Response) => {
-//     console.log("MASUK REQ");
-//     try {
-//       const imageFiles = req.file;
-//       console.log("Image File: ", imageFiles);
-//       // res.status(200).json({ message: "Files uploaded successfully" });
-
-//       res.send(req.file);
-//     } catch (error) {
-//       console.error("Error uploading files:", error);
-//       res.status(500).json({ message: "Failed to upload files" });
-//     }
-//   },
-// ];
+  try {
+    const posts = await searchPosts(keyword);
+    if (posts && posts.length > 0) {
+      return res.status(200).json({
+        message: "Posts successfully retrieved",
+        number_of_posts: posts.length,
+        posts: posts,
+      });
+    } else {
+      return res.status(404).json({ message: "No posts found" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Unexpected error occurred" });
+  }
+};
 
 const makePost = async (req: Request, res: Response) => {
   const images = req.files;
@@ -127,6 +117,7 @@ const getOnePost = async (req: Request, res: Response) => {
   };
 
   const id = getIdFromPath(req.path);
+  // console.log("ID Get One Post: ", id);
 
   try {
     const post = await getPostByID(+id);
@@ -143,6 +134,7 @@ const getOnePost = async (req: Request, res: Response) => {
         stok: post.stok,
         status: post.status,
         user_id: post.user_id,
+        url: post.url,
       });
     }
     return res.status(400).json({ message: "Post with that id doesn't exist" });
@@ -152,22 +144,19 @@ const getOnePost = async (req: Request, res: Response) => {
   }
 };
 
-const searchPostByKeyword = async (req: Request, res: Response) => {
-  const keyword = req.query.keyword as string;
-  if (!keyword) {
-    return res.status(400).json({ message: "Keyword is required" });
-  }
+const getPostImages = async (req: Request, res: Response) => {
+  const { post_id } = req.body;
 
   try {
-    const posts = await searchPosts(keyword);
-    if (posts && posts.length > 0) {
+    const images = await getImagesById(+post_id);
+
+    console.log("post images: ", images);
+
+    if (images) {
       return res.status(200).json({
-        message: "Posts successfully retrieved",
-        number_of_posts: posts.length,
-        posts: posts,
+        message: "Posts successfully retreived",
+        images: images,
       });
-    } else {
-      return res.status(404).json({ message: "No posts found" });
     }
   } catch (error) {
     console.error(error);
@@ -175,7 +164,7 @@ const searchPostByKeyword = async (req: Request, res: Response) => {
   }
 };
 
-export { displayPost, makePost, getOnePost, searchPostByKeyword, getImageFromServer };
+export { displayPost, makePost, getOnePost, searchPostByKeyword, getImageFromServer, getPostImages };
 
 // const getIdFromPath = (path: string) => {
 //   const pathSegments = path.split("/");
