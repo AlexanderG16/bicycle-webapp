@@ -15,7 +15,7 @@ function Login() {
     e.preventDefault();
 
     if (username == "" || password == "") {
-      setMessage("username and password must be filled!");
+      setMessage("Username and password must be filled!");
     } else {
       try {
         const response = await fetch("http://localhost:5000/api/auth/login", {

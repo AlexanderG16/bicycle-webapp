@@ -8,16 +8,24 @@ import "./ViewPost.css";
 import Post from "../../../backend/src/models/post";
 import cartImage from "./assets/vecteezy_online-shop-icon-set-vector-for-web-presentation-logo_4262773.jpg";
 import profileImage from "./assets/vecteezy_default-profile-account-unknown-icon-black-silhouette_20765399.jpg";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 const ViewPost = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get("token");
     if (typeof token === "string") {
+      const payload = jwtDecode<JwtPayload>(token);
       setIsAuthenticated(true);
+
+      const role = Number(payload.role);
+      if (!isNaN(role) && role === 1) {
+        setIsSeller(true);
+      }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isSeller]);
 
   const res = useLoaderData() as Post;
   return (
@@ -31,20 +39,33 @@ const ViewPost = () => {
           <input type="text" className="search-bar" placeholder="Search" />
         </div>
         <div className="header-right">
-          <img
-            className="btn-cart-menu"
-            src={cartImage}
-            onClick={function () {
-              location.href = "/cart";
-            }}
-          ></img>
-          <img
-            className="btn-profile-menu"
-            src={profileImage}
-            onClick={function () {
-              location.href = "/profile";
-            }}
-          ></img>
+        {isAuthenticated ? (
+            <>
+              <img
+                className="btn-cart-menu"
+                src={cartImage}
+                onClick={function () {
+                  location.href = "/cart";
+                }}
+              ></img>
+              <img
+                className="btn-profile-menu"
+                src={profileImage}
+                onClick={function () {
+                  location.href = "/profile";
+                }}
+              ></img>
+            </>
+          ) : (
+            <div className="header-links">
+              <a href="/signin" className=" sign-in-btn">
+                Sign In
+              </a>
+              <a href="/signup" className=" sign-up-btn">
+                Sign Up
+              </a>
+            </div>
+          )}
         </div>
       </header>
       <div className="carousel">

@@ -2,26 +2,29 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { findUserByUsername, createUser } from "../models/user";
+import { getCartyByUserId } from "../models/cart";
 
 const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
   const user = await findUserByUsername(username);
-
+  
   if (!user) {
     return res.status(401).json({ message: "Invalid username" });
   }
-
+  
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     return res.status(401).json({ message: "Invalid password" });
   }
+  const cart = await getCartyByUserId(user?.id);
 
   const token = jwt.sign(
     {
       user_id: user.id,
       username: user.username,
       role: user.is_seller,
+      cart_id: cart?.id
     },
     process.env.JWT_SECRET!,
     { expiresIn: "1h" }
