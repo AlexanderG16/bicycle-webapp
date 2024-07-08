@@ -12,6 +12,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AboutUs from "./AboutUs";
 import EditProfile from "./EditProfile";
 import TransactionHistory from "./TransactionHistory";
+import SellerDashboard from "./SellerDashboard";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
   {
     path: "/transaction-history",
     element: <TransactionHistory />,
+  },
+  {
+    path: "/seller-dashboard",
+    element: <SellerDashboard />,
   },
 ]);
 
