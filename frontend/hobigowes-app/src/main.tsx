@@ -72,7 +72,7 @@ const router = createBrowserRouter([
         },
       });
       const resJson = await res.json();
-      return resJson.post;
+      return resJson;
     },
   },
 ]);

@@ -32,6 +32,10 @@ const Home = () => {
     fetchData();
   }, [keyword]); // Fetch posts when keyword changes
 
+  useEffect(() => {
+    attachEventListeners(); // Attach event listeners whenever html changes
+  }, [html]);
+
   const fetchData = async () => {
     try {
       let url = "http://localhost:5000/";
@@ -71,7 +75,6 @@ const Home = () => {
           `;
         }
         setHtml(htmlContent);
-        attachEventListeners(); // Attach event listeners after updating HTML content
       }
     } catch (error) {
       console.error("Error fetching posts:", error);

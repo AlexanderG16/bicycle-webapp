@@ -6,6 +6,7 @@ import "./OrderPageCart.css";
 import Button from "./components/Button";
 import { useLoaderData } from "react-router-dom";
 import Post from "../../../backend/src/models/post";
+import "./OrderPageCart.css";
 
 const OrderPagePost: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(-1);
@@ -14,13 +15,12 @@ const OrderPagePost: React.FC = () => {
   const [quantity, setQuantity] = useState(1);
 
   const postPass = useLoaderData() as Post;
-
   useEffect(() => {
     const token = Cookies.get("token");
     try {
+      setPost(postPass);
       if (typeof token === "string") {
         setIsAuthenticated(0);
-        setPost(postPass);
         setTotalPrice(postPass.price);
       } else {
         setIsAuthenticated(2);
@@ -30,7 +30,7 @@ const OrderPagePost: React.FC = () => {
       setIsAuthenticated(3);
       throw error;
     }
-  }, [postPass]);
+  }, [post]);
 
   const handleDecrease = () => {
     setQuantity((prevQty) => Math.max(prevQty - 1, 1));
@@ -45,8 +45,6 @@ const OrderPagePost: React.FC = () => {
       setTotalPrice(post.price * quantity);
     }
   }, [quantity, post]);
-
-  console.log(post?.id);
 
   return (
     <div className="order-cart">
@@ -64,14 +62,24 @@ const OrderPagePost: React.FC = () => {
               </button>
             </div>
             <div className="header-right-order-cart">
-              <img className="btn-cart-menu" src={cartImage} style={{ cursor: "not-allowed" }} />
-              <img
-                className="btn-profile-menu"
-                src={profileImage}
-                onClick={() => {
-                  location.href = "/profile";
-                }}
-              />
+              {isAuthenticated === 0 && (
+                <>
+                  <img
+                    className="btn-cart-menu"
+                    src={cartImage}
+                    onClick={() => {
+                      location.href = "/cart";
+                    }}
+                  />
+                  <img
+                    className="btn-profile-menu"
+                    src={profileImage}
+                    onClick={() => {
+                      location.href = "/profile";
+                    }}
+                  />
+                </>
+              )}
             </div>
           </header>
           <div className="hero-content-order-cart">
@@ -91,7 +99,9 @@ const OrderPagePost: React.FC = () => {
                 <div id="post-area">
                   <div className="post">
                     <div className="click-post" data-id={`${post?.id}`}>
-                      <img className="post-img" src={`http://localhost:5000/user_uploads/retrieve_img/${post?.url}`} />
+                      <div className="post-img">
+                        <img src={`http://localhost:5000/user_uploads/retrieve_img/${post?.url}`}></img>
+                      </div>
                       <div className="post-description">
                         <h3 className="post-title">{post?.title}</h3>
                         <p className="post-loc">
@@ -119,11 +129,17 @@ const OrderPagePost: React.FC = () => {
                 <p>CONFIRM YOUR ORDER?</p>
                 <hr />
                 <div className="total-price">
-                  <h2>Rp. {totalPrice * quantity}</h2>
+                  <h2>Rp. {totalPrice}</h2>
                 </div>
                 <Button btnType="pay-from-cart">Pay</Button>
               </div>
             </>
+          )}
+          {isAuthenticated === 2 && (
+            <div className="not-logged-in">
+              <h2>Access Denied</h2>
+              <p>You need to be logged in to view your cart.</p>
+            </div>
           )}
           {isAuthenticated === 3 && (
             <div className="error-occurred">

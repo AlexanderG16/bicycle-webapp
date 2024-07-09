@@ -34,7 +34,9 @@ const OrderPage: React.FC = () => {
               html += `
                   <div class="post">
                     <div class="click-post" data-id="${element.id}">
-                      <img class="post-img" src={"http://localhost:5000/user_uploads/retrieve_img/${element.url}"} />
+                      <div class="post-img">
+                        <img src="http://localhost:5000/user_uploads/retrieve_img/${element.url}"></img>
+                      </div>
                       <div class="post-description">
                         <h3 class="post-title">${element.title}</h3>
                         <p class="post-loc">${element.city}, ${element.province}</p>
