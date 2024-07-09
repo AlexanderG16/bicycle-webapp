@@ -78,6 +78,10 @@
   margin-right: 20px;
 }
 
+.auth-links {
+  margin-right: 2%;
+}
+
 .search-bar-create-post {
   display: flex;
   justify-content: center;

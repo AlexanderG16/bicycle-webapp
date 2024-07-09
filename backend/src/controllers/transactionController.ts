@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import InitDB from "../database";
-import { jwtDecode } from "jwt-decode";
 import { createTransaction, createTransactionOnePost, getAllOrders, TransactionStatus, createTransactionDetail } from "../models/transaction";
 import { getAllCartItems } from "../models/cart";
 
