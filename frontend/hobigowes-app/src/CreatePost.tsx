@@ -31,7 +31,7 @@ const CreatePost = () => {
     if (typeof token === "string") {
       // Decode token to get user_id
       const decodedToken = jwtDecode<JwtPayload>(token);
-      
+
       if (decodedToken.user_id) {
         setUserID(decodedToken.user_id);
       }
@@ -53,7 +53,7 @@ const CreatePost = () => {
       });
 
       formData.append(`title`, postTitle);
-      formData.append(`bike_type`, bikeType);
+      formData.append(`bike_type_input`, bikeType);
       formData.append(`description`, postDescription);
       formData.append(`price`, postPrice);
       formData.append(`city`, postCity);
@@ -76,8 +76,6 @@ const CreatePost = () => {
           } else {
             setMessage("File upload failed");
           }
-
-          console.log(message);
         })
         .catch((error) => {
           // Handle network errors or Axios-specific errors
