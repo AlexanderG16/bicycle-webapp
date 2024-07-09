@@ -55,20 +55,20 @@ const OrderPagePost: React.FC = () => {
       const response = await fetch(`http://localhost:5000/transaction/${post?.id}/order-checkout`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({user_id, quantity})
-      })
-      
+        body: JSON.stringify({ user_id, quantity }),
+      });
+
       const data = await response.json();
       window.alert(data.message);
       if (response.status === 201) {
-        window.location.href = '/transaction-history'
+        window.location.href = "/transaction-history";
       }
     } catch (error) {
       window.alert(error);
     }
-  }
+  };
 
   return (
     <div className="order-cart">
@@ -155,14 +155,16 @@ const OrderPagePost: React.FC = () => {
                 <div className="total-price">
                   <h2>Rp. {totalPrice}</h2>
                 </div>
-                <Button btnType="pay-from-cart" onClick={insertIntoTransaction}>Pay</Button>
+                <Button btnType="pay-from-cart" onClick={insertIntoTransaction}>
+                  Pay
+                </Button>
               </div>
             </>
           )}
           {isAuthenticated === 2 && (
             <div className="not-logged-in">
               <h2>Access Denied</h2>
-              <p>You need to be logged in to view your cart.</p>
+              <p>You need to be logged in to be able to make an order.</p>
             </div>
           )}
           {isAuthenticated === 3 && (

@@ -186,3 +186,14 @@
 .upload-time {
   text-align: right;
 }
+
+#post-area h2.no-post-message {
+  width: 400px;
+  height: 100px;
+  text-align: center;
+  line-height: 100px;
+  color: black;
+  border: 1px solid black;
+  margin: auto;
+  font-size: 20px;
+}

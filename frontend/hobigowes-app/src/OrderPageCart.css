@@ -121,6 +121,7 @@
   text-align: center;
   border: 1px solid #ccc;
   padding: 20px;
+  margin: auto;
   border-radius: 8px;
   background-color: #fff;
 }

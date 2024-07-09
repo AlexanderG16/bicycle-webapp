@@ -40,10 +40,6 @@ const displayPost = async (req: Request, res: Response) => {
 
 const searchPostByKeyword = async (req: Request, res: Response) => {
   const keyword = req.query.keyword as string;
-  if (!keyword) {
-    return res.status(400).json({ message: "Keyword is required" });
-  }
-
   try {
     const posts = await searchPosts(keyword);
     if (posts && posts.length > 0) {

@@ -75,7 +75,7 @@ const ViewPost = () => {
 
   const insertToCart = async () => {
     if (cartId !== undefined) {
-      console.log(cartId)
+      console.log(cartId);
       const response = await fetch("http://localhost:5000/cart/insert-item", {
         method: "POST",
         headers: {
@@ -100,11 +100,7 @@ const ViewPost = () => {
     <div className="product-view">
       <header className="header">
         <div className="header-left">
-          <button className="back-button">❮</button>
           <h1 className="logo">HOBIGOWES</h1>
-        </div>
-        <div className="header-center">
-          <input type="text" className="search-bar" placeholder="Search" />
         </div>
         <div className="header-right">
           {isAuthenticated ? (
@@ -153,13 +149,17 @@ const ViewPost = () => {
       </div>
       <div className="product-details">
         <div className="product-info">
-          <h2>{post.title}</h2>
-          <p className="location">
-            <span className="icon">📍</span>
-            {post.city}, {post.province}
-          </p>
-          <button className="seller-dashboard">View Seller Dashboard</button>
-          <span className="seller-icon">👤</span>
+          <div>
+            <h2 style={{ color: "black", fontSize: "22px" }}>{post.title}</h2>
+            <p className="location" style={{ color: "black", fontSize: "18px" }}>
+              <span className="icon">📍</span>
+              {post.city}, {post.province}
+            </p>
+          </div>
+          <div>
+            <button className="seller-dashboard">View Seller Dashboard</button>
+            <span className="seller-icon">👤</span>
+          </div>
         </div>
         <div className="product-price">
           <h3>Rp. {post.price}</h3>

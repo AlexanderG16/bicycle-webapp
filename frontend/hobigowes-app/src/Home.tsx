@@ -11,7 +11,6 @@ import { jwtDecode, JwtPayload } from "jwt-decode"; // Fix import statement
 const Home = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSeller, setIsSeller] = useState(false);
-  const [imageFile, setImageFile] = useState<File>();
   const [keyword, setKeyword] = useState<string>("");
   const [html, setHtml] = useState<string>("");
 
@@ -38,7 +37,7 @@ const Home = () => {
 
   const fetchData = async () => {
     try {
-      let url = "http://localhost:5000/";
+      let url = `http://localhost:5000/`;
       if (keyword) {
         url = `http://localhost:5000/search?keyword=${keyword}`;
       }
@@ -50,13 +49,13 @@ const Home = () => {
         },
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        const posts = data.posts;
-        const message = data.message;
-        console.log(message);
+      const data = await response.json();
+      const message = data.message;
+      let htmlContent = "";
 
-        let htmlContent = "";
+      if (response.ok) {
+        const posts = data.posts;
+
         for (let index = 0; index < posts.length; index++) {
           const element = posts[index];
 
@@ -74,6 +73,9 @@ const Home = () => {
             </div>
           `;
         }
+        setHtml(htmlContent);
+      } else if (response.status == 404) {
+        htmlContent = "";
         setHtml(htmlContent);
       }
     } catch (error) {
@@ -140,6 +142,9 @@ const Home = () => {
         <div className="hero-content">
           <div className="slogan">
             <h1>FIND YOUR PERFECT RIDE!</h1>
+            <h1>FIND YOUR PERFECT RIDE!</h1>
+            <h1>FIND YOUR PERFECT RIDE!</h1>
+            <h1>FIND YOUR PERFECT RIDE!</h1>
           </div>
           <p>Join our community of cycling enthusiasts and discover a wide range of bikes to suit every style and need, quality, convenience, and passion all in one place.</p>
           <div className="hero-buttons">
@@ -169,7 +174,7 @@ const Home = () => {
         </form>
         {isSeller && <Button btnType="create-post">Create Post</Button>}
       </div>
-      <div id="post-area" dangerouslySetInnerHTML={{ __html: html }} />
+      <div id="post-area" dangerouslySetInnerHTML={{ __html: html || '<h2 class="no-post-message">No Posts Available</h2>' }}></div>
     </div>
   );
 };

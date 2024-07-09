@@ -129,15 +129,12 @@ export const getPostByID = async (id?: number): Promise<Post | null> => {
   }
 };
 
-export const getImagesById = async (post_id: number): Promise<Array<File> | null> => {
+export const getImagesById = async (post_id: number): Promise<Array<{ url: string }> | null> => {
   const conn = await InitDB.getInstance();
 
   try {
     const [images] = await conn.query("SELECT url FROM image WHERE image.post_id = ?", [post_id]);
     conn.release();
-
-    console.log("post_id: ", post_id);
-    console.log("images right from query: ", images);
 
     if (Array.isArray(images) && images.length > 0) {
       return images;
@@ -149,7 +146,6 @@ export const getImagesById = async (post_id: number): Promise<Array<File> | null
     conn.release();
     return null;
   }
-  return null;
 };
 
 export default Post;
