@@ -9,9 +9,11 @@ export interface Cart {
 
 export interface CartItems {
   cart_id: number;
+  post_id: number;
   post: Post;
   quantity: number;
   addedAt: Date;
+  price?: number;
 }
 
 export const createCart = async (user_id?: number): Promise<void> => {

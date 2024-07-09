@@ -24,7 +24,7 @@ interface Post {
   stok: number;
   status: status;
   user_id: number;
-  url: string;
+  url?: string;
 }
 
 export const getAllPosts = async (): Promise<Array<Post> | null> => {

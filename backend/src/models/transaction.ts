@@ -92,13 +92,14 @@ export const createTransactionOnePost = async (
 export const createTransaction = async (
   user_id: string,
   transaction_date: Date,
-  status: TransactionStatus
+  status: TransactionStatus,
+  total_price: number
 ): Promise<number> => {
   const conn = await InitDB.getInstance();
   try {
     const [result] = await conn.query(
-      "INSERT INTO transaction (user_id, transaction_date, status) VALUES (?, ?, ?)",
-      [user_id, transaction_date, status]
+      "INSERT INTO transaction (user_id, transaction_date, status, total_price) VALUES (?, ?, ?, ?)",
+      [user_id, transaction_date, status, total_price]
     );
     conn.release();
     return (result as any).insertId;
@@ -112,13 +113,14 @@ export const createTransaction = async (
 export const createTransactionDetail = async (
   transaction_id: number,
   post_id: number,
-  quantity: number
+  quantity: number,
+  total_price: number
 ): Promise<void> => {
   const conn = await InitDB.getInstance();
   try {
     await conn.query(
-      "INSERT INTO transaction_detail (transaction_id, post_id, quantity) VALUES (?, ?, ?)",
-      [transaction_id, post_id, quantity]
+      "INSERT INTO transaction_detail (transaction_id, post_id, quantity, total_price) VALUES (?, ?, ?, ?)",
+      [transaction_id, post_id, quantity, total_price]
     );
     conn.release();
   } catch (error) {

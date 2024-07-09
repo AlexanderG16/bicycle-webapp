@@ -7,12 +7,14 @@ import Button from "./components/Button";
 import { useLoaderData } from "react-router-dom";
 import Post from "../../../backend/src/models/post";
 import "./OrderPageCart.css";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 const OrderPagePost: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(-1);
   const [totalPrice, setTotalPrice] = useState(0);
   const [post, setPost] = useState<Post>();
   const [quantity, setQuantity] = useState(1);
+  const [user_id, setUserId] = useState(0);
 
   const postPass = useLoaderData() as Post;
   useEffect(() => {
@@ -22,6 +24,8 @@ const OrderPagePost: React.FC = () => {
       if (typeof token === "string") {
         setIsAuthenticated(0);
         setTotalPrice(postPass.price);
+        const decode = jwtDecode<JwtPayload>(token);
+        setUserId(decode.user_id ?? 0);
       } else {
         setIsAuthenticated(2);
       }
@@ -30,7 +34,7 @@ const OrderPagePost: React.FC = () => {
       setIsAuthenticated(3);
       throw error;
     }
-  }, [post]);
+  }, [post, user_id]);
 
   const handleDecrease = () => {
     setQuantity((prevQty) => Math.max(prevQty - 1, 1));
@@ -45,6 +49,26 @@ const OrderPagePost: React.FC = () => {
       setTotalPrice(post.price * quantity);
     }
   }, [quantity, post]);
+
+  const insertIntoTransaction = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/transaction/${post?.id}/order-checkout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({user_id, quantity})
+      })
+      
+      const data = await response.json();
+      window.alert(data.message);
+      if (response.status === 201) {
+        window.location.href = '/transaction-history'
+      }
+    } catch (error) {
+      window.alert(error);
+    }
+  }
 
   return (
     <div className="order-cart">
@@ -131,7 +155,7 @@ const OrderPagePost: React.FC = () => {
                 <div className="total-price">
                   <h2>Rp. {totalPrice}</h2>
                 </div>
-                <Button btnType="pay-from-cart">Pay</Button>
+                <Button btnType="pay-from-cart" onClick={insertIntoTransaction}>Pay</Button>
               </div>
             </>
           )}

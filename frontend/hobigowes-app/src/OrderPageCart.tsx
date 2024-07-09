@@ -9,13 +9,18 @@ import Button from "./components/Button";
 const OrderPage: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(-1);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [cart_id, setCartId] = useState(0);
+  const [user_id, setUserId] = useState(0);
 
   useEffect(() => {
     const token = Cookies.get("token");
     const fetchData = async () => {
       try {
         if (typeof token === "string") {
-          const cart_id = jwtDecode(token).cart_id;
+          const decode = jwtDecode(token)
+          const cart_id = decode.cart_id;
+          setCartId(cart_id??0);
+          setUserId(decode.user_id??0);
           const response = await fetch("http://localhost:5000/cart", {
             method: "POST",
             headers: {
@@ -127,7 +132,27 @@ const OrderPage: React.FC = () => {
     };
 
     fetchData();
-  }, [isAuthenticated, totalPrice]);
+  }, [isAuthenticated, totalPrice, cart_id, user_id, totalPrice]);
+
+  const insertIntoTransaction = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/transaction/order-checkout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({user_id, cart_id, total_price: totalPrice})
+      })
+      
+      const data = await response.json();
+      window.alert(data.message);
+      if (response.status === 201) {
+        window.location.href = '/transaction-history'
+      }
+    } catch (error) {
+      window.alert(error);
+    }
+  }
 
   return (
     <div className="order-cart">
@@ -177,7 +202,7 @@ const OrderPage: React.FC = () => {
                 <div className="total-price">
                   <h2>Rp. {totalPrice}</h2>
                 </div>
-                <Button btnType="pay-from-cart">Pay</Button>
+                <Button btnType="pay-from-cart" onClick={insertIntoTransaction}>Pay</Button>
               </div>
             </>
           )}

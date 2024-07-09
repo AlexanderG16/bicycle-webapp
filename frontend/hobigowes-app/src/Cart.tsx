@@ -45,14 +45,6 @@ const Cart: React.FC = () => {
                         <p class="upload-time">${(element.upload_date as string).slice(0, 10)}</p>
                       </div>
                     </div>
-                    <div class='interactive'>
-                      <div class='qty-settings'>
-                        <button class='decrease'>-</button>
-                        <input id='input-qty' type='number' value='${element.quantity}' disabled/>
-                        <button class='increase'>+</button>
-                      </div>
-                      <button class='save-settings' data-post-id='${element.id}'>Save</button>
-                    </div>
                   </div>
                 `;
             }
@@ -65,53 +57,6 @@ const Cart: React.FC = () => {
                   const postId = post.getAttribute("data-id");
                   window.location.href = `/post/${postId}`;
                 });
-              });
-
-              const interactiveElements = container.getElementsByClassName("interactive");
-              Array.from(interactiveElements).forEach((interactive, index) => {
-                const decreaseBtn = interactive.querySelector(".decrease");
-                const increaseBtn = interactive.querySelector(".increase");
-                const inputQty = interactive.querySelector('input[type="number"]');
-                const saveBtn = interactive.querySelector(".save-settings");
-
-                if (decreaseBtn && increaseBtn && inputQty && saveBtn) {
-                  decreaseBtn.addEventListener("click", () => {
-                    let qty = parseInt(inputQty.getAttribute("value") as string);
-                    if (qty > 1) {
-                      qty--;
-                      inputQty.setAttribute("value", qty.toString());
-                    }
-                  });
-
-                  increaseBtn.addEventListener("click", () => {
-                    let qty = parseInt(inputQty.getAttribute("value") as string);
-                    qty++;
-                    inputQty.setAttribute("value", qty.toString());
-                  });
-
-                  saveBtn.addEventListener("click", async () => {
-                    const quantity = parseInt(inputQty.getAttribute("value") as string);
-                    const post_id = saveBtn.getAttribute("data-post-id");
-                    try {
-                      const response = await fetch("http://localhost:5000/cart/set-qty", {
-                        method: "PUT",
-                        headers: {
-                          "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ cart_id, post_id, quantity }),
-                      });
-
-                      if (response.ok) {
-                        window.alert("Quantity updated successfully");
-                      } else {
-                        window.alert("Failed to update quantity");
-                      }
-                    } catch (error) {
-                      console.error("Error updating quantity: ", error);
-                      // Handle fetch or network error
-                    }
-                  });
-                }
               });
             }
           }
@@ -127,6 +72,8 @@ const Cart: React.FC = () => {
 
     fetchData();
   }, [isAuthenticated]);
+
+  console.log(isAuthenticated)
 
   return (
     <div className="cart">

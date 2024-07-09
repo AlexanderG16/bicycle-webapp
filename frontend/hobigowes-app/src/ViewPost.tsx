@@ -74,7 +74,8 @@ const ViewPost = () => {
   };
 
   const insertToCart = async () => {
-    if (typeof cartId != undefined) {
+    if (cartId !== undefined) {
+      console.log(cartId)
       const response = await fetch("http://localhost:5000/cart/insert-item", {
         method: "POST",
         headers: {
