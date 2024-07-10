@@ -1,3 +1,14 @@
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  color: black;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -25,10 +36,11 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  /* display: flex;
+  place-items: center; */
   min-width: 320px;
   min-height: 100vh;
+  background-color: white;
 }
 
 h1 {
@@ -46,6 +58,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  font-weight: bolder;
 }
 button:hover {
   border-color: #646cff;
@@ -53,6 +66,26 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.logo {
+  font-family: Alfa Slab One, serif;
+  color: white;
+  margin-left: 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  width: 400px;
+  border-radius: 40px;
+  color: white;
+  transition: 800ms;
+}
+
+.btn:hover {
+  background-color: #9d9d9d;
+  color: black;
 }
 
 @media (prefers-color-scheme: light) {

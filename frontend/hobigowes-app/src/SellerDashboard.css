@@ -1,0 +1,138 @@
+/* seller-dashboard.css */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.seller-page-bg {
+  position: relative;
+  background: url("./assets/profile-page-bg.jpeg") no-repeat center center;
+  background-size: cover;
+  color: white;
+  padding: 100px 2rem;
+}
+
+.seller-page-top {
+  text-align: center;
+  color: white;
+}
+
+.seller-page-top h1 {
+  font-size: 2.5em;
+  margin: 0;
+}
+
+section#seller-section {
+  padding-top: 50px;
+}
+
+.seller-section-header {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+a#seller-profile-logo {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  margin-left: 50px;
+  width: 300px;
+  height: 200px;
+}
+
+.seller-profile-info {
+  padding-left: 30px;
+}
+
+h1.seller-profile-info {
+  font-size: xx-large;
+}
+
+.seller-profile-info img {
+  border-radius: 50%;
+}
+
+.seller-profile-info h1 {
+  font-size: 30px;
+  align-items: start;
+  justify-content: start;
+  display: flex;
+}
+
+.seller-total-sales,
+.seller-total-order {
+  text-align: center;
+  justify-content: center;
+  flex-direction: row;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  background-color: #e1e1e1;
+  border-radius: 20px;
+  margin-left: 50px;
+  max-height: 50px;
+}
+
+.seller-total-sales a {
+  width: 250px;
+  font-size: x-large;
+  text-decoration: none;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+.seller-total-order a {
+  width: 250px;
+  font-size: x-large;
+  text-decoration: none;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+h2#seller-total-order-header2 {
+  display: inline;
+}
+
+.seller-products-section {
+  margin: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1#seller-products-section-header {
+  font-size: 30px;
+  text-align: left;
+}
+
+.seller-best-products-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: large;
+}
+
+thead#seller-best-products-thead {
+  background-color: #f9f9f9;
+}
+
+tr#seller-best-products-row,
+tr#seller-best-products-tr {
+  display: table-row;
+  background-color: #fff;
+}
+
+th#seller-best-products-th,
+td#seller-best-products-td {
+  padding: 10px;
+  text-align: left;
+}
+th#seller-best-products-th {
+  border-bottom: 1px solid #ddd; /* Added to visually separate rows */
+}

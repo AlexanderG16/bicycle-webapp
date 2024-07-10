@@ -1,0 +1,92 @@
+.trans-history-page-top {
+  position: relative;
+  background: url(./assets/profile-page-bg.jpeg) no-repeat center top;
+  background-size: cover;
+  color: white;
+  padding: 100px 2rem 4rem;
+  height: 100px;
+}
+.trans-history-page-top-content {
+  width: 330px;
+  position: absolute;
+  margin-left: 30px;
+}
+
+.trans-history-page-top-slogan {
+  position: absolute;
+  width: 630px;
+  height: 100px;
+}
+
+.trans-history-page-top-slogan h1 {
+  position: absolute;
+  color: #e8e8e8;
+  font-size: 28px;
+}
+
+.trans-history-page-top-slogan h1:not(:nth-of-type(1)) {
+  color: black;
+  text-shadow: 1px 1px 0 #fff, -1px 1px 0 #fff, 1px -1px 0 #fff,
+    -1px -1px 0 #fff, 0px 1px 0 #fff, 0px -1px 0 #fff, -1px 0px 0 #fff,
+    1px 0px 0 #fff, 2px 2px 0 #fff, -2px 2px 0 #fff, 2px -2px 0 #fff,
+    -2px -2px 0 #fff, 0px 2px 0 #fff, 0px -2px 0 #fff, -2px 0px 0 #fff,
+    2px 0px 0 #fff, 1px 2px 0 #fff, -1px 2px 0 #fff, 1px -2px 0 #fff,
+    -1px -2px 0 #fff, 2px 1px 0 #fff, -2px 1px 0 #fff, 2px -1px 0 #fff,
+    -2px -1px 0 #fff;
+}
+
+.trans-history-page-top-slogan h1:nth-of-type(2) {
+  top: 35px;
+  opacity: 40%;
+}
+
+.trans-history-page-top-slogan h1:nth-of-type(3) {
+  top: 73px;
+  opacity: 20%;
+}
+
+.trans-history-page-top-slogan h1:nth-of-type(4) {
+  top: 110px;
+  opacity: 10%;
+}
+
+.trans-history-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.trans-history-section-header {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin-top: 25px;
+}
+
+.trans-history-section-header h1 {
+  font-size: x-large;
+  text-align: center;
+}
+
+.trans-history-table {
+  width: 100%;
+  max-width: 800px;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.trans-history-table thead th {
+  background-color: #f4f4f4;
+  padding: 10px;
+  text-align: center;
+}
+
+.trans-history-table tbody td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.trans-history-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}

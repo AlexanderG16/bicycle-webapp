@@ -8,14 +8,20 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "fs": "^0.0.1-security",
+    "js-cookie": "^3.0.5",
+    "path": "^0.12.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "@types/multer": "^1.4.11",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "multer": "^1.4.5-lts.1",
     "vite": "^4.2.0"
   }
 }
