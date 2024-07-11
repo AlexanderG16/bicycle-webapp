@@ -14,7 +14,7 @@
   align-items: center;
   width: 100%;
   padding: 10px 20px;
-  background-color: black;
+  /* background-color: transparent; */
 }
 
 .header-left {
@@ -50,10 +50,13 @@
   max-width: 800px;
   padding: 20px;
   text-align: center;
+  margin-top: 10%;
 }
 
 h1 {
   margin-bottom: 30px;
+  color: white;
+  text-align: left;
 }
 
 .content-sections {
@@ -73,11 +76,13 @@ h1 {
 h2 {
   font-size: 18px;
   margin-bottom: 10px;
+  color: white;
 }
 
 p {
   font-size: 14px;
   line-height: 1.6;
+  color: white;
 }
 
 .social-media {
@@ -88,4 +93,10 @@ p {
   display: flex;
   gap: 10px;
   font-size: 24px;
+}
+
+span img {
+  background-color: black;
+  border-color: black;
+  width: 50px;
 }

@@ -24,6 +24,11 @@ form#form-createpost {
   justify-content: space-between;
 }
 
+textarea#post-description {
+  padding: 15px;
+  border-radius: 10px;
+}
+
 form select {
   width: 150px;
   height: 50px;

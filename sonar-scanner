@@ -1,0 +1,1 @@
+sonar-scanner.bat -D"sonar.projectKey=hobigowes-webapp" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.token=sqp_d5eb35546d24d10d0ec4b204fd22138dad2bf4b1"

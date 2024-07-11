@@ -1,17 +1,8 @@
 import { Request, Response } from "express";
 import InitDB from "../database";
-import findIsSeller from "../models/user";
+import { findIsSeller } from "../models/user";
 
-import {
-  createTransaction,
-  createTransactionOnePost,
-  getAllOrders,
-  getAllOrdersBySeller,
-  getTotalSalesBySeller,
-  getTotalOrdersBySeller,
-  TransactionStatus,
-  createTransactionDetail,
-} from "../models/transaction";
+import { createTransaction, createTransactionOnePost, getAllOrders, getAllOrdersBySeller, getTotalSalesBySeller, getTotalOrdersBySeller, TransactionStatus, createTransactionDetail } from "../models/transaction";
 import { getAllCartItems } from "../models/cart";
 
 export const getAllTransactions = async (req: Request, res: Response) => {
@@ -81,10 +72,7 @@ export const getSellerTotalSales = async (req: Request, res: Response) => {
   }
 };
 
-export const getSellerTotalTransactions = async (
-  req: Request,
-  res: Response
-) => {
+export const getSellerTotalTransactions = async (req: Request, res: Response) => {
   try {
     const user_id = req.body.user_id;
 
@@ -110,7 +98,7 @@ export const getSellerTotalTransactions = async (
 
 export const insertTransactionOnePost = async (req: Request, res: Response) => {
   try {
-    const user_id = req.body;
+    const user_id = req.body.user_id;
 
     if (!user_id) {
       return res.status(404).json({ message: "User not found" });
@@ -124,15 +112,8 @@ export const insertTransactionOnePost = async (req: Request, res: Response) => {
     };
 
     const post_id = getIdFromPath(req.path, 2);
-    await createTransactionOnePost(
-      TransactionStatus.SUCCESS,
-      user_id,
-      post_id,
-      quantity
-    );
-    return res
-      .status(200)
-      .json({ message: "Transaction has been successfully created" });
+    await createTransactionOnePost(TransactionStatus.SUCCESS, user_id, post_id, quantity);
+    return res.status(200).json({ message: "Transaction has been successfully created" });
   } catch (error) {
     console.error("Unexpected Error Occurred:", error);
     return res.status(500).json({ message: "Unexpected Error Occurred" });
@@ -141,7 +122,7 @@ export const insertTransactionOnePost = async (req: Request, res: Response) => {
 
 export const insertTransaction = async (req: Request, res: Response) => {
   try {
-    const { user_id, cart_id } = req.body;
+    const { user_id, cart_id, total_price } = req.body;
     // Retrieve cart items
     const cartItems = await getAllCartItems(cart_id);
     if (!cartItems || cartItems.length === 0) {
@@ -156,27 +137,19 @@ export const insertTransaction = async (req: Request, res: Response) => {
 
     try {
       // Insert into the transaction table and get the transaction_id
-      const transaction_id = await createTransaction(
-        user_id,
-        transaction_date,
-        TransactionStatus.SUCCESS
-      );
+      const transaction_id = await createTransaction(user_id, transaction_date, TransactionStatus.SUCCESS, total_price);
 
       // Insert into the transaction_detail table
+
       for (const item of cartItems) {
-        await createTransactionDetail(
-          transaction_id,
-          item.post_id,
-          item.quantity
-        );
+        console.log(item);
+        await createTransactionDetail(transaction_id, item.post_id, item.quantity, item.quantity * (item.price ?? -1));
       }
 
       // Commit the transaction
       await conn.commit();
 
-      return res
-        .status(201)
-        .json({ message: "Transaction created successfully", transaction_id });
+      return res.status(201).json({ message: "Transaction created successfully", transaction_id });
     } catch (error) {
       // Rollback the transaction in case of error
       await conn.rollback();

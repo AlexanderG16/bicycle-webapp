@@ -5,12 +5,7 @@ import jwt from "jsonwebtoken";
 import { jwtDecode } from "jwt-decode";
 import multer from "multer";
 
-import {
-  findUserByUsername,
-  findUserById,
-  updateUser,
-  registerAsSeller,
-} from "../models/user";
+import { findUserByUsername, findUserById, updateUser, registerAsSeller } from "../models/user";
 
 // Multer configuration for file uploads
 const storage = multer.diskStorage({
@@ -42,7 +37,7 @@ export const displayUserProfile = async (req: Request, res: Response) => {
       profile_picture: user.profile_picture,
     };
 
-    console.log("username");
+    console.log("username: ", user.username);
     return res.status(200).json(userProfile);
   } catch (error) {
     return res.status(401).json({ message: "Invalid token" });
@@ -53,10 +48,6 @@ export const updateUserProfile = async (req: Request, res: Response) => {
   const user_id = req.body.user_id;
 
   try {
-    if (!user_id) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
     const user = await findUserById(user_id);
 
     if (!user) {
@@ -64,7 +55,8 @@ export const updateUserProfile = async (req: Request, res: Response) => {
     }
 
     const { oldPassword, newPassword, email, phone_number, address } = req.body;
-    const profile_picture = req.file ? req.file.path : undefined;
+    console.log(req.file);
+    const profile_picture = req.file;
 
     if (oldPassword && newPassword) {
       // Verify old password
@@ -75,10 +67,7 @@ export const updateUserProfile = async (req: Request, res: Response) => {
       }
 
       // Check if the new password is the same as the old password
-      const isNewPasswordSame = await bcrypt.compare(
-        newPassword,
-        user.password
-      );
+      const isNewPasswordSame = await bcrypt.compare(newPassword, user.password);
       if (isNewPasswordSame) {
         return res.status(400).json({
           message: "New password cannot be the same as the old password",
@@ -92,11 +81,9 @@ export const updateUserProfile = async (req: Request, res: Response) => {
     // Update other profile fields if provided
     if (email) user.email = email;
     if (phone_number) user.phone_number = phone_number;
-    if (profile_picture) user.profile_picture = profile_picture;
-    if (address) user.address = address;
 
     // Update user profile
-    await updateUser(user, oldPassword);
+    await updateUser(user, oldPassword, user.username, user.phone_number, newPassword, user.email, address, profile_picture?.filename ?? "");
 
     return res.status(200).json({
       id: user.id,
@@ -125,9 +112,7 @@ export const registerBuyerToSeller = async (req: Request, res: Response) => {
     }
 
     await registerAsSeller(user_id, phone_number);
-    return res
-      .status(200)
-      .json({ message: "User successfully registered as seller" });
+    return res.status(200).json({ message: "User successfully registered as seller" });
   } catch (error) {
     console.error("Error registering user as seller:", error);
     return res.status(500).json({ message: "Unexpected Error Occured" });

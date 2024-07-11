@@ -5,9 +5,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { useHistory } from "react-router-dom";
 
-<<<<<<< HEAD
-function SignUp() {
-=======
 function App() {
   const navigate = useNavigate();
 
@@ -46,8 +43,6 @@ function App() {
       }
     }
   };
-
->>>>>>> 39935ed1067c52050789f7a153f2a2651d5e1ef9
   return (
     <div className="SignUp">
       <div className="left-banner">
@@ -64,12 +59,11 @@ function App() {
           <input type="tel" id="input-phone-num" placeholder="+62 |" onChange={(e) => setPhoneNUmber(e.target.value)}></input>
 
           <input type="text" id="input-address" placeholder="Address"></input>
-
-          <Button btnType="btn-signup" type="submit">Sign Up</Button>
+          <Button btnType="btn-signup">Sign Up</Button>
         </form>
         {message && <p>{message}</p>}
         <p>Already Have An Account?</p>
-        <a href="/" className="log-in-link">
+        <a href="/signin" className="log-in-link">
           <strong>Log In Here</strong>
         </a>
       </div>
@@ -77,8 +71,4 @@ function App() {
   );
 }
 
-<<<<<<< HEAD
-export default SignUp;
-=======
 export default App;
->>>>>>> 39935ed1067c52050789f7a153f2a2651d5e1ef9

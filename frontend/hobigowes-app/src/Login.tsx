@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import Button from "./components/Button";
-<<<<<<< HEAD
 import "./Login.css";
 import "./Form.css";
-=======
 import "./Form.css";
 import "./Login.css";
->>>>>>> 39935ed1067c52050789f7a153f2a2651d5e1ef9
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -35,7 +32,6 @@ function Login() {
           const data = await response.json();
           setMessage("Login successful");
           // Handle token storage and redirect if necessary
-          console.log("Token:", data.token);
 
           var token = data.token;
           console.log(token.id);
@@ -63,20 +59,14 @@ function Login() {
         <h2 className="logo">HOBIGOWES</h2>
       </div>
       <div className="main-area">
-<<<<<<< HEAD
-        <form action="" onSubmit={handleSubmit}>
-=======
         <form className="form-signin" action="" onSubmit={handleSubmit}>
->>>>>>> 39935ed1067c52050789f7a153f2a2651d5e1ef9
           <input type="text" id="input-username" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
 
           <input type="password" id="input-password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-<<<<<<< HEAD
-          <Button btnType="btn-login">Log In</Button>
-=======
-          <Button btnType="btn-login" type="submit">Log In</Button>
->>>>>>> 39935ed1067c52050789f7a153f2a2651d5e1ef9
+          <Button btnType="btn-login" type="submit">
+            Log In
+          </Button>
         </form>
         {message && <p>{message}</p>}
         <p>Don't have an account yet?</p>

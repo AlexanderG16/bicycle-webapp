@@ -1,8 +1,7 @@
 import { Router } from "express";
-import { displayPost, getOnePost, makePost, makePostStub, searchPostByKeyword } from "../controllers/postController";
+import { displayPost, getOnePost, makePost, searchPostByKeyword, getImageFromServer, getPostImages } from "../controllers/postController";
 import multer from "multer";
 import path from "path";
-import fs from "fs";
 
 const router = Router();
 
@@ -22,5 +21,7 @@ router.get("/", displayPost);
 router.post("/:user_id/create-post", upload.array("images"), makePost);
 router.get("/post/:id", getOnePost);
 router.get("/search", searchPostByKeyword);
+router.get("/retrieve_img/:filename", getImageFromServer);
+router.post("/retrieve_img_post", getPostImages);
 
 export default router;

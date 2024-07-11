@@ -1,8 +1,5 @@
 import { Router } from "express";
-import {
-  displayUserProfile,
-  updateUserProfile,
-} from "../controllers/profileController";
+import { displayUserProfile, updateUserProfile } from "../controllers/profileController";
 import multer from "multer";
 import path from "path";
 
@@ -26,10 +23,6 @@ const upload = multer({ storage });
 router.post("/dashboard", displayUserProfile);
 
 // Route to update user profile
-router.put(
-  "/:user_id/edit-profile",
-  upload.single("profile_picture"),
-  updateUserProfile
-);
+router.put("/edit-profile", upload.single("profile_picture"), updateUserProfile);
 
 export default router;

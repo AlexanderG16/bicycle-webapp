@@ -24,21 +24,40 @@ interface Post {
   stok: number;
   status: status;
   user_id: number;
-  url: string;
+  url?: string;
 }
 
 export const getAllPosts = async (): Promise<Array<Post> | null> => {
   const conn = await InitDB.getInstance();
   // const posts = Array<Post>;
   try {
-    const [rows] = await conn.query(
-      "SELECT * FROM post JOIN image ON post.id = image.post_id"
-    );
+    const [rows] = await conn.query("SELECT post.*, image.url FROM post JOIN image ON post.id = image.post_id GROUP BY post.id");
     conn.release();
+
+    console.log("Ieu data all posts: ", rows);
 
     return rows as Array<Post>;
   } catch (error) {
     console.error("Error getting all posts");
+    conn.release();
+    return null;
+  }
+};
+
+export const searchPosts = async (keyword: string): Promise<Array<Post> | null> => {
+  const conn = await InitDB.getInstance();
+  try {
+    const query = `
+            SELECT post.*, image.url FROM post JOIN image
+            ON post.id = image.post_id WHERE title LIKE ? OR description LIKE ? OR city LIKE ? OR province LIKE ?
+        `;
+    const [rows] = await conn.query(query, [`%${keyword}%`, `%${keyword}%`, `%${keyword}%`, `%${keyword}%`]);
+
+    console.log(rows.url);
+    conn.release();
+    return rows as Array<Post>;
+  } catch (error) {
+    console.error("Error searching posts", error);
     conn.release();
     return null;
   }
@@ -81,7 +100,7 @@ export const createPost = async (
     console.log("post id bos: ", post_id_num);
 
     for (let i = 0; i < images.length; i++) {
-      await conn.query("INSERT INTO image (url, post_id) VALUES (?, ?)", [images[0], post_id_num]);
+      await conn.query("INSERT INTO image (url, post_id) VALUES (?, ?)", [images[i], post_id_num]);
     }
 
     conn.release();
@@ -95,10 +114,7 @@ export const createPost = async (
 export const getPostByID = async (id?: number): Promise<Post | null> => {
   const conn = await InitDB.getInstance();
   try {
-    const [rows] = await conn.query(
-      "SELECT id, title, bike_type, description, price, city, province, upload_date, stok, status, user_id FROM post WHERE id = ?",
-      [id]
-    );
+    const [rows] = await conn.query("SELECT post.*, image.url FROM post JOIN image ON post.id = image.post_id WHERE post.id = ?", [id]);
     conn.release();
 
     if (Array.isArray(rows) && rows.length > 0) {
@@ -113,25 +129,20 @@ export const getPostByID = async (id?: number): Promise<Post | null> => {
   }
 };
 
-export const searchPosts = async (
-  keyword: string
-): Promise<Array<Post> | null> => {
+export const getImagesById = async (post_id: number): Promise<Array<{ url: string }> | null> => {
   const conn = await InitDB.getInstance();
+
   try {
-    const query = `
-            SELECT * FROM post
-            WHERE title LIKE ? OR description LIKE ? OR city LIKE ? OR province LIKE ?
-        `;
-    const [rows] = await conn.query(query, [
-      `%${keyword}%`,
-      `%${keyword}%`,
-      `%${keyword}%`,
-      `%${keyword}%`,
-    ]);
+    const [images] = await conn.query("SELECT url FROM image WHERE image.post_id = ?", [post_id]);
     conn.release();
-    return rows as Array<Post>;
+
+    if (Array.isArray(images) && images.length > 0) {
+      return images;
+    } else {
+      return null;
+    }
   } catch (error) {
-    console.error("Error searching posts", error);
+    console.error("Error retrieving images", error);
     conn.release();
     return null;
   }

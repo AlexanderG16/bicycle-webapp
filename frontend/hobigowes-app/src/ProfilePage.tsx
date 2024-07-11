@@ -30,7 +30,7 @@ const ProfilePage = () => {
         setUserID(payload.user_id);
       }
     }
-  }, []);
+  }, [userID]);
 
   useEffect(() => {
     if (userID !== null) {
@@ -40,12 +40,9 @@ const ProfilePage = () => {
 
   const fetchUserProfile = async (userID: number) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/profile/dashboard",
-        {
-          user_id: userID,
-        }
-      );
+      const response = await axios.post("http://localhost:5000/profile/dashboard", {
+        user_id: userID,
+      });
       const data = response.data;
       setUsername(data.username);
       setEmail(data.email);
@@ -94,12 +91,7 @@ const ProfilePage = () => {
         <div className="profile-page-content">
           <div className="profile-info">
             <a id="profile-logo">
-              <img
-                src={profilePicture || profileImage}
-                alt="Profile Picture"
-                width="100"
-                height="100"
-              />
+              <img src={profilePicture ? `http://localhost:5000/user_uploads/retrieve_img/${profilePicture}` : profileImage} alt="Profile Picture" width="100" height="100" />
             </a>
             <h1 id="profile-name">{username}</h1>
             <article id="profile-desc">

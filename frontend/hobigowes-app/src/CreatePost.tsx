@@ -31,14 +31,12 @@ const CreatePost = () => {
     if (typeof token === "string") {
       // Decode token to get user_id
       const decodedToken = jwtDecode<JwtPayload>(token);
-      
+
       if (decodedToken.user_id) {
         setUserID(decodedToken.user_id);
       }
     }
   }, [userID]);
-
-  console.log(userID);
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,13 +45,15 @@ const CreatePost = () => {
       setMessage("Please select at least one image to upload");
       return;
     } else {
+      console.log("Panjang Images: ", imageFiles.length);
       const formData = new FormData();
-      imageFiles.forEach((file, index) => {
+      imageFiles.forEach((file) => {
         formData.append(`images`, file);
+        console.log("fileName: ", file.name);
       });
 
       formData.append(`title`, postTitle);
-      formData.append(`bike_type`, bikeType);
+      formData.append(`bike_type_input`, bikeType);
       formData.append(`description`, postDescription);
       formData.append(`price`, postPrice);
       formData.append(`city`, postCity);
@@ -76,8 +76,6 @@ const CreatePost = () => {
           } else {
             setMessage("File upload failed");
           }
-
-          console.log(message);
         })
         .catch((error) => {
           // Handle network errors or Axios-specific errors
@@ -143,7 +141,9 @@ const CreatePost = () => {
               <input type="text" id="price" value={postPrice} onChange={(e) => setPostPrice(e.target.value)} />
             </div>
           </div>
-          <Button btnType="create-post" type="submit">Upload</Button>
+          <Button btnType="create-post" type="submit">
+            Upload
+          </Button>
         </form>
 
         {message && <p>{message}</p>}

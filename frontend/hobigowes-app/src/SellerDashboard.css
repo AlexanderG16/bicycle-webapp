@@ -47,19 +47,16 @@ a#seller-profile-logo {
   padding-left: 30px;
 }
 
-h1.seller-profile-info {
-  font-size: xx-large;
-}
-
 .seller-profile-info img {
   border-radius: 50%;
 }
 
-.seller-profile-info h1 {
-  font-size: 30px;
+#seller-profile-name {
+  font-size: xx-large;
   align-items: start;
   justify-content: start;
   display: flex;
+  color: #000;
 }
 
 .seller-total-sales,

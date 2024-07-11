@@ -45,12 +45,9 @@ const SellerDashboard = () => {
 
   const fetchUserProfile = async (userID: number) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/profile/dashboard",
-        {
-          user_id: userID,
-        }
-      );
+      const response = await axios.post("http://localhost:5000/profile/dashboard", {
+        user_id: userID,
+      });
 
       const data = response.data;
       setUsername(data.username);
@@ -62,12 +59,9 @@ const SellerDashboard = () => {
 
   const fetchListBestSellingPosts = async (userID: number) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/transaction/seller-orders-list",
-        {
-          user_id: userID,
-        }
-      );
+      const response = await axios.post("http://localhost:5000/transaction/seller-orders-list", {
+        user_id: userID,
+      });
 
       const data = response.data;
       setBestSellingPosts(data);
@@ -78,12 +72,9 @@ const SellerDashboard = () => {
 
   const fetchTotalSales = async (userID: number) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/transaction/total-sales",
-        {
-          user_id: userID,
-        }
-      );
+      const response = await axios.post("http://localhost:5000/transaction/total-sales", {
+        user_id: userID,
+      });
 
       const data = response.data;
       setTotalSales(data.total_sales);
@@ -94,12 +85,9 @@ const SellerDashboard = () => {
 
   const fetchTotalOrder = async (userID: number) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/transaction/total-transactions",
-        {
-          user_id: userID,
-        }
-      );
+      const response = await axios.post("http://localhost:5000/transaction/total-transactions", {
+        user_id: userID,
+      });
 
       const data = response.data;
       setTotalOrder(data.total_orders);
@@ -146,12 +134,7 @@ const SellerDashboard = () => {
       <section id="seller-section">
         <div className="seller-section-header">
           <a id="seller-profile-logo">
-            <img
-              src={profilePicture || profileImage}
-              alt="Profile Picture"
-              width="100"
-              height="100"
-            />
+            <img src={profilePicture ? `http://localhost:5000/user_uploads/retrieve_img/${profilePicture}` : profileImage} alt="Profile Picture" width="250px" height="250px" />
           </a>
           <div className="seller-profile-info">
             <h1 id="seller-profile-name">{username}</h1>
@@ -184,9 +167,7 @@ const SellerDashboard = () => {
               listBestSellingPosts.map((post) => (
                 <tr id="seller-best-products-tr" key={post.transaction_id}>
                   <td id="seller-best-products-td">{post.product_name}</td>
-                  <td id="seller-best-products-td">
-                    Rp. {post.product_price}, 00
-                  </td>
+                  <td id="seller-best-products-td">Rp. {post.product_price}, 00</td>
                   <td id="seller-best-products-td">{post.quantity} Pcs</td>
                 </tr>
               ))

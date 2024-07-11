@@ -24,6 +24,10 @@ div.main-area {
   justify-content: center;
 }
 
+.main-area p {
+  color: black;
+}
+
 ::placeholder {
   font-size: medium;
   color: #9d9d9d;
