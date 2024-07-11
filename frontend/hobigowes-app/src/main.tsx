@@ -13,6 +13,7 @@ import SellerDashboard from "./SellerDashboard";
 import OrderPage from "./OrderPageCart";
 import OrderPagePost from "./OrderPagePost";
 import Cart from "./Cart";
+import RegisterAsSeller from "./RegisterAsSeller";
 
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -89,6 +90,10 @@ const router = createBrowserRouter([
   {
     path: "/seller-dashboard",
     element: <SellerDashboard />,
+  },
+  {
+    path: "register-as-seller",
+    element: <RegisterAsSeller />,
   },
 ]);
 

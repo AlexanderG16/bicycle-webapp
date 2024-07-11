@@ -4,7 +4,7 @@ import cartImage from "./assets/vecteezy_online-shop-icon-set-vector-for-web-pre
 import profileImage from "./assets/vecteezy_default-profile-account-unknown-icon-black-silhouette_20765399.jpg";
 import "./OrderPageCart.css";
 import Button from "./components/Button";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import Post from "../../../backend/src/models/post";
 import "./OrderPageCart.css";
 import { jwtDecode, JwtPayload } from "jwt-decode";
@@ -62,12 +62,22 @@ const OrderPagePost: React.FC = () => {
 
       const data = await response.json();
       window.alert(data.message);
+
+      const navigate = useNavigate();
+
       if (response.status === 201) {
-        window.location.href = "/transaction-history";
+        navigate("/transaction-history");
       }
     } catch (error) {
       window.alert(error);
     }
+  };
+
+  const formatRupiah = (price: number | undefined): string => {
+    if (price === undefined) {
+      return "Rp. 0"; // or any default value or message you want to return
+    }
+    return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(price);
   };
 
   return (
@@ -131,7 +141,7 @@ const OrderPagePost: React.FC = () => {
                         <p className="post-loc">
                           {post?.city}, {post?.province}
                         </p>
-                        <h2 className="price">Rp. {post?.price}</h2>
+                        <h2 className="price">{formatRupiah(post?.price)}</h2>
                         <p className="upload-time">{(post?.upload_date as string).slice(0, 10)}</p>
                       </div>
                     </div>
@@ -153,7 +163,7 @@ const OrderPagePost: React.FC = () => {
                 <p>CONFIRM YOUR ORDER?</p>
                 <hr />
                 <div className="total-price">
-                  <h2>Rp. {totalPrice}</h2>
+                  <h2>{formatRupiah(totalPrice)}</h2>
                 </div>
                 <Button btnType="pay-from-cart" onClick={insertIntoTransaction}>
                   Pay

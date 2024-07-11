@@ -31,7 +31,7 @@ function App() {
 
         if (response.ok) {
           const data = await response.json();
-          navigate("/");
+          navigate("/signin");
           // setMessage("Sign Up successful");
         } else {
           const errorData = await response.json();
@@ -59,7 +59,9 @@ function App() {
           <input type="tel" id="input-phone-num" placeholder="+62 |" onChange={(e) => setPhoneNUmber(e.target.value)}></input>
 
           <input type="text" id="input-address" placeholder="Address"></input>
-          <Button btnType="btn-signup">Sign Up</Button>
+          <Button btnType="btn-signup" type="submit">
+            Sign Up
+          </Button>
         </form>
         {message && <p>{message}</p>}
         <p>Already Have An Account?</p>

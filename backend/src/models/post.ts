@@ -49,7 +49,7 @@ export const searchPosts = async (keyword: string): Promise<Array<Post> | null> 
   try {
     const query = `
             SELECT post.*, image.url FROM post JOIN image
-            ON post.id = image.post_id WHERE title LIKE ? OR description LIKE ? OR city LIKE ? OR province LIKE ?
+            ON post.id = image.post_id WHERE title LIKE ? OR description LIKE ? OR city LIKE ? OR province LIKE ? GROUP BY post.id
         `;
     const [rows] = await conn.query(query, [`%${keyword}%`, `%${keyword}%`, `%${keyword}%`, `%${keyword}%`]);
 

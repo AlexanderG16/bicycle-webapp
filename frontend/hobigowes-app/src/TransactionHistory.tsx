@@ -14,9 +14,7 @@ const TransactionHistory = () => {
   const [userID, setUserID] = useState<number | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSeller, setIsSeller] = useState(false);
-  const [listTransactionsHistory, setListTransactionsHistory] = useState<any[]>(
-    []
-  );
+  const [listTransactionsHistory, setListTransactionsHistory] = useState<any[]>([]);
   const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
@@ -53,12 +51,9 @@ const TransactionHistory = () => {
 
   const fetchUserTransactionHistory = async (userID: number) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/transaction/order-list",
-        {
-          user_id: userID,
-        }
-      );
+      const response = await axios.post("http://localhost:5000/transaction/order-list", {
+        user_id: userID,
+      });
 
       const data = response.data;
       setListTransactionsHistory(data);
@@ -67,10 +62,24 @@ const TransactionHistory = () => {
     }
   };
 
+  const formatRupiah = (price: number) => {
+    return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(price);
+  };
+
   return (
     <div className="transaction-history">
       <header className="header">
-        <h2 className="logo">HOBIGOWES</h2>
+        <div className="header-left">
+          <h2 className="logo">HOBIGOWES</h2>
+          <button
+            className="back-button"
+            onClick={function () {
+              window.location.href = "/";
+            }}
+          >
+            HOME
+          </button>
+        </div>
         <div className="auth-links">
           {isAuthenticated ? (
             <>
@@ -129,7 +138,7 @@ const TransactionHistory = () => {
                 <tr key={transaction.transaction_id}>
                   <td>{formatDate(transaction.transaction_date)}</td>
                   <td>{transaction.product_name}</td>
-                  <td>{transaction.total_price}</td>
+                  <td>{formatRupiah(transaction.total_price)}</td>
                 </tr>
               ))
             ) : (

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { findUserByUsername, createUser } from "../models/user";
-import { getCartByUserId } from "../models/cart";
+import { findUserByUsername, createUser, registerAsSeller } from "../models/user";
+import { createCart, getCartByUserId } from "../models/cart";
 
 const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
@@ -17,7 +17,13 @@ const login = async (req: Request, res: Response) => {
   if (!isPasswordValid) {
     return res.status(401).json({ message: "Invalid password" });
   }
-  const cart = await getCartByUserId(user?.id);
+  let cart = await getCartByUserId(user?.id);
+
+  if (!cart) {
+    const newCart = await createCart(user?.id);
+
+    cart = await getCartByUserId(user?.id);
+  }
 
   const token = jwt.sign(
     {
@@ -49,4 +55,19 @@ const signup = async (req: Request, res: Response) => {
   }
 };
 
-export { login, signup };
+const becomeSeller = async (req: Request, res: Response) => {
+  const { address, user_id } = req.body;
+
+  try {
+    await registerAsSeller(user_id, address);
+    return res.status(201).json({
+      message: "Succesfully registered as seller",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+export { login, signup, becomeSeller };

@@ -56,7 +56,17 @@ const ProfilePage = () => {
   return (
     <div className="profile-page">
       <header className="header">
-        <h2 className="logo">HOBIGOWES</h2>
+        <div className="header-left">
+          <h2 className="logo">HOBIGOWES</h2>
+          <button
+            className="back-button"
+            onClick={function () {
+              window.location.href = "/";
+            }}
+          >
+            HOME
+          </button>
+        </div>
         <div className="auth-links">
           {isAuthenticated ? (
             <>
@@ -110,9 +120,14 @@ const ProfilePage = () => {
             <span>View Transaction History</span>
             <span>&gt;</span>
           </a>
-          {isSeller && (
+          {isSeller ? (
             <a href="/seller-dashboard" className="profile-menu-item">
               <span>Show Seller Dashboard</span>
+              <span>&gt;</span>
+            </a>
+          ) : (
+            <a href="/register-as-seller" className="profile-menu-item">
+              <span>Register as Seller</span>
               <span>&gt;</span>
             </a>
           )}

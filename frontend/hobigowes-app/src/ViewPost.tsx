@@ -89,7 +89,7 @@ const ViewPost = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ cart_id: cartId, post_id, quantity: "1" }),
+        body: JSON.stringify({ cart_id: cartId, post_id: post_id, quantity: "1" }),
       });
       const data = await response.json();
 
@@ -104,11 +104,23 @@ const ViewPost = () => {
     }
   };
 
+  const formatRupiah = (price: number) => {
+    return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(price);
+  };
+
   return (
     <div className="product-view">
       <header className="header">
         <div className="header-left">
-          <h1 className="logo">HOBIGOWES</h1>
+          <h2 className="logo">HOBIGOWES</h2>
+          <button
+            className="back-button"
+            onClick={function () {
+              window.location.href = "/";
+            }}
+          >
+            HOME
+          </button>
         </div>
         <div className="header-right">
           {isAuthenticated ? (
@@ -176,7 +188,7 @@ const ViewPost = () => {
           )}
         </div>
         <div className="product-price">
-          <h3>Rp. {post.price}</h3>
+          <h3>{formatRupiah(post.price)}</h3>
           <button className="order-now" onClick={orderItem}>
             Order Now
           </button>

@@ -16,6 +16,11 @@ export interface CartItems {
   price?: number;
 }
 
+export enum CartStatus {
+  CHECKED_OUT = "checked out",
+  NOT_CHECKED_OUT = "not checked out",
+}
+
 export const createCart = async (user_id?: number): Promise<void> => {
   const connection = await InitDB.getInstance();
   try {
@@ -52,10 +57,10 @@ export const getAllCartItems = async (cart_id: number): Promise<Array<CartItems>
       JOIN cart c ON ci.cart_id = c.id
       JOIN post p ON ci.post_id = p.id
       JOIN image i ON p.id = i.post_id
-      WHERE c.id = ?
+      WHERE c.id = ? AND ci.status = ?
       GROUP BY ci.post_id
     `,
-      [cart_id]
+      [cart_id, CartStatus.NOT_CHECKED_OUT]
     );
 
     conn.release();
@@ -113,5 +118,17 @@ export const setItemQuantity = async (cart_id?: number, post_id?: number, quanti
     console.error("Unexpected Error Occured: ", error);
     conn.release();
     throw error;
+  }
+};
+
+export const updateCartItemStatus = async (cart_id?: number): Promise<void> => {
+  const conn = await InitDB.getInstance();
+
+  try {
+    await conn.query("UPDATE cart_item SET status = ? WHERE cart_id = ?", [CartStatus.CHECKED_OUT, cart_id]);
+  } catch (error) {
+    console.error("Unexpected Error Occured: ", error);
+  } finally {
+    conn.release();
   }
 };

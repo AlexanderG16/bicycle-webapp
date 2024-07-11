@@ -3,7 +3,7 @@ import InitDB from "../database";
 import { findIsSeller } from "../models/user";
 
 import { createTransaction, createTransactionOnePost, getAllOrders, getAllOrdersBySeller, getTotalSalesBySeller, getTotalOrdersBySeller, TransactionStatus, createTransactionDetail } from "../models/transaction";
-import { getAllCartItems } from "../models/cart";
+import { getAllCartItems, updateCartItemStatus } from "../models/cart";
 
 export const getAllTransactions = async (req: Request, res: Response) => {
   const user_id = req.body.user_id;
@@ -145,6 +145,8 @@ export const insertTransaction = async (req: Request, res: Response) => {
         console.log(item);
         await createTransactionDetail(transaction_id, item.post_id, item.quantity, item.quantity * (item.price ?? -1));
       }
+
+      await updateCartItemStatus(cart_id);
 
       // Commit the transaction
       await conn.commit();

@@ -107,7 +107,18 @@ const EditProfile = () => {
   return (
     <div className="edit-profile">
       <header className="header">
-        <h2 className="logo">HOBIGOWES</h2>
+        {/* <h2 className="logo">HOBIGOWES</h2> */}
+        <div className="header-left">
+          <h2 className="logo">HOBIGOWES</h2>
+          <button
+            className="back-button"
+            onClick={function () {
+              window.location.href = "/";
+            }}
+          >
+            HOME
+          </button>
+        </div>
       </header>
       <section id="edit-profile-section">
         <form id="form-editprofile" className="form-editprofile" onSubmit={handleUpdateProfile} encType="multipart/form-data" method="put">

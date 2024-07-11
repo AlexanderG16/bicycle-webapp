@@ -41,7 +41,7 @@ const Cart: React.FC = () => {
                       <div class="post-description">
                         <h3 class="post-title">${element.title}</h3>
                         <p class="post-loc">${element.city}, ${element.province}</p>
-                        <h2 class="price">Rp. ${element.price}</h2>
+                        <h2 class="price">${formatRupiah(element.price)}</h2>
                         <p class="upload-time">${(element.upload_date as string).slice(0, 10)}</p>
                       </div>
                     </div>
@@ -73,7 +73,9 @@ const Cart: React.FC = () => {
     fetchData();
   }, [isAuthenticated]);
 
-  console.log(isAuthenticated);
+  const formatRupiah = (price: number) => {
+    return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(price);
+  };
 
   return (
     <div className="cart">

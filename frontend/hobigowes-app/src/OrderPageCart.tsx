@@ -17,10 +17,10 @@ const OrderPage: React.FC = () => {
     const fetchData = async () => {
       try {
         if (typeof token === "string") {
-          const decode = jwtDecode(token)
+          const decode = jwtDecode(token);
           const cart_id = decode.cart_id;
-          setCartId(cart_id??0);
-          setUserId(decode.user_id??0);
+          setCartId(cart_id ?? 0);
+          setUserId(decode.user_id ?? 0);
           const response = await fetch("http://localhost:5000/cart", {
             method: "POST",
             headers: {
@@ -45,7 +45,7 @@ const OrderPage: React.FC = () => {
                       <div class="post-description">
                         <h3 class="post-title">${element.title}</h3>
                         <p class="post-loc">${element.city}, ${element.province}</p>
-                        <h2 class="price">Rp. ${element.price}</h2>
+                        <h2 class="price">Rp. ${formatRupiah(element.price)}</h2>
                         <p class="upload-time">${(element.upload_date as string).slice(0, 10)}</p>
                       </div>
                     </div>
@@ -139,20 +139,27 @@ const OrderPage: React.FC = () => {
       const response = await fetch(`http://localhost:5000/transaction/order-checkout`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({user_id, cart_id, total_price: totalPrice})
-      })
-      
+        body: JSON.stringify({ user_id, cart_id, total_price: totalPrice }),
+      });
+
       const data = await response.json();
       window.alert(data.message);
       if (response.status === 201) {
-        window.location.href = '/transaction-history'
+        window.location.href = "/transaction-history";
       }
     } catch (error) {
       window.alert(error);
     }
-  }
+  };
+
+  const formatRupiah = (price: number | undefined): string => {
+    if (price === undefined) {
+      return "Rp. 0"; // or any default value or message you want to return
+    }
+    return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(price);
+  };
 
   return (
     <div className="order-cart">
@@ -200,9 +207,11 @@ const OrderPage: React.FC = () => {
                 <p>CONFIRM YOUR ORDER?</p>
                 <hr />
                 <div className="total-price">
-                  <h2>Rp. {totalPrice}</h2>
+                  <h2>{formatRupiah(totalPrice)}</h2>
                 </div>
-                <Button btnType="pay-from-cart" onClick={insertIntoTransaction}>Pay</Button>
+                <Button btnType="pay-from-cart" onClick={insertIntoTransaction}>
+                  Pay
+                </Button>
               </div>
             </>
           )}
