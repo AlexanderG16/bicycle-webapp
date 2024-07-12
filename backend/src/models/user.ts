@@ -134,7 +134,7 @@ export const updateUser = async (user: User, oldPassword: string, newName: strin
 export const registerAsSeller = async (user_id: number, address: string): Promise<void> => {
   const conn = await InitDB.getInstance();
   try {
-    await conn.query("UPDATE users SET address = ? and isSeller = 1 WHERE id = ?", [address, user_id]);
+    await conn.query("UPDATE users SET address = ?, is_seller = ? WHERE id = ?", [address, 1, user_id]);
   } catch (error) {
     console.error("Error registering as seller:", error);
     throw error;

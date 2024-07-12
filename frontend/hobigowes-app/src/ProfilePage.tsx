@@ -53,6 +53,16 @@ const ProfilePage = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      document.cookie = "token" + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+      window.alert("Logout Successfully");
+      window.location.href = "/";
+    } catch (error) {
+      window.alert("Failed to Log Out");
+    }
+  };
+
   return (
     <div className="profile-page">
       <header className="header">
@@ -130,6 +140,15 @@ const ProfilePage = () => {
               <span>Register as Seller</span>
               <span>&gt;</span>
             </a>
+          )}
+          {isAuthenticated ? (
+            <>
+              <button onClick={handleLogout} style={{ color: "white" }}>
+                Log Out
+              </button>
+            </>
+          ) : (
+            <></>
           )}
         </div>
       </section>

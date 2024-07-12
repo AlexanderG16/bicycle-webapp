@@ -7,7 +7,7 @@ import "./RegisterAsSeller.css";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
-function RegisterAsSeller() {
+const RegisterAsSeller = () => {
   const [address, setAddress] = useState<string>("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userID, setUserID] = useState<number | null>(null);
@@ -27,20 +27,34 @@ function RegisterAsSeller() {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://localhost:5000/api/auth/becomeSeller", {
-        method: "POST",
+      const response = await fetch("http://localhost:5000/api/auth/becomeSeller", {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ address: address, user_id: userID }),
+        body: JSON.stringify({ address, user_id: userID }),
       });
 
-      console.log("RESPONSE: ", response);
-      console.log("MESSAGE: ", response.json);
+      const data = await response.json();
+
+      console.log("RESPONSE: ", response.status);
+      console.log("MESSAGE: ", data.message);
 
       if (response.status == 201) {
         window.alert("You're now a seller");
+        // Handle token storage and redirect if necessary
+
+        var token = data.token;
+        console.log(token.id);
+        var expirationDate = new Date();
+        expirationDate.setTime(expirationDate.getTime() + 1 * 60 * 60 * 1000); // 1 hour in milliseconds
+
+        var cookieString = "token=" + token + "; expires=" + expirationDate.toUTCString() + "; path=/";
+
+        document.cookie = cookieString;
         window.location.href = "/profile";
+      } else {
+        window.alert(data.message);
       }
     } catch (error) {
       window.alert("Failed to register as Seller");
@@ -59,6 +73,6 @@ function RegisterAsSeller() {
       </section>
     </div>
   );
-}
+};
 
 export default RegisterAsSeller;

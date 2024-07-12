@@ -63,11 +63,11 @@ const OrderPagePost: React.FC = () => {
       const data = await response.json();
       window.alert(data.message);
 
-      const navigate = useNavigate();
+      // const navigate = useNavigate();
 
-      if (response.status === 201) {
-        navigate("/transaction-history");
-      }
+      // if (response.status === 201) {
+      //   navigate("/transaction-history");
+      // }
     } catch (error) {
       window.alert(error);
     }
